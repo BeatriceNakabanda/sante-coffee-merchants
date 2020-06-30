@@ -15,7 +15,6 @@ data class RegionalManager(
     @ColumnInfo(name = "region") var region: String,
     @ColumnInfo(name = "password") var password: String,
     @ColumnInfo(name = "created_at") var createdAt: Long
-
     )
     :Serializable {
 }
