@@ -1,15 +1,12 @@
 package com.example.santecoffeemerhants.data.Entity
 
-import androidx.room.ColumnInfo
-import androidx.room.Entity
-import androidx.room.ForeignKey
-import androidx.room.PrimaryKey
+import androidx.room.*
 import java.io.Serializable
 
 @Entity(tableName = "farmer_table", foreignKeys = [ForeignKey(entity = RegionalManager::class,
-    parentColumns = arrayOf("regional_manager_id"),
+    parentColumns = arrayOf("id"),
     childColumns = arrayOf("manager_id"),
-    onDelete = ForeignKey.CASCADE)])
+    onDelete = ForeignKey.CASCADE)], indices = [Index("manager_id")] )
 data class Farmer(
     @PrimaryKey(autoGenerate = true)
     @ColumnInfo(name = "id") val farmer_id: Long,
