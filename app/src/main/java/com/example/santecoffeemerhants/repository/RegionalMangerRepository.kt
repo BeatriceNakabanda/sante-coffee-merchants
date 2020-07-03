@@ -8,7 +8,7 @@ class RegionalMangerRepository private constructor(private val regionalManagerDa
 //    private val regionalManagerAccount: LiveData<RegionalManager>? = null
     //Check if password for an email exists
     fun isValidAccount(email: String, password: String): Boolean{
-        val regionalManagerAccount = regionalManagerDao.getRegionalManager(email)
+        val regionalManagerAccount = regionalManagerDao.getRegionalManagerByEmail(email)
         return regionalManagerAccount.password == password
     }
     fun insertRegionalManager(regionalManager: RegionalManager){

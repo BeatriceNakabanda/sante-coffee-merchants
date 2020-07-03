@@ -2,13 +2,16 @@ package com.example.santecoffeemerhants.data
 
 import android.content.Context
 import androidx.room.*
+import androidx.sqlite.db.SupportSQLiteDatabase
 import com.example.santecoffeemerhants.data.Dao.FarmerDao
 import com.example.santecoffeemerhants.data.Dao.RegionalManagerDao
 import com.example.santecoffeemerhants.data.Entity.Farmer
 import com.example.santecoffeemerhants.data.Entity.RegionalManager
 import com.example.santecoffeemerhants.data.converter.Converters
+import kotlinx.coroutines.CoroutineScope
+import java.util.*
 
-@Database(entities = [Farmer::class, RegionalManager::class], version = 1, exportSchema = false)
+@Database(entities = [RegionalManager::class, Farmer::class], version = 1)
 @TypeConverters(Converters::class)
 abstract class SanteRoomDatabase: RoomDatabase() {
 
@@ -16,23 +19,31 @@ abstract class SanteRoomDatabase: RoomDatabase() {
     abstract fun farmerDao(): FarmerDao
 
     companion object {
-        @Volatile
-        private var INSTANCE: SanteRoomDatabase? = null
 
-        fun getDatabase(context: Context): SanteRoomDatabase {
-            val tempInstance = INSTANCE
-            if (tempInstance != null) {
-                return tempInstance
-            }
-            synchronized(this) {
+        // For Singleton instantiation
+        @Volatile private var instance: SanteRoomDatabase? = null
+
+//        fun getInstance(context: Context): SanteRoomDatabase {
+//            return instance ?: synchronized(this) {
+//                instance ?: buildDatabase(context).also { instance = it }
+//            }
+        fun getDatabase(
+            context: Context
+        ): SanteRoomDatabase {
+            // if the INSTANCE is not null, then return it,
+            // if it is, then create the database
+            return instance ?: synchronized(this) {
                 val instance = Room.databaseBuilder(
                     context.applicationContext,
                     SanteRoomDatabase::class.java,
                     "sante_database"
-                ).build()
-                INSTANCE = instance
-                return instance
+                )
+                    .build()
+                Companion.instance = instance
+                // return instance
+                instance
             }
         }
+
     }
 }

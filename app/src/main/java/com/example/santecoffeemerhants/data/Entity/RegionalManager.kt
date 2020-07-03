@@ -24,26 +24,5 @@ data class RegionalManager(
     @TypeConverters(Converters::class)
     var createdAt: Date?
     )
-    :Serializable, RegionalManagerDao {
+    :Serializable
 
-    override fun getRegionalManager(email: String): RegionalManager {
-        TODO("Not yet implemented")
-//        var regionalManager = RegionalManager(regional_manager_id=this.regional_manager_id,
-//            name = this.name, gender = this.gender, email = this.email,
-//            region = this.region, password = this.password, createdAt = this.createdAt)
-//        return regionalManager
-    }
-
-//    override fun getAllRegionalMangers(): LiveData<List<RegionalManager>> {
-//        TODO("Not yet implemented")
-//    }
-
-    override fun getEmail(email: String): String {
-        return this.email
-    }
-
-    override fun insert(regionalManager: RegionalManager) {
-        TODO("Not yet implemented")
-    }
-
-}

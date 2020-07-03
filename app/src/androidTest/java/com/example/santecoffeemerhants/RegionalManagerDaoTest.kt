@@ -1,20 +1,17 @@
 package com.example.santecoffeemerhants
 
-import android.content.Context
-import androidx.arch.core.executor.testing.InstantTaskExecutorRule
 import androidx.room.Room
+import androidx.room.Room.inMemoryDatabaseBuilder
 import androidx.test.InstrumentationRegistry
 import androidx.test.runner.AndroidJUnit4
 import com.example.santecoffeemerhants.data.Dao.RegionalManagerDao
-import com.example.santecoffeemerhants.data.SanteRoomDatabase
-import androidx.test.espresso.matcher.ViewMatchers.assertThat
 import com.example.santecoffeemerhants.data.Entity.RegionalManager
-import junit.framework.Assert.assertEquals
-import kotlinx.coroutines.runBlocking
+import com.example.santecoffeemerhants.data.SanteRoomDatabase
 import org.hamcrest.CoreMatchers.equalTo
+import org.hamcrest.MatcherAssert.assertThat
+
 import org.junit.After
 import org.junit.Before
-import org.junit.Rule
 import org.junit.Test
 import org.junit.runner.RunWith
 import java.io.IOException
@@ -22,44 +19,77 @@ import java.util.*
 
 @RunWith(AndroidJUnit4::class)
 class RegionalManagerDaoTest {
+
     private lateinit var regionalManagerDao: RegionalManagerDao
-    private lateinit var database: SanteRoomDatabase
+    private lateinit var db: SanteRoomDatabase
 
-    private val regionalManager1 = RegionalManager(
-        name = "Sande",
-        gender = "Male",
-        region = "Lwengo",
-        password = "12345",
-        email = "sande@gmail.com",
-        createdAt = Date()
-    )
-
-
-
-    @get:Rule
-    var instantTaskExecutorRule = InstantTaskExecutorRule()
-
-    @Before fun createDb() = runBlocking {
+    @Before
+    fun createDb() {
         val context = InstrumentationRegistry.getInstrumentation().targetContext
-        database = Room.inMemoryDatabaseBuilder(context, SanteRoomDatabase::class.java).build()
-        regionalManagerDao = database.regionalManagerDao()
-
-        regionalManagerDao.insert(regionalManager1)
+        // Using an in-memory database because the information stored here disappears when the
+        // process is killed.
+        db = inMemoryDatabaseBuilder(context, SanteRoomDatabase::class.java)
+                // Allowing main thread queries, just for testing.
+                .allowMainThreadQueries()
+                .build()
+        regionalManagerDao = db.regionalManagerDao()
     }
 
-    @After fun closeDb() {
-        database.close()
+    @After
+    @Throws(IOException::class)
+    fun closeDb() {
+        db.close()
+    }
+    @Test
+    fun testGetRegionalManagerByEmail() {
+        //Arrange
+        val regionalManager1 = RegionalManager(
+            name = "liz",
+            gender = "Male",
+            email = "liz@gmail.com",
+            region = "Lwengo",
+            password = "12345",
+            createdAt = Date()
+        )
+        val email = regionalManager1.email
+        regionalManagerDao.insert(regionalManager1)
+
+        //Act
+        val regionalManager = email?.let { regionalManagerDao.getRegionalManagerByEmail(it) }
+        val returnedRegionalManagerEmail = regionalManager?.email
+
+        //Assert
+        assertThat(returnedRegionalManagerEmail, equalTo(email))
+
     }
 
     @Test
-    fun testGetRegionalManager() {
-        val email = regionalManager1.email
+    fun getAllRegionalMangersTest(){
+        //Arrange
+        val regionalManager1 = RegionalManager(
+            name = "liz",
+            gender = "Female",
+            email = "liz@gmail.com",
+            region = "Lwengo",
+            password = "12345",
+            createdAt = Date()
+        )
+        val regionalManager2 = RegionalManager(
+            name = "Sande",
+            gender = "Male",
+            email = "sande@gmail.com",
+            region = "Bbunga",
+            password = "12345",
+            createdAt = Date()
+        )
+        regionalManagerDao.insert(regionalManager1)
+        //Act
+        val regionalManagers = regionalManagerDao.getAllRegionalMangers()
+        val regionalManagerList = (regionalManagerDao.getAllRegionalMangers()).value
 
-        val regionalManager = regionalManagerDao.getEmail(email = email)
-        assertThat(regionalManager, equalTo(regionalManager1))
-
-
+        //Assert
+        if (regionalManagerList != null) {
+            assertThat(regionalManagerList.size, equalTo(3))
+        }
     }
-
 }
-

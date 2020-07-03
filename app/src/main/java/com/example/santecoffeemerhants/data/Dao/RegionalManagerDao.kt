@@ -10,14 +10,11 @@ import com.example.santecoffeemerhants.data.Entity.RegionalManager
 
 @Dao
 interface RegionalManagerDao {
-    @Query("SELECT * FROM regional_manager WHERE regional_manager.id LIKE :email")
-    fun getRegionalManager(email: String): RegionalManager
+    @Query("SELECT * FROM regional_manager")
+    fun getAllRegionalMangers():LiveData<List<RegionalManager>>
 
-//    @Query("SELECT * FROM regional_manager")
-//    fun getAllRegionalMangers():LiveData<List<RegionalManager>>
-
-    @Query("SELECT * FROM regional_manager WHERE regional_manager.id LIKE :email")
-    fun getEmail(email: String): String
+    @Query("SELECT * FROM regional_manager WHERE regional_manager.email LIKE :email")
+    fun getRegionalManagerByEmail(email: String): RegionalManager
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     fun insert(regionalManager: RegionalManager)
