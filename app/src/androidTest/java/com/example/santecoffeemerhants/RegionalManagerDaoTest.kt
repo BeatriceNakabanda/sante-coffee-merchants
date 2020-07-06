@@ -20,7 +20,7 @@ import java.util.*
 @RunWith(AndroidJUnit4::class)
 class RegionalManagerDaoTest {
 
-    private lateinit var regionalManagerDao: RegionalManagerDao
+    private var regionalManagerDao: RegionalManagerDao? = null
     private lateinit var db: SanteRoomDatabase
 
     @Before
@@ -41,6 +41,25 @@ class RegionalManagerDaoTest {
         db.close()
     }
     @Test
+    fun testInsertRegionalManager(){
+        //Arrange
+        val regionalManager1 = RegionalManager(
+            name = "liz",
+            gender = "Male",
+            email = "liz@gmail.com",
+            region = "Lwengo",
+            password = "12345",
+            createdAt = Date()
+        )
+        val email = regionalManager1.email
+        //Act
+        regionalManagerDao?.insert(regionalManager1)
+        val returnedRegionalManage = regionalManagerDao?.getRegionalManagerByEmail(email)
+        val returnedEmail = returnedRegionalManage?.email
+        //Assert
+        assertThat(returnedEmail, equalTo(email))
+    }
+    @Test
     fun testGetRegionalManagerByEmail() {
         //Arrange
         val regionalManager1 = RegionalManager(
@@ -52,10 +71,10 @@ class RegionalManagerDaoTest {
             createdAt = Date()
         )
         val email = regionalManager1.email
-        regionalManagerDao.insert(regionalManager1)
+        regionalManagerDao?.insert(regionalManager1)
 
         //Act
-        val regionalManager = email?.let { regionalManagerDao.getRegionalManagerByEmail(it) }
+        val regionalManager = email?.let { regionalManagerDao?.getRegionalManagerByEmail(it) }
         val returnedRegionalManagerEmail = regionalManager?.email
 
         //Assert
@@ -82,14 +101,41 @@ class RegionalManagerDaoTest {
             password = "12345",
             createdAt = Date()
         )
-        regionalManagerDao.insert(regionalManager1)
+        regionalManagerDao?.insert(regionalManager1)
         //Act
-        val regionalManagers = regionalManagerDao.getAllRegionalMangers()
-        val regionalManagerList = (regionalManagerDao.getAllRegionalMangers()).value
+        val regionalManagers = regionalManagerDao?.getAllRegionalMangers()
+        val regionalManagerList = (regionalManagerDao?.getAllRegionalMangers())?.value
 
         //Assert
         if (regionalManagerList != null) {
             assertThat(regionalManagerList.size, equalTo(3))
         }
+    }
+    @Test
+    fun getRegionalManagerByEmailAndPassword(){
+        //Arrange
+        val regionalManager1 = RegionalManager(
+            name = "liz",
+            gender = "Male",
+            email = "liz@gmail.com",
+            region = "Lwengo",
+            password = "12345",
+            createdAt = Date()
+        )
+        val email = regionalManager1.email
+        val password = regionalManager1.password
+
+        regionalManagerDao?.insert(regionalManager1)
+
+        //Act
+        val regionalManager =
+            regionalManagerDao?.getRegionalManagerByEmailAndPassword(email, password)
+
+        val returnedRegionalManagerEmail = regionalManager?.email
+        val returnedRegionalManagerPassword = regionalManager?.password
+
+        //Assert
+        assertThat(returnedRegionalManagerEmail, equalTo(email))
+        assertThat(returnedRegionalManagerPassword, equalTo(password))
     }
 }

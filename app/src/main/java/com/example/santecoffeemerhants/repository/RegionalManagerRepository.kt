@@ -4,8 +4,8 @@ import androidx.lifecycle.LiveData
 import com.example.santecoffeemerhants.data.Dao.RegionalManagerDao
 import com.example.santecoffeemerhants.data.Entity.RegionalManager
 
-class RegionalMangerRepository private constructor(private val regionalManagerDao: RegionalManagerDao){
-//    private val regionalManagerAccount: LiveData<RegionalManager>? = null
+class RegionalManagerRepository private constructor(private val regionalManagerDao: RegionalManagerDao){
+    val allRegionalManagers: LiveData<List<RegionalManager>> = regionalManagerDao.getAllRegionalMangers()
     //Check if password for an email exists
     fun isValidAccount(email: String, password: String): Boolean{
         val regionalManagerAccount = regionalManagerDao.getRegionalManagerByEmail(email)
@@ -16,11 +16,11 @@ class RegionalMangerRepository private constructor(private val regionalManagerDa
     }
 
     companion object {
-        private var instance: RegionalMangerRepository? = null
+        private var instance: RegionalManagerRepository? = null
 
-        fun getInstance(regionalManagerDao: RegionalManagerDao): RegionalMangerRepository {
+        fun getInstance(regionalManagerDao: RegionalManagerDao): RegionalManagerRepository {
             if (instance == null) {
-                instance = RegionalMangerRepository(regionalManagerDao)
+                instance = RegionalManagerRepository(regionalManagerDao)
             }
             return instance!!
         }

@@ -9,9 +9,11 @@ import com.example.santecoffeemerhants.data.Entity.Farmer
 import com.example.santecoffeemerhants.data.Entity.RegionalManager
 import com.example.santecoffeemerhants.data.converter.Converters
 import kotlinx.coroutines.CoroutineScope
-import java.util.*
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
+import java.time.chrono.HijrahChronology.INSTANCE
 
-@Database(entities = [RegionalManager::class, Farmer::class], version = 1)
+@Database(entities = [RegionalManager::class, Farmer::class], version = 2)
 @TypeConverters(Converters::class)
 abstract class SanteRoomDatabase: RoomDatabase() {
 
@@ -28,8 +30,8 @@ abstract class SanteRoomDatabase: RoomDatabase() {
 //                instance ?: buildDatabase(context).also { instance = it }
 //            }
         fun getDatabase(
-            context: Context
-        ): SanteRoomDatabase {
+    context: Context
+): SanteRoomDatabase {
             // if the INSTANCE is not null, then return it,
             // if it is, then create the database
             return instance ?: synchronized(this) {
@@ -46,4 +48,5 @@ abstract class SanteRoomDatabase: RoomDatabase() {
         }
 
     }
+
 }
