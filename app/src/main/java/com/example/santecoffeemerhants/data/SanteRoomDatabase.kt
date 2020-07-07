@@ -20,33 +20,27 @@ abstract class SanteRoomDatabase: RoomDatabase() {
     abstract fun regionalManagerDao(): RegionalManagerDao
     abstract fun farmerDao(): FarmerDao
 
-    companion object {
+companion object{
+    // Singleton prevents multiple instances of database opening at the
+    // same time.
+    @Volatile
+    private var INSTANCE: SanteRoomDatabase? = null
 
-        // For Singleton instantiation
-        @Volatile private var instance: SanteRoomDatabase? = null
-
-//        fun getInstance(context: Context): SanteRoomDatabase {
-//            return instance ?: synchronized(this) {
-//                instance ?: buildDatabase(context).also { instance = it }
-//            }
-        fun getDatabase(
-    context: Context
-): SanteRoomDatabase {
-            // if the INSTANCE is not null, then return it,
-            // if it is, then create the database
-            return instance ?: synchronized(this) {
-                val instance = Room.databaseBuilder(
-                    context.applicationContext,
-                    SanteRoomDatabase::class.java,
-                    "sante_database"
-                )
-                    .build()
-                Companion.instance = instance
-                // return instance
-                instance
-            }
+    fun getDatabase(context: Context): SanteRoomDatabase {
+        val tempInstance = INSTANCE
+        if (tempInstance != null) {
+            return tempInstance
         }
-
+        synchronized(this) {
+            val instance = Room.databaseBuilder(
+                context.applicationContext,
+                SanteRoomDatabase::class.java,
+                "sante_database"
+            )   .allowMainThreadQueries()
+                .build()
+            INSTANCE = instance
+            return instance
+        }
     }
-
+}
 }

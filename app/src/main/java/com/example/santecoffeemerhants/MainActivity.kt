@@ -13,12 +13,12 @@ class MainActivity : AppCompatActivity()  {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
 
-        regionalManager = intent.getSerializableExtra("Regional_Manager") as RegionalManager
+//        regionalManager = intent.getSerializableExtra("Regional_Manager") as RegionalManager
         user = findViewById(R.id.User)
 
-        if (regionalManager != null){
-            user.setText("Welcome " + regionalManager.name)
-        }
+//        if (regionalManager != null){
+//            user.setText("Welcome " + regionalManager.name)
+//        }
 
     }
 }

@@ -12,19 +12,18 @@ import android.widget.EditText
 import android.widget.TextView
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
-import androidx.room.Room
-import com.example.santecoffeemerhants.data.Dao.RegionalManagerDao
+import androidx.lifecycle.ViewModelProvider
 import com.example.santecoffeemerhants.data.Entity.RegionalManager
-import com.example.santecoffeemerhants.data.SanteRoomDatabase
 import com.example.santecoffeemerhants.viewmodel.RegionalManagerViewModel
 
 class LoginActivity : AppCompatActivity() {
     private lateinit var editTextEmail:EditText
     private lateinit var editTextPassword:EditText
-    private lateinit var regionalManagerViewModel: RegionalManagerViewModel
-    private  var regionalManagerDao: RegionalManagerDao? = null
     private lateinit var textViewRegister: TextView
-    private var dataBase: SanteRoomDatabase? = null
+    private  lateinit var regionalManagerViewModel: RegionalManagerViewModel
+
+    private var regionalManager: RegionalManager? = null
+
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -38,12 +37,6 @@ class LoginActivity : AppCompatActivity() {
         //inflate layout
         setContentView(R.layout.activity_login)
 
-        dataBase =
-            Room.databaseBuilder<SanteRoomDatabase>(this, SanteRoomDatabase::class.java, "sante_database.db")
-                .allowMainThreadQueries()
-                .build()
-        val db =dataBase?.regionalManagerDao()
-
         editTextEmail = findViewById(R.id.loginEmailAddressEditText)
         editTextPassword = findViewById(R.id.loginPasswordEditText)
         textViewRegister = findViewById(R.id.signUpTextView)
@@ -53,35 +46,31 @@ class LoginActivity : AppCompatActivity() {
             startActivity(intent)
         }
 
-//        editTextEmail.addTextChangedListener(emailTextWatcher)
-//        editTextPassword.addTextChangedListener(passwordTextWatcher)
+        regionalManagerViewModel = ViewModelProvider(this).get(RegionalManagerViewModel::class.java)
 
         val button = findViewById<Button>(R.id.signInButton)
         button.setOnClickListener{
             val email = editTextEmail.getText().toString().trim()
             val password = editTextPassword.getText().toString().trim()
 
-            val regionalManager: RegionalManager? =
-                db?.getRegionalManagerByEmail(email)
-            val returnedRegionalManagerEmail = regionalManager?.email
+            val isValid = regionalManagerViewModel?.checkIfValidAccount(email, password)
 
-            if (email == returnedRegionalManagerEmail){
+            if (isValid){
                 val intent = Intent(this, MainActivity::class.java)
-                intent.putExtra("Regional_Manager", regionalManager)
+                Toast.makeText(baseContext, "Successfully Logged In!", Toast.LENGTH_LONG).show()
+//                intent.putExtra("Regiona_Manager", regionalManager)
                 startActivity(intent)
                 finish()
             } else{
                 Toast.makeText(
                     this@LoginActivity,
-                    "Unregistered user, or incorrect",
+                    "Unregistered user, Login unsuccessfull",
                     Toast.LENGTH_SHORT
                 ).show()
             }
 
         }
 
-
-//        login()
     }
     private val emailTextWatcher = object: TextWatcher{
         override fun afterTextChanged(editable: Editable?) {
@@ -90,7 +79,6 @@ class LoginActivity : AppCompatActivity() {
                 invalidEmailText.visibility = View.GONE
             }
         }
-
 
         override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {
 
@@ -101,8 +89,6 @@ class LoginActivity : AppCompatActivity() {
 
     }
 
-    private fun login(){
-
-    }
-
 }
+
+
