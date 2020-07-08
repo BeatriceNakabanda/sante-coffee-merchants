@@ -12,9 +12,10 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="176dp"
-        android:layout_marginTop="50dp"
+        android:layout_marginTop="40dp"
         android:layout_marginEnd="176dp"
         android:textStyle="bold"
+        android:textSize="24sp"
         android:text="@string/app_name"
         android:fontFamily="@font/amita"
         app:layout_constraintEnd_toEndOf="parent"
@@ -23,21 +24,21 @@
 
     <TextView
         android:id="@+id/nameTextView"
-        android:layout_width="wrap_content"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginStart="99dp"
-        android:layout_marginTop="50dp"
+        android:layout_marginStart="32dp"
+        android:layout_marginTop="30dp"
         android:text="Name"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@id/santeTextView" />
 
     <EditText
         android:id="@+id/nameEditText"
-        android:layout_width="wrap_content"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginStart="99dp"
+        android:layout_marginStart="32dp"
         android:layout_marginTop="4dp"
-        android:layout_marginEnd="99dp"
+        android:layout_marginEnd="32dp"
         android:ems="10"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.0"
@@ -46,9 +47,9 @@
 
     <TextView
         android:id="@+id/emptyNameTextView"
-        android:layout_width="wrap_content"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginStart="99dp"
+        android:layout_marginStart="32dp"
         android:layout_marginTop="4dp"
         android:text="Please enter name"
         android:textColor="@color/invalid"
@@ -59,11 +60,11 @@
 
     <TextView
         android:id="@+id/emailTextView"
-        android:layout_width="wrap_content"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginStart="99dp"
+        android:layout_marginStart="32dp"
         android:layout_marginTop="8dp"
-        android:layout_marginEnd="99dp"
+        android:layout_marginEnd="32dp"
         android:text="Email"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.0"
@@ -72,11 +73,11 @@
 
     <EditText
         android:id="@+id/registerEmailAddressEditText"
-        android:layout_width="wrap_content"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginStart="99dp"
+        android:layout_marginStart="32dp"
         android:layout_marginTop="4dp"
-        android:layout_marginEnd="99dp"
+        android:layout_marginEnd="32dp"
         android:ems="10"
         android:inputType="textEmailAddress"
         app:layout_constraintEnd_toEndOf="parent"
@@ -86,9 +87,9 @@
 
     <TextView
         android:id="@+id/invalidEmailTextView"
-        android:layout_width="wrap_content"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginStart="99dp"
+        android:layout_marginStart="32dp"
         android:layout_marginTop="4dp"
         android:text="Please enter email"
         android:textColor="@color/invalid"
@@ -99,9 +100,9 @@
 
     <TextView
         android:id="@+id/regionTextView"
-        android:layout_width="wrap_content"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginStart="99dp"
+        android:layout_marginStart="32dp"
         android:layout_marginTop="8dp"
         android:text="Region"
         app:layout_constraintStart_toStartOf="parent"
@@ -109,11 +110,11 @@
 
     <EditText
         android:id="@+id/regionEditText"
-        android:layout_width="wrap_content"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginStart="99dp"
+        android:layout_marginStart="32dp"
         android:layout_marginTop="8dp"
-        android:layout_marginEnd="99dp"
+        android:layout_marginEnd="32dp"
         android:ems="10"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.0"
@@ -122,9 +123,9 @@
 
     <TextView
         android:id="@+id/emptyRegionTextView"
-        android:layout_width="wrap_content"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginStart="99dp"
+        android:layout_marginStart="32dp"
         android:layout_marginTop="4dp"
         android:text="Please enter region"
         android:textColor="@color/invalid"
@@ -135,11 +136,11 @@
 
     <TextView
         android:id="@+id/genderTextView"
-        android:layout_width="wrap_content"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginStart="99dp"
+        android:layout_marginStart="32dp"
         android:layout_marginTop="8dp"
-        android:layout_marginEnd="99dp"
+        android:layout_marginEnd="32dp"
         android:text="Gender"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.0"
@@ -148,13 +149,13 @@
 
     <Spinner
         android:id="@+id/genderSpinner"
-        android:layout_width="227dp"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginStart="99dp"
+        android:layout_marginStart="32dp"
         android:layout_marginTop="16dp"
-        android:layout_marginEnd="99dp"
+        android:layout_marginEnd="32dp"
         android:spinnerMode="dropdown"
-        android:text="Gender"
+        android:ems="10"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent"
@@ -164,7 +165,7 @@
         android:id="@+id/invalidGenderTextView"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginStart="99dp"
+        android:layout_marginStart="32dp"
         android:layout_marginTop="8dp"
         android:text="Please enter valid gender"
         android:textColor="@color/invalid"
@@ -175,11 +176,11 @@
 
     <TextView
         android:id="@+id/passwordTextView"
-        android:layout_width="wrap_content"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginStart="99dp"
+        android:layout_marginStart="32dp"
         android:layout_marginTop="10dp"
-        android:layout_marginEnd="99dp"
+        android:layout_marginEnd="32dp"
         android:text="Password"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.0"
@@ -188,11 +189,11 @@
 
     <EditText
         android:id="@+id/registerPasswordEditText"
-        android:layout_width="wrap_content"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginStart="99dp"
+        android:layout_marginStart="32dp"
         android:layout_marginTop="4dp"
-        android:layout_marginEnd="99dp"
+        android:layout_marginEnd="32dp"
         android:ems="10"
         android:inputType="textPassword"
         app:layout_constraintEnd_toEndOf="parent"
@@ -202,9 +203,9 @@
 
     <TextView
         android:id="@+id/emptyPasswordTextView"
-        android:layout_width="wrap_content"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginStart="99dp"
+        android:layout_marginStart="32dp"
         android:layout_marginTop="4dp"
         android:text="Please enter password"
         android:textColor="@color/invalid"
@@ -215,11 +216,11 @@
 
     <TextView
         android:id="@+id/confirmPasswordTextView"
-        android:layout_width="wrap_content"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginStart="99dp"
+        android:layout_marginStart="32dp"
         android:layout_marginTop="8dp"
-        android:layout_marginEnd="99dp"
+        android:layout_marginEnd="32dp"
         android:text="Confirm Password"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.0"
@@ -228,11 +229,11 @@
 
     <EditText
         android:id="@+id/confirmPasswordEditText"
-        android:layout_width="wrap_content"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginStart="99dp"
+        android:layout_marginStart="32dp"
         android:layout_marginTop="4dp"
-        android:layout_marginEnd="99dp"
+        android:layout_marginEnd="32dp"
         android:ems="10"
         android:inputType="textPassword"
         app:layout_constraintEnd_toEndOf="parent"
@@ -242,9 +243,9 @@
 
     <TextView
         android:id="@+id/noMatchPasswordTextView"
-        android:layout_width="wrap_content"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginStart="99dp"
+        android:layout_marginStart="32dp"
         android:layout_marginTop="4dp"
         android:text="Passwords don't match"
         android:textColor="@color/invalid"
@@ -258,7 +259,7 @@
         android:layout_width="85dp"
         android:layout_height="50dp"
         android:layout_marginStart="161dp"
-        android:layout_marginTop="32dp"
+        android:layout_marginTop="16dp"
         android:layout_marginEnd="162dp"
         android:background="#FFFFFF"
         android:text="Sign up"

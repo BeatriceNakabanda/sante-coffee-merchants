@@ -1,7 +1,10 @@
 <resources>
     <string name="app_name">Sante Coffee Merhants</string>
+    <string name="farmers">Farmers</string>
     <string name="gender_unknown">Unknown</string>
     <string name="gender_male">Male</string>
     <string name="gender_female">Female</string>
     <string name="gender_default">Select Gender</string>
+    <string name="search_title">Search</string>
+    <string name="add_farmer">Add new farmer</string>
 </resources>
