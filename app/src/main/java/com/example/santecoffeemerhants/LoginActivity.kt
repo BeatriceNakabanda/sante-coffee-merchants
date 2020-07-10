@@ -33,7 +33,7 @@ class LoginActivity : AppCompatActivity() {
         getSupportActionBar()?.hide();
         //enable full screen
         this.getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN,
-            WindowManager.LayoutParams.FLAG_FULLSCREEN);
+                WindowManager.LayoutParams.FLAG_FULLSCREEN);
         //inflate layout
         setContentView(R.layout.activity_login)
 
@@ -63,9 +63,9 @@ class LoginActivity : AppCompatActivity() {
                 finish()
             } else{
                 Toast.makeText(
-                    this@LoginActivity,
-                    "Unregistered user, Login unsuccessfull",
-                    Toast.LENGTH_SHORT
+                        this@LoginActivity,
+                        "Unregistered user, Login unsuccessfull",
+                        Toast.LENGTH_SHORT
                 ).show()
             }
 
@@ -90,5 +90,3 @@ class LoginActivity : AppCompatActivity() {
     }
 
 }
-
-

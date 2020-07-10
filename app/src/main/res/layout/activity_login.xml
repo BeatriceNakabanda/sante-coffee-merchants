@@ -17,6 +17,7 @@
         android:fontFamily="@font/amita"
         android:text="@string/app_name"
         android:textAlignment="center"
+        android:textColor="@color/colorPrimaryDark"
         android:textSize="24sp"
         android:textStyle="bold"
         app:layout_constraintEnd_toEndOf="parent"
@@ -33,6 +34,7 @@
         app:layout_constraintHorizontal_bias="0.0"
         android:layout_marginEnd="32dp"
         android:text="Email"
+        android:textColor="@color/colorPrimaryDark"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@id/santeTextView" />
@@ -46,6 +48,7 @@
         android:layout_marginEnd="32dp"
         android:ems="10"
         android:inputType="textEmailAddress"
+        android:textAlignment="textStart"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent"
@@ -72,6 +75,7 @@
         android:layout_marginTop="16dp"
         android:layout_marginEnd="32dp"
         android:text="Password"
+        android:textColor="@color/colorPrimaryDark"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent"
@@ -86,6 +90,7 @@
         android:layout_marginEnd="32dp"
         android:ems="10"
         android:inputType="textPassword"
+        android:textAlignment="textStart"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent"
@@ -125,8 +130,10 @@
         android:layout_marginStart="161dp"
         android:layout_marginTop="32dp"
         android:layout_marginEnd="162dp"
+        android:background="@color/colorPrimaryDark"
         android:text="Sign in"
-        android:background="#FFFFFF"
+        android:textAlignment="center"
+        android:textColor="#FFFFFF"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/incorrectPasswordEmailTextView" />
@@ -144,6 +151,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:ems="10"
+            android:textColor="@color/colorPrimaryDark"
             android:text="New User ?" />
 
         <TextView

@@ -14,8 +14,8 @@ data class Farmer(
     @ColumnInfo(name = "name") val name: String,
     @ColumnInfo(name = "gender") val gender: String,
     @ColumnInfo(name = "phone_number") val phone_number: String,
-//    @ColumnInfo(typeAffinity = ColumnInfo.BLOB)
-//    val birth_certificate: ByteArray? = null,
+    @ColumnInfo(name = "birth_certificate") val birth_certificate: String,
+//    @ColumnInfo(name = "national_id") val national_id: String,
     @ColumnInfo(name = "created_at") val createdAt: Long,
     @ColumnInfo(name = "modified_at") val modifiedAt: Long
 ): Serializable {
