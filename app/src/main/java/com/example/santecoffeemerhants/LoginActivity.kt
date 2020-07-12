@@ -2,9 +2,6 @@ package com.example.santecoffeemerhants
 
 import android.content.Intent
 import android.os.Bundle
-import android.text.Editable
-import android.text.TextWatcher
-import android.view.View
 import android.view.Window
 import android.view.WindowManager
 import android.widget.Button
@@ -48,6 +45,7 @@ class LoginActivity : AppCompatActivity() {
 
         regionalManagerViewModel = ViewModelProvider(this).get(RegionalManagerViewModel::class.java)
 
+
         val button = findViewById<Button>(R.id.signInButton)
         button.setOnClickListener{
             val email = editTextEmail.getText().toString().trim()
@@ -55,38 +53,50 @@ class LoginActivity : AppCompatActivity() {
 
             val isValid = regionalManagerViewModel?.checkIfValidAccount(email, password)
 
-            if (isValid){
+//            val regionalManager: Unit = regionalManagerViewModel.getRegionalMangerByEmail(email)
+            regionalManager = regionalManagerViewModel.getRegionalManagerDetails(email)
+
+            val returnedEmail = regionalManager?.email
+
+            if(email == returnedEmail){
                 val intent = Intent(this, MainActivity::class.java)
-                Toast.makeText(baseContext, "Successfully Logged In!", Toast.LENGTH_LONG).show()
-//                intent.putExtra("Regiona_Manager", regionalManager)
+                intent.putExtra("Regional_Manager", regionalManager)
                 startActivity(intent)
                 finish()
-            } else{
+            }else{
                 Toast.makeText(
-                        this@LoginActivity,
-                        "Unregistered user, Login unsuccessfull",
-                        Toast.LENGTH_SHORT
+                    this@LoginActivity,
+                    "Unregistered user, or incorrect",
+                    Toast.LENGTH_SHORT
                 ).show()
             }
 
-        }
 
-    }
-    private val emailTextWatcher = object: TextWatcher{
-        override fun afterTextChanged(editable: Editable?) {
-            val invalidEmailText =findViewById<View>(R.id.invalidEmailTextView) as TextView
-            if(editable != null && !editTextEmail.equals("") ){
-                invalidEmailText.visibility = View.GONE
+
+//            if (isValid){
+//                val intent = Intent(this, MainActivity::class.java)
+//                Toast.makeText(baseContext, "Successfully Logged In!", Toast.LENGTH_LONG).show()
+//                startActivity(intent)
+//                finish()
+//            } else{
+//                Toast.makeText(
+//                        this@LoginActivity,
+//                        "Unregistered user, Login unsuccessfull",
+//                        Toast.LENGTH_SHORT
+//                ).show()
+//            }
+
+
             }
-        }
+//            val intent = Intent(this, NewFarmerActivity::class.java)
+//            val regionalManagerEmail = regionalManager
+//
+//
+//            intent.putExtra("Regional_Manager", regionalManager)
+//            startActivity(intent)
 
-        override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {
 
-        }
-
-        override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {
         }
 
     }
 
-}

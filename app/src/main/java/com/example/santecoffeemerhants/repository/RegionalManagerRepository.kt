@@ -1,4 +1,4 @@
-package com.example.santecoffeemerhants.repository
+package com.example.santecoffeemerhants.viewmodel
 
 import androidx.lifecycle.LiveData
 import com.example.santecoffeemerhants.data.Dao.RegionalManagerDao
@@ -25,6 +25,10 @@ class RegionalManagerRepository constructor(private val regionalManagerDao: Regi
     fun isValidAccount(email: String, password: String): Boolean{
         val regionalManagerAccount = regionalManagerDao.getRegionalManagerByEmail(email)
         return regionalManagerAccount.password == password
+    }
+    fun getRegionalManagerDetails(email: String): RegionalManager {
+        val regionalManagerAccount = regionalManagerDao.getRegionalManagerByEmail(email)
+        return regionalManagerAccount
     }
 
 }

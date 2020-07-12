@@ -1,15 +1,12 @@
 package com.example.santecoffeemerhants.data.Entity
 
-import androidx.lifecycle.LiveData
 import androidx.room.ColumnInfo
 import androidx.room.Entity
 import androidx.room.PrimaryKey
 import androidx.room.TypeConverters
-import com.example.santecoffeemerhants.data.Dao.RegionalManagerDao
 import com.example.santecoffeemerhants.data.converter.Converters
 import java.io.Serializable
 import java.util.*
-
 
 @Entity(tableName = "regional_manager")
 data class RegionalManager(
@@ -23,6 +20,4 @@ data class RegionalManager(
     @ColumnInfo(name = "created_at", defaultValue = "CURRENT_TIMESTAMP")
     @TypeConverters(Converters::class)
     var createdAt: Date?
-    )
-    :Serializable
-
+) : Serializable

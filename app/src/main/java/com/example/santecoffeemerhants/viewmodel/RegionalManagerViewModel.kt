@@ -5,7 +5,6 @@ import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.LiveData
 import com.example.santecoffeemerhants.data.Entity.RegionalManager
 import com.example.santecoffeemerhants.data.SanteRoomDatabase
-import com.example.santecoffeemerhants.repository.RegionalManagerRepository
 
 class RegionalManagerViewModel(application: Application): AndroidViewModel(application) {
     private val repository: RegionalManagerRepository
@@ -21,11 +20,14 @@ class RegionalManagerViewModel(application: Application): AndroidViewModel(appli
     fun insert(regionalManager: RegionalManager){
         repository.insertRegionalManager(regionalManager)
     }
-    fun getRegionalMangerByEmail(email: String){
-        repository.getRegionalManagerByEmail(email)
+    fun getRegionalMangerByEmail(regionalManager: String){
+        repository.getRegionalManagerByEmail(regionalManager)
     }
     fun checkIfValidAccount(email: String, password: String): Boolean{
         return repository.isValidAccount(email, password)
+    }
+    fun getRegionalManagerDetails(email: String): RegionalManager{
+        return repository.getRegionalManagerDetails(email)
     }
 
 

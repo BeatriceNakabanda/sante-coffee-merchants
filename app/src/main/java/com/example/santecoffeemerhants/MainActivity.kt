@@ -2,20 +2,19 @@ package com.example.santecoffeemerhants
 
 import android.content.Intent
 import android.os.Bundle
+import android.text.TextUtils
 import android.view.Menu
-import android.widget.ListView
-import android.widget.TextView
+import android.view.View
+import android.widget.*
 import androidx.appcompat.app.ActionBar
 import androidx.appcompat.app.AppCompatActivity
-import androidx.drawerlayout.widget.DrawerLayout
 import com.example.santecoffeemerhants.data.Entity.RegionalManager
 import com.google.android.material.floatingactionbutton.FloatingActionButton
-import com.google.android.material.navigation.NavigationView
-import com.google.android.material.snackbar.Snackbar
+import kotlinx.android.synthetic.main.activity_new_farmer.*
 
 class MainActivity : AppCompatActivity()  {
-    private lateinit var regionalManager: RegionalManager
-    private lateinit var user: TextView
+    private var regionalManager: RegionalManager? = null
+
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -25,10 +24,22 @@ class MainActivity : AppCompatActivity()  {
         if (actionBar != null) {
             actionBar.setTitle("Farmers")
         }
+        regionalManager = intent.getSerializableExtra("Regional_Manager") as RegionalManager
+        val email = regionalManager?.email
+        val name = regionalManager?.name
+        val regionalManagerId = regionalManager?.regional_manager_id
+        Toast.makeText(
+            this,
+            "User Email: $email \n User Id: $regionalManagerId \n UserName: $name",
+            Toast.LENGTH_SHORT
+        ).show()
+
         val fab = findViewById<FloatingActionButton>(R.id.fab)
         fab.setOnClickListener {
             val intent = Intent(this, NewFarmerActivity::class.java)
+            intent.putExtra("Regional_Manager", regionalManager)
             startActivity(intent)
+
         }
 
 
