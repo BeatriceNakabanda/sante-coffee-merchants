@@ -55,7 +55,20 @@
         app:layout_constraintTop_toBottomOf="@+id/emailTextView" />
 
     <TextView
-        android:id="@+id/invalidEmailTextView"
+        android:id="@+id/invalidEmailLoginTextView"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="32dp"
+        android:layout_marginTop="4dp"
+        android:text="Please enter valid email"
+        android:textColor="@color/invalid"
+        android:textSize="12sp"
+        android:visibility="gone"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/loginEmailAddressEditText" />
+
+    <TextView
+        android:id="@+id/emptyEmailTextView"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="32dp"
@@ -65,7 +78,7 @@
         android:textSize="12sp"
         android:visibility="gone"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/loginEmailAddressEditText" />
+        app:layout_constraintTop_toBottomOf="@id/invalidEmailLoginTextView" />
 
     <TextView
         android:id="@+id/passwordTextView"
@@ -79,7 +92,7 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/invalidEmailTextView" />
+        app:layout_constraintTop_toBottomOf="@id/emptyEmailTextView" />
 
     <EditText
         android:id="@+id/loginPasswordEditText"
@@ -97,7 +110,7 @@
         app:layout_constraintTop_toBottomOf="@+id/passwordTextView" />
 
     <TextView
-        android:id="@+id/emptyPasswordTextView"
+        android:id="@+id/emptyPasswordLoginTextView"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="32dp"
@@ -110,18 +123,29 @@
         app:layout_constraintTop_toBottomOf="@id/loginPasswordEditText" />
 
     <TextView
-        android:id="@+id/incorrectPasswordEmailTextView"
+        android:id="@+id/invalidPasswordLoginTextView"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="32dp"
         android:layout_marginTop="4dp"
-        android:text="Incorrect password or email"
+        android:text="Enter password with more than 4 characters"
         android:textColor="@color/invalid"
         android:textSize="12sp"
         android:visibility="gone"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/emptyPasswordTextView" />
-
+        app:layout_constraintTop_toBottomOf="@id/emptyPasswordLoginTextView" />
+    <TextView
+        android:id="@+id/invalidEmailPasswordTextView"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="32dp"
+        android:layout_marginTop="4dp"
+        android:text="Enter valid email and password"
+        android:textColor="@color/invalid"
+        android:textSize="12sp"
+        android:visibility="gone"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/invalidPasswordLoginTextView" />
 
     <Button
         android:id="@+id/signInButton"
@@ -136,7 +160,7 @@
         android:textColor="#FFFFFF"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/incorrectPasswordEmailTextView" />
+        app:layout_constraintTop_toBottomOf="@+id/invalidEmailPasswordTextView" />
 
     <RelativeLayout
         android:layout_width="match_parent"

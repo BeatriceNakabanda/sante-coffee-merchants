@@ -14,7 +14,7 @@
         android:textColor="#2B3D4D"/>
 
     <TextView
-        android:id="@+id/farmerPhoneNumberTextView"
+        android:id="@+id/farmerPhoneNoTextView"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:fontFamily="sans-serif"

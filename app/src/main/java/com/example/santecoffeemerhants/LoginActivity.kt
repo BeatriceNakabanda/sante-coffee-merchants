@@ -2,6 +2,10 @@ package com.example.santecoffeemerhants
 
 import android.content.Intent
 import android.os.Bundle
+import android.text.Editable
+import android.text.TextWatcher
+import android.util.Patterns
+import android.view.View
 import android.view.Window
 import android.view.WindowManager
 import android.widget.Button
@@ -12,6 +16,8 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.ViewModelProvider
 import com.example.santecoffeemerhants.data.Entity.RegionalManager
 import com.example.santecoffeemerhants.viewmodel.RegionalManagerViewModel
+import java.util.regex.Pattern
+
 
 class LoginActivity : AppCompatActivity() {
     private lateinit var editTextEmail:EditText
@@ -36,6 +42,8 @@ class LoginActivity : AppCompatActivity() {
 
         editTextEmail = findViewById(R.id.loginEmailAddressEditText)
         editTextPassword = findViewById(R.id.loginPasswordEditText)
+        editTextEmail.addTextChangedListener(emailTextWatcher)
+        editTextPassword.addTextChangedListener(passwordTextWatcher)
         textViewRegister = findViewById(R.id.signUpTextView)
 
         textViewRegister.setOnClickListener{
@@ -50,53 +58,81 @@ class LoginActivity : AppCompatActivity() {
         button.setOnClickListener{
             val email = editTextEmail.getText().toString().trim()
             val password = editTextPassword.getText().toString().trim()
-
-            val isValid = regionalManagerViewModel?.checkIfValidAccount(email, password)
+            val invalidEmailText =
+                findViewById<View>(R.id.invalidEmailLoginTextView) as TextView
+            val invalidPasswordText =
+                findViewById<View>(R.id.invalidPasswordLoginTextView) as TextView
+            val emailPattern = "[a-zA-Z0-9._-]+@[a-z]+\\.+[a-z]+"
 
 //            val regionalManager: Unit = regionalManagerViewModel.getRegionalMangerByEmail(email)
-            regionalManager = regionalManagerViewModel.getRegionalManagerDetails(email)
 
-            val returnedEmail = regionalManager?.email
+            when{
+                email.isEmpty() || password.isEmpty() || !Patterns.EMAIL_ADDRESS.matcher(email).matches() ->{
+                    invalidEmailText.visibility = View.VISIBLE
+                    invalidPasswordText.visibility = View.VISIBLE
+                }else ->{
+                val isValid = regionalManagerViewModel?.checkIfValidAccount(email, password)
+                regionalManager = regionalManagerViewModel.getRegionalManagerDetails(email)
 
-            if(email == returnedEmail){
-                val intent = Intent(this, MainActivity::class.java)
-                intent.putExtra("Regional_Manager", regionalManager)
-                startActivity(intent)
-                finish()
+                val returnedEmail = regionalManager?.email
+                if(isValid && email == returnedEmail){
+                    val intent = Intent(this, MainActivity::class.java)
+                    intent.putExtra("Regional_Manager", regionalManager)
+                    startActivity(intent)
+                    finish()
+                }else{
+                    Toast.makeText(
+                        this@LoginActivity,
+                        "Unregistered user, or incorrect",
+                        Toast.LENGTH_SHORT
+                    ).show()
+                }
+            }
+            }
+
+            }
+
+        }
+    private val emailTextWatcher = object: TextWatcher {
+        override fun afterTextChanged(s: Editable?) {
+            val invalidEmailText =
+                findViewById<View>(R.id.invalidEmailLoginTextView) as TextView
+            val email = editTextEmail.getText().toString().trim()
+            val isValid =
+                Patterns.EMAIL_ADDRESS.matcher(email).matches()
+            if ( email.isEmpty()) {
+                invalidEmailText.visibility = View.VISIBLE
             }else{
-                Toast.makeText(
-                    this@LoginActivity,
-                    "Unregistered user, or incorrect",
-                    Toast.LENGTH_SHORT
-                ).show()
+                invalidEmailText.visibility = View.GONE
             }
 
+        }
+        override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {
+        }
 
-
-//            if (isValid){
-//                val intent = Intent(this, MainActivity::class.java)
-//                Toast.makeText(baseContext, "Successfully Logged In!", Toast.LENGTH_LONG).show()
-//                startActivity(intent)
-//                finish()
-//            } else{
-//                Toast.makeText(
-//                        this@LoginActivity,
-//                        "Unregistered user, Login unsuccessfull",
-//                        Toast.LENGTH_SHORT
-//                ).show()
-//            }
-
-
+        override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {
+        }
+    }
+    private val passwordTextWatcher = object : TextWatcher{
+        override fun afterTextChanged(s: Editable?) {
+            val invalidPasswordText =
+                findViewById<View>(R.id.invalidPasswordLoginTextView) as TextView
+            if (editTextPassword.getText().toString().isEmpty() || editTextPassword.getText().length <= 3) {
+                invalidPasswordText.visibility = View.VISIBLE
             }
-//            val intent = Intent(this, NewFarmerActivity::class.java)
-//            val regionalManagerEmail = regionalManager
-//
-//
-//            intent.putExtra("Regional_Manager", regionalManager)
-//            startActivity(intent)
+            else {
+                invalidPasswordText.visibility = View.GONE
+            }
+        }
 
+        override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {
+        }
 
+        override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {
         }
 
     }
+
+    }
+
 

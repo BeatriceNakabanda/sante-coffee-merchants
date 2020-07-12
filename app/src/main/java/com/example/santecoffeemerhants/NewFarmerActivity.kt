@@ -4,6 +4,8 @@ import android.content.Intent
 import android.net.Uri
 import android.os.Bundle
 import android.text.TextUtils
+import android.view.Menu
+import android.view.MenuItem
 import android.view.View
 import android.widget.*
 import androidx.appcompat.app.AppCompatActivity
@@ -20,7 +22,7 @@ class NewFarmerActivity : AppCompatActivity() {
     private lateinit var mGenderSpinner: Spinner
     private lateinit var farmerViewModel: FarmerViewModel
     private var regionalManager: RegionalManager? = null
-    private lateinit var birth_certificate: String
+    private lateinit var birthCertificate:  String
 
     private val genderUnknown = "Unknown"
     private val genderMale = "Female"
@@ -40,10 +42,8 @@ class NewFarmerActivity : AppCompatActivity() {
         farmerViewModel = ViewModelProvider(this).get(FarmerViewModel::class.java)
 
         setUpGenderSpinner()
-//        birthCertificate = intent.getStringExtra("Directory")
-//        val filePath = intent.getStringExtra("Directory")
-        //set on click listeners for attach documents buttons
-        captureNationalIdButton.setOnClickListener{
+
+        captureNationalIdButton.setOnClickListener {
             val intent = Intent(this, CaptureDocumentActivity::class.java)
             startActivity(intent)
 
@@ -69,16 +69,16 @@ class NewFarmerActivity : AppCompatActivity() {
             val phoneNumber = phoneNumber.getText().toString().trim()
 //            val filePath = intent.getStringExtra("Directory")
 //            birthCertificate = filePath
-//            val savedPhotoUri = intent.getSerializableExtra("Photo_uri")
-            val savedBirthCertificate = intent.getStringExtra("Photo_uri")
-            birth_certificate = savedBirthCertificate
+            val savedPhotoUri = intent?.getStringExtra("Photo_uri").toString()
+            birthCertificate = savedPhotoUri
+//            birthCertificate = intent.getStringExtra("Photo_uri")
 
             val newFarmer = Farmer(
                 manager_id = regionalManagerId,
                 name = name,
                 phone_number = phoneNumber,
                 gender = mGender,
-                birth_certificate = birth_certificate,
+//                birth_certificate = birthCertificate,
                 createdAt = Date()
             )
             val newFarmerCreatedAt = newFarmer.createdAt
@@ -89,44 +89,10 @@ class NewFarmerActivity : AppCompatActivity() {
             val addedFarmerPhoneNo = addedFarmer.phone_number
             val addedFarmerDateCreated = addedFarmer.createdAt
 
-            if(phoneNo == addedFarmerPhoneNo){
-                Toast.makeText(
-                    this,
-                    "Farmer successfully added \n FarmerId: ${addedFarmer.farmer_id} \n farmer name: ${addedFarmer.name}",
-                    Toast.LENGTH_SHORT
-                ).show()
-            }else{
-                Toast.makeText(
-                    this,
-                    "Farmer not added",
-                    Toast.LENGTH_SHORT
-                ).show()
-            }
-        }
-
-        //Create new farmer
-//        val button = findViewById<Button>(R.id.addFarmerButton)
-//        button.setOnClickListener {
-//            val name = editTextName.getText().toString().trim()
-//            val phoneNumber = phoneNumber.getText().toString().trim()
-//
-//
-//            val filePath = intent.getStringExtra("Directory")
-//            birthCertificate = filePath
-//
-//            val newFarmer = Farmer(
-//                manager_id = regionalManagerId,
-//                name = name,
-//                phone_number = phoneNumber,
-//                gender = mGender,
-//                birth_certificate = birthCertificate,
-//                createdAt = Date()
-//            )
-//            val farmer = farmerViewModel.insert(newFarmer)
-//            if(farmer != null){
+//            if(phoneNo == addedFarmerPhoneNo){
 //                Toast.makeText(
 //                    this,
-//                    "Farmer successfully added",
+//                    "Farmer successfully added \n FarmerId: ${addedFarmer.farmer_id} \n farmer name: ${addedFarmer.name}",
 //                    Toast.LENGTH_SHORT
 //                ).show()
 //            }else{
@@ -136,30 +102,21 @@ class NewFarmerActivity : AppCompatActivity() {
 //                    Toast.LENGTH_SHORT
 //                ).show()
 //            }
-//        }
+            if (addedFarmer != null) {
+                Toast.makeText(
+                    this,
+                    "Farmer successfully added \n FarmerId: ${addedFarmer.farmer_id} \n farmer name: ${addedFarmer.name} \n farmer birthCertificate: ",
+                    Toast.LENGTH_SHORT
+                ).show()
+            } else {
+                Toast.makeText(
+                    this,
+                    "Farmer not added",
+                    Toast.LENGTH_SHORT
+                ).show()
+            }
+        }
     }
-
-//    private fun saveFarmer(regionalManagerId){
-//        val button = findViewById<Button>(R.id.camera_capture_button)
-//        button.setOnClickListener {
-//            val name = editTextName.getText().toString().trim()
-//            val phoneNumber = phoneNumber.getText().toString().trim()
-//
-//
-//            val filePath = intent.getStringExtra("Directory")
-//            birthCertificate = filePath
-//
-////            val newFarmer = Farmer(
-////                manager_id =managerId,
-////                name = name,
-////                phone_number = phoneNumber,
-////                gender = mGender,
-////                birth_certificate = birthCertificate,
-////                createdAt = Date()
-////
-////            )
-//        }
-//    }
 
     private fun setUpGenderSpinner(){
         if (mGenderSpinner != null ){
@@ -203,6 +160,22 @@ class NewFarmerActivity : AppCompatActivity() {
                 }
             }
         }
+    }
+
+    override fun onCreateOptionsMenu(menu: Menu): Boolean {
+        menuInflater.inflate(R.menu.options_menu, menu)
+        return true
+    }
+    override fun onOptionsItemSelected(item: MenuItem): Boolean {
+        val id: Int = item.getItemId()
+        if (id == R.id.logout) {
+            val intent = Intent(this, LoginActivity::class.java)
+            intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP or Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK)
+            startActivity(intent)
+            finish()
+            return true
+        }
+        return super.onOptionsItemSelected(item)
     }
 }
 

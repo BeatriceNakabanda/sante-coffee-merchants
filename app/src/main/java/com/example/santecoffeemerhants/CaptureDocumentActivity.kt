@@ -1,6 +1,7 @@
 package com.example.santecoffeemerhants
 
 import android.Manifest
+import android.content.Context
 import android.content.Intent
 import android.content.pm.PackageManager
 import android.net.Uri
@@ -30,12 +31,13 @@ class CaptureDocumentActivity : AppCompatActivity() {
     private var imageCapture: ImageCapture? = null
     private var imageAnalyzer: ImageAnalysis? = null
     private var camera: Camera? = null
-    private lateinit var savedUri: Uri
 
     private lateinit var outputDirectory: File
     private lateinit var cameraExecutor: ExecutorService
 
     override fun onCreate(savedInstanceState: Bundle?) {
+
+
         super.onCreate(savedInstanceState)
 
         // hide the title
@@ -59,18 +61,20 @@ class CaptureDocumentActivity : AppCompatActivity() {
         camera_capture_button.setOnClickListener {
             takePhoto()
 
+//            finish()
+
         }
 
-        camera_back_button.setOnClickListener {
-            val intent = Intent(this, NewFarmerActivity::class.java)
-            intent.putExtra("Photo_uri", savedUri)
-
-            finish()
-        }
+//        camera_back_button.setOnClickListener {
+//
+//
+//        }
 
         outputDirectory = getOutputDirectory()
 
         cameraExecutor = Executors.newSingleThreadExecutor()
+
+
     }
 
     private fun startCamera() {
@@ -85,6 +89,7 @@ class CaptureDocumentActivity : AppCompatActivity() {
                 .build()
             //Capture image
             imageCapture = ImageCapture.Builder()
+                .setCaptureMode(ImageCapture.CAPTURE_MODE_MINIMIZE_LATENCY)
                 .build()
 
             // Select back camera
@@ -105,7 +110,7 @@ class CaptureDocumentActivity : AppCompatActivity() {
         }, ContextCompat.getMainExecutor(this))
     }
 
-    private fun takePhoto() {
+     fun takePhoto() {
         // Get a stable reference of the modifiable image capture use case
         val imageCapture = imageCapture ?: return
 
@@ -127,11 +132,21 @@ class CaptureDocumentActivity : AppCompatActivity() {
                 }
 
                 override fun onImageSaved(output: ImageCapture.OutputFileResults) {
-                    savedUri = Uri.fromFile(photoFile)
+                    val savedUri = Uri.fromFile(photoFile)
                     val msg = "Photo capture succeeded: $savedUri"
-                    Toast.makeText(baseContext, msg, Toast.LENGTH_SHORT).show()
+//                    Toast.makeText(baseContext, msg, Toast.LENGTH_SHORT).show()
                     Log.d(TAG, msg)
+//                    val photoFileString = photoFile.toString()
+//                    Toast.makeText(baseContext, photoFileString, Toast.LENGTH_SHORT).show()
+                    Toast.makeText(baseContext, msg, Toast.LENGTH_SHORT).show()
+                    val intent = Intent(this@CaptureDocumentActivity, NewFarmerActivity::class.java)
+                    intent.putExtra("Photo_uri", savedUri)
+                    startActivity(intent)
+
+
                 }
+
+
             })
     }
 
@@ -167,5 +182,7 @@ class CaptureDocumentActivity : AppCompatActivity() {
         private const val REQUEST_CODE_PERMISSIONS = 10
         private val REQUIRED_PERMISSIONS = arrayOf(Manifest.permission.CAMERA)
     }
+
+
 
 }

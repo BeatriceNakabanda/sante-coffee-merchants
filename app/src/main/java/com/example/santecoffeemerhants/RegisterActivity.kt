@@ -74,7 +74,7 @@ class RegisterActivity : AppCompatActivity(){
             regionalManagerViewModel.insert(regionalManager1)
             val returnedRegionalManager = regionalManagerViewModel.getRegionalMangerByEmail(regionalManager1Email)
 
-            if (returnedRegionalManager != null){
+            if (returnedRegionalManager != null ){
                 Toast.makeText(
                     this,
                     "Successfully added regional manager",
@@ -133,5 +133,9 @@ class RegisterActivity : AppCompatActivity(){
                 }
             }
         }
+    }
+
+    private fun isEmpty(){
+
     }
 }

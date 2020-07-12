@@ -1,5 +1,6 @@
 package com.example.santecoffeemerhants.data.Entity
 
+import android.net.Uri
 import androidx.room.*
 import com.example.santecoffeemerhants.data.converter.Converters
 import java.io.Serializable
@@ -16,7 +17,7 @@ data class Farmer(
     @ColumnInfo(name = "name") val name: String,
     @ColumnInfo(name = "gender") val gender: String,
     @ColumnInfo(name = "phone_number") val phone_number: String,
-    @ColumnInfo(name = "birth_certificate") val birth_certificate: String,
+//    @ColumnInfo(name = "birth_certificate") val birth_certificate: String,
 //    @ColumnInfo(name = "national_id") val national_id: String,
     @ColumnInfo(name = "created_at", defaultValue = "CURRENT_TIMESTAMP")
     @TypeConverters(Converters::class)

@@ -6,5 +6,6 @@
     <string name="gender_female">Female</string>
     <string name="gender_default">Select Gender</string>
     <string name="search_title">Search</string>
+    <string name="logout">Logout</string>
     <string name="add_farmer">Add new farmer</string>
 </resources>

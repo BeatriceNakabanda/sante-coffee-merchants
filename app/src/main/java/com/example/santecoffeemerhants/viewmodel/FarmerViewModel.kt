@@ -26,5 +26,8 @@ class FarmerViewModel(application: Application): AndroidViewModel(application) {
     fun getFarmerByPhoneNumber(phone_number: String): Farmer{
         return repository.getFarmerByPhoneNumber(phone_number)
     }
+    fun getAllFarmersByRegionalManagerId(regionalManagerId: Int): LiveData<List<Farmer>> {
+        return repository.getAllFarmersByRegionalManagerId(regionalManagerId)
+    }
 
 }

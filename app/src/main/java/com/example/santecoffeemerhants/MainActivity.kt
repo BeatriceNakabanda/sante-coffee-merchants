@@ -2,28 +2,30 @@ package com.example.santecoffeemerhants
 
 import android.content.Intent
 import android.os.Bundle
-import android.text.TextUtils
 import android.view.Menu
-import android.view.View
-import android.widget.*
+import android.view.MenuItem
+import android.widget.Toast
 import androidx.appcompat.app.ActionBar
 import androidx.appcompat.app.AppCompatActivity
+import androidx.lifecycle.Observer
+import androidx.lifecycle.ViewModelProvider
+import androidx.recyclerview.widget.DividerItemDecoration
+import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.recyclerview.widget.RecyclerView
 import com.example.santecoffeemerhants.data.Entity.RegionalManager
+import com.example.santecoffeemerhants.viewmodel.FarmerViewModel
 import com.google.android.material.floatingactionbutton.FloatingActionButton
-import kotlinx.android.synthetic.main.activity_new_farmer.*
+
 
 class MainActivity : AppCompatActivity()  {
     private var regionalManager: RegionalManager? = null
+    private lateinit var farmerViewModel: FarmerViewModel
 
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
 
-        val actionBar: ActionBar? = supportActionBar
-        if (actionBar != null) {
-            actionBar.setTitle("Farmers")
-        }
         regionalManager = intent.getSerializableExtra("Regional_Manager") as RegionalManager
         val email = regionalManager?.email
         val name = regionalManager?.name
@@ -34,6 +36,32 @@ class MainActivity : AppCompatActivity()  {
             Toast.LENGTH_SHORT
         ).show()
 
+        //Add recyclerView and list adapter
+        val recyclerView = findViewById<RecyclerView>(R.id.recyclerview)
+        val adapter = FarmerListAdapter(this)
+        recyclerView.adapter = adapter
+        recyclerView.layoutManager = LinearLayoutManager(this)
+
+        //Divider
+        recyclerView.addItemDecoration(
+            DividerItemDecoration(this,
+            LinearLayoutManager.VERTICAL)
+        )
+
+        //set up live data observer
+        farmerViewModel = ViewModelProvider(this).get(FarmerViewModel::class.java)
+        regionalManagerId?.let {
+            farmerViewModel.getAllFarmersByRegionalManagerId(it).observe(this, Observer { farmers ->
+                farmers.let { adapter.setFarmers(it) }
+            })
+        }
+
+        val actionBar: ActionBar? = supportActionBar
+        if (actionBar != null) {
+            actionBar.setTitle("Farmers")
+        }
+
+
         val fab = findViewById<FloatingActionButton>(R.id.fab)
         fab.setOnClickListener {
             val intent = Intent(this, NewFarmerActivity::class.java)
@@ -42,11 +70,21 @@ class MainActivity : AppCompatActivity()  {
 
         }
 
-
     }
+
     override fun onCreateOptionsMenu(menu: Menu): Boolean {
         menuInflater.inflate(R.menu.options_menu, menu)
-
         return true
+    }
+    override fun onOptionsItemSelected(item: MenuItem): Boolean {
+        val id: Int = item.getItemId()
+        if (id == R.id.logout) {
+            val intent = Intent(this, LoginActivity::class.java)
+            intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP or Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK)
+            startActivity(intent)
+            finish()
+            return true
+        }
+        return super.onOptionsItemSelected(item)
     }
 }

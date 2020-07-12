@@ -13,6 +13,9 @@ interface FarmerDao {
     @Query("SELECT * FROM FARMER_TABLE")
     fun getAllFarmers():LiveData<List<Farmer>>
 
+    @Query("SELECT * FROM FARMER_TABLE WHERE farmer_table.manager_id LIKE :regional_manager_id")
+    fun getAllFarmersByRegionalManagerId(regional_manager_id : Int):LiveData<List<Farmer>>
+
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     fun insert(farmer: Farmer)
 
