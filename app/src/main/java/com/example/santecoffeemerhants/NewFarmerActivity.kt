@@ -67,18 +67,16 @@ class NewFarmerActivity : AppCompatActivity() {
         addFarmerButton.setOnClickListener {
             val name = editTextName.getText().toString().trim()
             val phoneNumber = phoneNumber.getText().toString().trim()
-//            val filePath = intent.getStringExtra("Directory")
-//            birthCertificate = filePath
-            val savedPhotoUri = intent?.getStringExtra("Photo_uri").toString()
+
+            val savedPhotoUri = intent.getStringExtra("Photo_uri")
             birthCertificate = savedPhotoUri
-//            birthCertificate = intent.getStringExtra("Photo_uri")
 
             val newFarmer = Farmer(
                 manager_id = regionalManagerId,
                 name = name,
                 phone_number = phoneNumber,
                 gender = mGender,
-//                birth_certificate = birthCertificate,
+                birth_certificate = birthCertificate,
                 createdAt = Date()
             )
             val newFarmerCreatedAt = newFarmer.createdAt
@@ -86,22 +84,8 @@ class NewFarmerActivity : AppCompatActivity() {
             farmerViewModel.insert(newFarmer)
 //            val addedFarmer = farmerViewModel.getFarmerByDateAndTimeCreated(newFarmer.createdAt)
             val addedFarmer = farmerViewModel.getFarmerByPhoneNumber(phoneNo)
-            val addedFarmerPhoneNo = addedFarmer.phone_number
-            val addedFarmerDateCreated = addedFarmer.createdAt
 
-//            if(phoneNo == addedFarmerPhoneNo){
-//                Toast.makeText(
-//                    this,
-//                    "Farmer successfully added \n FarmerId: ${addedFarmer.farmer_id} \n farmer name: ${addedFarmer.name}",
-//                    Toast.LENGTH_SHORT
-//                ).show()
-//            }else{
-//                Toast.makeText(
-//                    this,
-//                    "Farmer not added",
-//                    Toast.LENGTH_SHORT
-//                ).show()
-//            }
+            val addedFarmerDateCreated = addedFarmer.createdAt
             if (addedFarmer != null) {
                 Toast.makeText(
                     this,

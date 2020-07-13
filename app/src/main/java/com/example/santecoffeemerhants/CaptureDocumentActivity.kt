@@ -34,6 +34,7 @@ class CaptureDocumentActivity : AppCompatActivity() {
 
     private lateinit var outputDirectory: File
     private lateinit var cameraExecutor: ExecutorService
+    private lateinit var savedUri: Uri
 
     override fun onCreate(savedInstanceState: Bundle?) {
 
@@ -65,10 +66,12 @@ class CaptureDocumentActivity : AppCompatActivity() {
 
         }
 
-//        camera_back_button.setOnClickListener {
-//
-//
-//        }
+        camera_back_button.setOnClickListener {
+            val intent = Intent(this@CaptureDocumentActivity, NewFarmerActivity::class.java)
+            intent.putExtra("Photo_uri", savedUri.toString())
+            startActivity(intent)
+
+        }
 
         outputDirectory = getOutputDirectory()
 
@@ -134,15 +137,8 @@ class CaptureDocumentActivity : AppCompatActivity() {
                 override fun onImageSaved(output: ImageCapture.OutputFileResults) {
                     val savedUri = Uri.fromFile(photoFile)
                     val msg = "Photo capture succeeded: $savedUri"
-//                    Toast.makeText(baseContext, msg, Toast.LENGTH_SHORT).show()
-                    Log.d(TAG, msg)
-//                    val photoFileString = photoFile.toString()
-//                    Toast.makeText(baseContext, photoFileString, Toast.LENGTH_SHORT).show()
                     Toast.makeText(baseContext, msg, Toast.LENGTH_SHORT).show()
-                    val intent = Intent(this@CaptureDocumentActivity, NewFarmerActivity::class.java)
-                    intent.putExtra("Photo_uri", savedUri)
-                    startActivity(intent)
-
+                    Log.d(TAG, msg)
 
                 }
 
