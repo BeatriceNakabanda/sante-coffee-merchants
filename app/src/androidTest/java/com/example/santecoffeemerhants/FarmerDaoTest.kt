@@ -2,6 +2,7 @@ package com.example.santecoffeemerhants
 
 import android.widget.EditText
 import androidx.appcompat.app.AppCompatActivity
+import androidx.lifecycle.LiveData
 import androidx.room.Room
 import androidx.test.InstrumentationRegistry
 import androidx.test.runner.AndroidJUnit4
@@ -10,9 +11,8 @@ import com.example.santecoffeemerhants.data.Dao.RegionalManagerDao
 import com.example.santecoffeemerhants.data.Entity.Farmer
 import com.example.santecoffeemerhants.data.Entity.RegionalManager
 import com.example.santecoffeemerhants.data.SanteRoomDatabase
-import org.hamcrest.CoreMatchers
 import org.hamcrest.CoreMatchers.equalTo
-import org.hamcrest.MatcherAssert
+import org.hamcrest.MatcherAssert.assertThat
 import org.junit.After
 import org.junit.Before
 import org.junit.Test
@@ -63,6 +63,7 @@ class FarmerDaoTest  {
             phone_number = "0770990978",
             gender = "Male",
             birth_certificate = "file:///storage/emulated/0/Android/media/com.example.santecoffeemerhants/Sante%20Coffee%20Merhants/2020-07-13-08-49-07-286.jpg",
+            national_id = "file:///storage/emulated/0/Android/media/com.example.santecoffeemerhants/Sante%20Coffee%20Merhants/2020-07-13-08-49-07-286.jpg",
             createdAt = Date()
         )
         val phoneNo = newFarmer.phone_number
@@ -75,8 +76,10 @@ class FarmerDaoTest  {
         val addedFarmer = farmerDao?.getFarmerByDateAndTimeCreated(newFarmerCreatedAt)
         val addedFarmerCreatedAt = addedFarmer?.createdAt
         //Assert
-        MatcherAssert.assertThat(newFarmerCreatedAt, equalTo(addedFarmerCreatedAt))
+        assertThat(newFarmerCreatedAt, equalTo(addedFarmerCreatedAt))
     }
+//    @Test
+//
 
     @Test
     fun testGetFarmersByRegionalManagerID(){
@@ -95,29 +98,23 @@ class FarmerDaoTest  {
             phone_number = "0770990978",
             gender = "Male",
             birth_certificate = "file:///storage/emulated/0/Android/media/com.example.santecoffeemerhants/Sante%20Coffee%20Merhants/2020-07-13-08-49-07-286.jpg",
-            createdAt = Date()
-        )
-        val newFarmer2 = Farmer(
-            manager_id = 1,
-            name = "Tracey",
-            phone_number = "0770890978",
-            gender = "Female",
-            birth_certificate = "file:///storage/emulated/0/Android/media/com.example.santecoffeemerhants/Sante%20Coffee%20Merhants/2020-07-13-08-49-07-286.jpg",
+            national_id = "file:///storage/emulated/0/Android/media/com.example.santecoffeemerhants/Sante%20Coffee%20Merhants/2020-07-13-08-49-07-286.jpg",
             createdAt = Date()
         )
         regionalManagerDao?.insert(regionalManager)
         farmerDao?.insert(newFarmer1)
-        farmerDao?.insert(newFarmer2)
 
         //Act
         farmerDao?.getAllFarmersByRegionalManagerId(1)
-        val farmersList= farmerDao?.getAllFarmersByRegionalManagerId(1)
-
+        val farmersList= farmerDao?.getAllFarmersByRegionalManagerId(1)?.value
 
 
         //Assert
-
+        if (farmersList != null){
+            assertThat(farmersList.size, equalTo(1))
+        }
     }
+
 }
 
 

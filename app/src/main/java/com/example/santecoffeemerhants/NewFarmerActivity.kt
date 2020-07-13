@@ -1,5 +1,7 @@
 package com.example.santecoffeemerhants
 
+import android.app.Activity
+import android.app.Instrumentation
 import android.content.Intent
 import android.net.Uri
 import android.os.Bundle
@@ -8,6 +10,8 @@ import android.view.Menu
 import android.view.MenuItem
 import android.view.View
 import android.widget.*
+import androidx.activity.result.ActivityResult
+import androidx.activity.result.contract.ActivityResultContracts
 import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.ViewModelProvider
 import com.example.santecoffeemerhants.data.Entity.Farmer
@@ -23,12 +27,23 @@ class NewFarmerActivity : AppCompatActivity() {
     private lateinit var farmerViewModel: FarmerViewModel
     private var regionalManager: RegionalManager? = null
     private lateinit var birthCertificate:  String
+    private lateinit var photoUri: String
 
     private val genderUnknown = "Unknown"
     private val genderMale = "Female"
     private val genderFemale = "Male"
     private var mGender = genderUnknown
 
+
+    val startForResult =
+        registerForActivityResult(ActivityResultContracts.StartActivityForResult()) { result: ActivityResult ->
+        if (result.resultCode == Activity.RESULT_OK) {
+            val intent = result.data
+            // Handle the Intent
+            photoUri = intent?.getStringExtra("savedUri").toString()
+
+        }
+    }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -44,13 +59,11 @@ class NewFarmerActivity : AppCompatActivity() {
         setUpGenderSpinner()
 
         captureNationalIdButton.setOnClickListener {
-            val intent = Intent(this, CaptureDocumentActivity::class.java)
-            startActivity(intent)
+            startForResult.launch(Intent(this,  CaptureDocumentActivity::class.java))
 
         }
         captureBirthCertificateButton.setOnClickListener {
-            val intent = Intent(this, CaptureDocumentActivity::class.java)
-            startActivity(intent)
+            startForResult.launch(Intent(this,  CaptureDocumentActivity::class.java))
         }
         regionalManager = intent.getSerializableExtra("Regional_Manager") as RegionalManager
         val email = regionalManager?.email
@@ -67,9 +80,8 @@ class NewFarmerActivity : AppCompatActivity() {
         addFarmerButton.setOnClickListener {
             val name = editTextName.getText().toString().trim()
             val phoneNumber = phoneNumber.getText().toString().trim()
-
-            val savedPhotoUri = intent.getStringExtra("Photo_uri")
-            birthCertificate = savedPhotoUri
+            birthCertificate = photoUri
+            val nationalId = photoUri
 
             val newFarmer = Farmer(
                 manager_id = regionalManagerId,
@@ -77,6 +89,7 @@ class NewFarmerActivity : AppCompatActivity() {
                 phone_number = phoneNumber,
                 gender = mGender,
                 birth_certificate = birthCertificate,
+                national_id = nationalId,
                 createdAt = Date()
             )
             val newFarmerCreatedAt = newFarmer.createdAt
@@ -161,5 +174,7 @@ class NewFarmerActivity : AppCompatActivity() {
         }
         return super.onOptionsItemSelected(item)
     }
+
+
 }
 

@@ -1,7 +1,7 @@
 package com.example.santecoffeemerhants
 
 import android.Manifest
-import android.content.Context
+import android.app.Activity
 import android.content.Intent
 import android.content.pm.PackageManager
 import android.net.Uri
@@ -9,18 +9,14 @@ import android.os.Bundle
 import android.util.Log
 import android.view.Window
 import android.view.WindowManager
-import android.widget.Button
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.camera.core.*
 import androidx.camera.lifecycle.ProcessCameraProvider
 import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
-import com.example.santecoffeemerhants.CaptureDocumentActivity.Companion.REQUIRED_PERMISSIONS
 import kotlinx.android.synthetic.main.activity_camera.*
-import kotlinx.android.synthetic.main.activity_new_farmer.*
 import java.io.File
-import java.nio.ByteBuffer
 import java.text.SimpleDateFormat
 import java.util.*
 import java.util.concurrent.ExecutorService
@@ -29,12 +25,12 @@ import java.util.concurrent.Executors
 class CaptureDocumentActivity : AppCompatActivity() {
     private var preview: Preview? = null
     private var imageCapture: ImageCapture? = null
-    private var imageAnalyzer: ImageAnalysis? = null
     private var camera: Camera? = null
+
 
     private lateinit var outputDirectory: File
     private lateinit var cameraExecutor: ExecutorService
-    private lateinit var savedUri: Uri
+    private var savedUri: Uri? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
 
@@ -60,16 +56,53 @@ class CaptureDocumentActivity : AppCompatActivity() {
         }
         // Setup the listener for take photo button
         camera_capture_button.setOnClickListener {
-            takePhoto()
 
-//            finish()
+            // Get a stable reference of the modifiable image capture use case
+            val imageCapture = imageCapture ?: return@setOnClickListener
 
+            // Create timestamped output file to hold the image
+            val photoFile = File(
+                outputDirectory,
+                SimpleDateFormat(FILENAME_FORMAT, Locale.US
+                ).format(System.currentTimeMillis()) + ".jpg")
+
+            // Create output options object which contains file + metadata
+            val outputOptions = ImageCapture.OutputFileOptions.Builder(photoFile).build()
+
+            // Setup image capture listener which is triggered after photo has
+            // been taken
+            imageCapture.takePicture(
+                outputOptions, ContextCompat.getMainExecutor(this), object : ImageCapture.OnImageSavedCallback {
+
+                    override fun onError(exc: ImageCaptureException) {
+                        Log.e(TAG, "Photo capture failed: ${exc.message}", exc)
+                    }
+
+                    override fun onImageSaved(output: ImageCapture.OutputFileResults) {
+                        savedUri = Uri.fromFile(photoFile)
+                        val msg = "Photo capture succeeded: $savedUri"
+//                        Toast.makeText(baseContext, msg, Toast.LENGTH_SHORT).show()
+                        Log.d(TAG, msg)
+
+//                        val intent = Intent()
+//                        intent.putExtra("Photo_Uri", savedUri)
+//                        setResult(Activity.RESULT_OK, intent)
+
+                    }
+
+
+                })
+
+//            takePhoto()
         }
 
         camera_back_button.setOnClickListener {
-            val intent = Intent(this@CaptureDocumentActivity, NewFarmerActivity::class.java)
-            intent.putExtra("Photo_uri", savedUri.toString())
-            startActivity(intent)
+            val intent = Intent()
+            intent.putExtra("Photo_Uri", savedUri)
+            setResult(Activity.RESULT_OK, intent)
+            val msg = "Photo capture succeeded: $savedUri"
+            Toast.makeText(baseContext, msg, Toast.LENGTH_SHORT).show()
+                    finish()
 
         }
 
@@ -130,20 +163,27 @@ class CaptureDocumentActivity : AppCompatActivity() {
         // been taken
         imageCapture.takePicture(
             outputOptions, ContextCompat.getMainExecutor(this), object : ImageCapture.OnImageSavedCallback {
+
                 override fun onError(exc: ImageCaptureException) {
                     Log.e(TAG, "Photo capture failed: ${exc.message}", exc)
                 }
 
                 override fun onImageSaved(output: ImageCapture.OutputFileResults) {
-                    val savedUri = Uri.fromFile(photoFile)
+                    savedUri = Uri.fromFile(photoFile)
                     val msg = "Photo capture succeeded: $savedUri"
                     Toast.makeText(baseContext, msg, Toast.LENGTH_SHORT).show()
                     Log.d(TAG, msg)
+                    val intent = Intent()
+                        intent.putExtra("Photo_Uri", savedUri)
+                        setResult(Activity.RESULT_OK, intent)
 
                 }
 
 
+
             })
+
+
     }
 
     private fun allPermissionsGranted() = REQUIRED_PERMISSIONS.all {
@@ -160,6 +200,7 @@ class CaptureDocumentActivity : AppCompatActivity() {
     override fun onRequestPermissionsResult(
         requestCode: Int, permissions: Array<String>, grantResults:
         IntArray) {
+        super.onRequestPermissionsResult(requestCode, permissions, grantResults)
         if (requestCode == REQUEST_CODE_PERMISSIONS) {
             if (allPermissionsGranted()) {
                 startCamera()

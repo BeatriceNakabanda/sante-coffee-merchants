@@ -73,6 +73,8 @@ dependencies {
 
     testImplementation 'androidx.test.ext:truth:1.2.0'
     testImplementation 'com.google.truth:truth:0.44'
+    // Kotlin
+    implementation 'androidx.activity:activity-ktx:1.2.0-alpha05'
 
     def camerax_version = "1.0.0-beta03"
     // CameraX core library using camera2 implementation

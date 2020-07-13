@@ -18,7 +18,7 @@ data class Farmer(
     @ColumnInfo(name = "gender") val gender: String,
     @ColumnInfo(name = "phone_number") val phone_number: String,
     @ColumnInfo(name = "birth_certificate") val birth_certificate: String,
-//    @ColumnInfo(name = "national_id") val national_id: String,
+    @ColumnInfo(name = "national_id") val national_id: String,
     @ColumnInfo(name = "created_at", defaultValue = "CURRENT_TIMESTAMP")
     @TypeConverters(Converters::class)
     var createdAt: Date?
