@@ -1,6 +1,8 @@
 package com.example.santecoffeemerhants
 
+import android.content.Context
 import android.content.Intent
+import android.content.SharedPreferences
 import android.os.Bundle
 import android.text.Editable
 import android.text.TextWatcher
@@ -16,7 +18,6 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.ViewModelProvider
 import com.example.santecoffeemerhants.data.Entity.RegionalManager
 import com.example.santecoffeemerhants.viewmodel.RegionalManagerViewModel
-import java.util.regex.Pattern
 
 
 class LoginActivity : AppCompatActivity() {
@@ -24,6 +25,10 @@ class LoginActivity : AppCompatActivity() {
     private lateinit var editTextPassword:EditText
     private lateinit var textViewRegister: TextView
     private  lateinit var regionalManagerViewModel: RegionalManagerViewModel
+    private val MyPREFERENCES = "MyPrefs"
+    private val Password = "passwordKey"
+    private val Email = "emailKey"
+    private var sharedpreferences: SharedPreferences? = null
 
     private var regionalManager: RegionalManager? = null
 
@@ -53,7 +58,7 @@ class LoginActivity : AppCompatActivity() {
 
         regionalManagerViewModel = ViewModelProvider(this).get(RegionalManagerViewModel::class.java)
 
-
+        sharedpreferences = getSharedPreferences(MyPREFERENCES, Context.MODE_PRIVATE);
         val button = findViewById<Button>(R.id.signInButton)
         button.setOnClickListener{
             val email = editTextEmail.getText().toString().trim()

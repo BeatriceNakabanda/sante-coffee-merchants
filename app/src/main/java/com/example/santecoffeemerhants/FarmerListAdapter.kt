@@ -1,6 +1,8 @@
 package com.example.santecoffeemerhants
 
 import android.content.Context
+import android.content.Intent
+import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -9,12 +11,14 @@ import android.widget.Toast
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.RecyclerView
 import com.example.santecoffeemerhants.data.Entity.Farmer
+import com.example.santecoffeemerhants.data.Entity.RegionalManager
 
 class FarmerListAdapter internal constructor( private val context: Context)
     : RecyclerView.Adapter<FarmerListAdapter.FarmerViewHolder>()  {
 
     private val inflater: LayoutInflater = LayoutInflater.from(context)
     private var farmers = emptyList<Farmer>()
+//    private var regionalManager: RegionalManager? = null
 
     inner class FarmerViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
         val farmerNameView: TextView = itemView.findViewById(R.id.farmerNameTextView)
@@ -25,7 +29,13 @@ class FarmerListAdapter internal constructor( private val context: Context)
                 val FARMER = "farmer"
                 val position: Int = adapterPosition
 
-//                Toast.makeText(itemView.context, "You clicked on item # ${position + 1}", Toast.LENGTH_SHORT).show()
+                Toast.makeText(itemView.context, "You clicked on item # ${position + 1} \n $farmers[position]", Toast.LENGTH_SHORT).show()
+
+                val intent = Intent(context, NewFarmerActivity::class.java )
+                val bundle = Bundle()
+                bundle.putSerializable(FARMER, farmers[position])
+                intent.putExtras(bundle)
+                context.startActivity(intent)
             }
         }
     }
@@ -77,3 +87,4 @@ class FarmerListAdapter internal constructor( private val context: Context)
         }
     }
 }
+

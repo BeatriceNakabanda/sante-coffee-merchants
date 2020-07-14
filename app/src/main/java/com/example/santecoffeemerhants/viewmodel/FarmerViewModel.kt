@@ -20,6 +20,12 @@ class FarmerViewModel(application: Application): AndroidViewModel(application) {
     fun insert(farmer: Farmer){
         repository.insertNewFarmer(farmer)
     }
+//    fun updateSingleFarmer(farmerId: Int){
+//        repository.updateSingleFarmer(farmerId)
+//    }
+    fun updateFarmer(farmer: Farmer){
+        repository.updateFarmer(farmer)
+    }
     fun getFarmerByDateAndTimeCreated(createdAt: Date?): Farmer{
         return repository.getFarmerByDateAndTimeCreated(createdAt)
     }
@@ -28,6 +34,9 @@ class FarmerViewModel(application: Application): AndroidViewModel(application) {
     }
     fun getAllFarmersByRegionalManagerId(regionalManagerId: Int): LiveData<List<Farmer>> {
         return repository.getAllFarmersByRegionalManagerId(regionalManagerId)
+    }
+    fun getFarmerAndRegionalManager(regionalManagerId: Int, farmerId: Int): Farmer{
+        return repository.getFarmerAndRegionalManager(regionalManagerId, farmerId)
     }
 
 }

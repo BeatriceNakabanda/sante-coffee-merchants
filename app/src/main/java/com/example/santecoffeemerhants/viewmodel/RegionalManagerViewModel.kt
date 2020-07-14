@@ -29,6 +29,4 @@ class RegionalManagerViewModel(application: Application): AndroidViewModel(appli
     fun getRegionalManagerDetails(email: String): RegionalManager{
         return repository.getRegionalManagerDetails(email)
     }
-
-
 }

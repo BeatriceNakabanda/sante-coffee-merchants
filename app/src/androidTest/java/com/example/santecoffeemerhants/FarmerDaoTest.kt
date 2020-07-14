@@ -1,5 +1,6 @@
 package com.example.santecoffeemerhants
 
+import android.util.Log
 import android.widget.EditText
 import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.LiveData
@@ -22,9 +23,12 @@ import java.util.*
 
 @RunWith(AndroidJUnit4::class)
 class FarmerDaoTest  {
-    private var farmerDao: FarmerDao ? = null
+    private lateinit var  farmerDao: FarmerDao
     private lateinit var db: SanteRoomDatabase
-    private var regionalManagerDao: RegionalManagerDao? = null
+    private lateinit var regionalManagerDao: RegionalManagerDao
+    private lateinit var regionalManager: RegionalManager
+    private lateinit var newFarmer: Farmer
+    private lateinit var createdManager: RegionalManager
 
     @Before
     fun createDb() {
@@ -37,6 +41,28 @@ class FarmerDaoTest  {
             .build()
         farmerDao = db.farmerDao()
         regionalManagerDao = db.regionalManagerDao()
+
+        regionalManager = RegionalManager(
+            name = "liz",
+            gender = "Male",
+            email = "liz@gmail.com",
+            region = "Lwengo",
+            password = "12345",
+            createdAt = Date()
+        )
+        regionalManagerDao.insert(regionalManager)
+        createdManager = regionalManagerDao.getRegionalManagerByEmail(regionalManager.email)
+
+        newFarmer = Farmer(
+            manager_id = createdManager.regional_manager_id,
+            name = "William",
+            phone_number = "0770990978",
+            gender = 1,
+            birth_certificate = "file:///storage/emulated/0/Android/media/com.example.santecoffeemerhants/Sante%20Coffee%20Merhants/2020-07-13-08-49-07-286.jpg",
+            national_id = "file:///storage/emulated/0/Android/media/com.example.santecoffeemerhants/Sante%20Coffee%20Merhants/2020-07-13-08-49-07-286.jpg",
+            createdAt = Date()
+        )
+
     }
 
     @After
@@ -48,73 +74,72 @@ class FarmerDaoTest  {
     @Test
     fun testInsertFarmer(){
         //Arrange
-        val regionalManager = RegionalManager(
-            name = "liz",
-            gender = "Male",
-            email = "liz@gmail.com",
-            region = "Lwengo",
-            password = "12345",
-            createdAt = Date()
-        )
-
-        val newFarmer = Farmer(
-            manager_id = 1,
-            name = "William",
-            phone_number = "0770990978",
-            gender = "Male",
-            birth_certificate = "file:///storage/emulated/0/Android/media/com.example.santecoffeemerhants/Sante%20Coffee%20Merhants/2020-07-13-08-49-07-286.jpg",
-            national_id = "file:///storage/emulated/0/Android/media/com.example.santecoffeemerhants/Sante%20Coffee%20Merhants/2020-07-13-08-49-07-286.jpg",
-            createdAt = Date()
-        )
-        val phoneNo = newFarmer.phone_number
+        // Create farmer
+        Log.i("newFarmerIn", "${newFarmer.farmer_id}")
+        Log.i("Manager id", "${newFarmer.manager_id}")
         val newFarmerCreatedAt = newFarmer.createdAt
-        regionalManagerDao?.insert(regionalManager)
 
         //Act
-        farmerDao?.insert(newFarmer)
+        //Insert Farmer
+        farmerDao.insert(newFarmer)
 
-        val addedFarmer = farmerDao?.getFarmerByDateAndTimeCreated(newFarmerCreatedAt)
-        val addedFarmerCreatedAt = addedFarmer?.createdAt
-        //Assert
+        val addedFarmer = farmerDao.getFarmerByDateAndTimeCreated(newFarmerCreatedAt)
+        Log.i("newFarmerOut", "${addedFarmer.farmer_id}")
+        val addedFarmerCreatedAt = addedFarmer.createdAt
+
+        //Assert that added farmer is the same as farmer created
+        assert(addedFarmer !=  null)
         assertThat(newFarmerCreatedAt, equalTo(addedFarmerCreatedAt))
     }
-//    @Test
-//
-
     @Test
-    fun testGetFarmersByRegionalManagerID(){
+    fun testUpdateFarmer() {
         //Arrange
-        val regionalManager = RegionalManager(
-            name = "liz",
-            gender = "Male",
-            email = "liz@gmail.com",
-            region = "Lwengo",
-            password = "12345",
-            createdAt = Date()
-        )
-        val newFarmer1 = Farmer(
-            manager_id = 1,
-            name = "William",
-            phone_number = "0770990978",
-            gender = "Male",
-            birth_certificate = "file:///storage/emulated/0/Android/media/com.example.santecoffeemerhants/Sante%20Coffee%20Merhants/2020-07-13-08-49-07-286.jpg",
-            national_id = "file:///storage/emulated/0/Android/media/com.example.santecoffeemerhants/Sante%20Coffee%20Merhants/2020-07-13-08-49-07-286.jpg",
-            createdAt = Date()
-        )
-        regionalManagerDao?.insert(regionalManager)
-        farmerDao?.insert(newFarmer1)
+        //1.  create the new farmer
+        //2. insert new farmer
+        farmerDao?.insert(newFarmer)
+
+        Log.i("newFarmerIn", "${newFarmer.farmer_id}")
+        Log.i("Manager id", "${newFarmer.manager_id}")
 
         //Act
-        farmerDao?.getAllFarmersByRegionalManagerId(1)
-        val farmersList= farmerDao?.getAllFarmersByRegionalManagerId(1)?.value
+        // 3. get new farmer from database
+        val createdFarmer = farmerDao?.getFarmerByDateAndTimeCreated(newFarmer.createdAt)
 
+        // 4. update new farmer
+        createdFarmer?.name = "William shakespear"
+        createdFarmer?.let { farmerDao?.updateFarmer(it) }
 
-        //Assert
-        if (farmersList != null){
-            assertThat(farmersList.size, equalTo(1))
-        }
+        val updatedFarmer = farmerDao?.getFarmerByDateAndTimeCreated(newFarmer.createdAt)
+
+        //5. assert that new farmer in database has updated name
+        assert(updatedFarmer != null)
+        assertThat(updatedFarmer?.name, equalTo(createdFarmer?.name))
+    }
+
+    @Test
+    fun getAllFarmers(){
+        //Arrange
+        //1. Create farmer
+        //2. Insert Farmer
+        farmerDao.insert(newFarmer)
+        Log.i("Farmer id in", "${newFarmer.farmer_id}")
+        val newFarmerCreatedAt = newFarmer.createdAt
+
+        // Act
+        // 3. Get all farmers by regional manager
+        val allFarmers = farmerDao.getAllFarmersByRegionalManagerId(createdManager.regional_manager_id)
+        val addedFarmer = farmerDao.getFarmerByDateAndTimeCreated(newFarmer.createdAt)
+        val addedFarmerCreatedAt = addedFarmer.createdAt
+        Log.i("Farmer id out", "${addedFarmer.farmer_id}")
+
+        //Assert that the number of farmers is the same number of farmers creates
+        assert(allFarmers != null)
+        assert(addedFarmer != null )
+        Log.i("All Users", "${addedFarmer}")
+        assertThat(newFarmerCreatedAt, equalTo(addedFarmerCreatedAt))
     }
 
 }
+
 
 

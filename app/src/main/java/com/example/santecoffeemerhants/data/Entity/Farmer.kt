@@ -14,11 +14,11 @@ data class Farmer(
     @PrimaryKey(autoGenerate = true)
     @ColumnInfo(name = "id") val farmer_id: Int = 0,
     @ColumnInfo(name= "manager_id") val manager_id: Int,
-    @ColumnInfo(name = "name") val name: String,
-    @ColumnInfo(name = "gender") val gender: String,
-    @ColumnInfo(name = "phone_number") val phone_number: String,
-    @ColumnInfo(name = "birth_certificate") val birth_certificate: String,
-    @ColumnInfo(name = "national_id") val national_id: String,
+    @ColumnInfo(name = "name") var name: String,
+    @ColumnInfo(name = "gender") var gender: Int,
+    @ColumnInfo(name = "phone_number") var phone_number: String,
+    @ColumnInfo(name = "birth_certificate") var birth_certificate: String,
+    @ColumnInfo(name = "national_id") var national_id: String,
     @ColumnInfo(name = "created_at", defaultValue = "CURRENT_TIMESTAMP")
     @TypeConverters(Converters::class)
     var createdAt: Date?

@@ -1,5 +1,6 @@
 package com.example.santecoffeemerhants
 
+import android.content.Context
 import android.content.Intent
 import android.os.Bundle
 import android.view.Menu
@@ -15,16 +16,19 @@ import androidx.recyclerview.widget.RecyclerView
 import com.example.santecoffeemerhants.data.Entity.RegionalManager
 import com.example.santecoffeemerhants.viewmodel.FarmerViewModel
 import com.google.android.material.floatingactionbutton.FloatingActionButton
+import kotlinx.android.synthetic.main.activity_main.*
 
 
 class MainActivity : AppCompatActivity()  {
-    private var regionalManager: RegionalManager? = null
+     var regionalManager: RegionalManager? = null
     private lateinit var farmerViewModel: FarmerViewModel
 
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
+
+
 
         regionalManager = intent.getSerializableExtra("Regional_Manager") as RegionalManager
         val email = regionalManager?.email
@@ -42,6 +46,7 @@ class MainActivity : AppCompatActivity()  {
         recyclerView.adapter = adapter
         recyclerView.layoutManager = LinearLayoutManager(this)
 
+
         //Divider
         recyclerView.addItemDecoration(
             DividerItemDecoration(this,
@@ -55,6 +60,7 @@ class MainActivity : AppCompatActivity()  {
                 farmers.let { adapter.setFarmers(it) }
             })
         }
+
 
         val actionBar: ActionBar? = supportActionBar
         if (actionBar != null) {

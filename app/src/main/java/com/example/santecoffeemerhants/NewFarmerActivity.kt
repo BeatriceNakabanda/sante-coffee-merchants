@@ -29,11 +29,12 @@ class NewFarmerActivity : AppCompatActivity() {
     private lateinit var birthCertificate:  String
     private lateinit var photoUri: String
 
-    private val genderUnknown = "Unknown"
-    private val genderMale = "Female"
-    private val genderFemale = "Male"
-    private var mGender = genderUnknown
+    private val genderUnknown = 0
+    private val genderMale = 1
+    private val genderFemale = 2
 
+    private var mGender = genderUnknown
+    private var farmer: Farmer? = null
 
     val startForResult =
         registerForActivityResult(ActivityResultContracts.StartActivityForResult()) { result: ActivityResult ->
@@ -49,7 +50,6 @@ class NewFarmerActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
 
         setContentView(R.layout.activity_new_farmer)
-
         editTextName = findViewById(R.id.farmerNameEditText)
         phoneNumber = findViewById(R.id.phoneEditText)
         mGenderSpinner = findViewById(R.id.farmerGenderSpinner)
@@ -65,56 +65,74 @@ class NewFarmerActivity : AppCompatActivity() {
         captureBirthCertificateButton.setOnClickListener {
             startForResult.launch(Intent(this,  CaptureDocumentActivity::class.java))
         }
-        regionalManager = intent.getSerializableExtra("Regional_Manager") as RegionalManager
-        val email = regionalManager?.email
-        val name = regionalManager?.name
-        val regionalManagerId = regionalManager?.regional_manager_id!!
-        Toast.makeText(
-            this,
-            "User Email: $email \n User Id: $regionalManagerId \n UserName: $name",
-            Toast.LENGTH_SHORT
-        ).show()
 
-        //Create new farmer
-        val addFarmerButton = findViewById<Button>(R.id.addFarmerButton)
-        addFarmerButton.setOnClickListener {
-            val name = editTextName.getText().toString().trim()
-            val phoneNumber = phoneNumber.getText().toString().trim()
-            birthCertificate = photoUri
-            val nationalId = photoUri
+        farmer = intent?.extras?.get("farmer") as Farmer?
 
-            val newFarmer = Farmer(
-                manager_id = regionalManagerId,
-                name = name,
-                phone_number = phoneNumber,
-                gender = mGender,
-                birth_certificate = birthCertificate,
-                national_id = nationalId,
-                createdAt = Date()
-            )
-            val newFarmerCreatedAt = newFarmer.createdAt
-            val phoneNo = newFarmer.phone_number
-            farmerViewModel.insert(newFarmer)
+        if (farmer == null) {
+            //Get details of logged in regional manager
+            regionalManager = intent.getSerializableExtra("Regional_Manager") as RegionalManager
+
+            val regionalManagerId = regionalManager?.regional_manager_id!!
+            Toast.makeText(
+                this,
+                " $regionalManagerId",
+                Toast.LENGTH_SHORT
+            ).show()
+
+            //Create new farmer
+            val addFarmerButton = findViewById<Button>(R.id.addFarmerButton)
+            addFarmerButton.setOnClickListener {
+                val name = editTextName.getText().toString().trim()
+                val phoneNumber = phoneNumber.getText().toString().trim()
+                birthCertificate = photoUri
+                val nationalId = photoUri
+
+                val newFarmer = Farmer(
+                    manager_id = regionalManagerId,
+                    name = name,
+                    phone_number = phoneNumber,
+                    gender = mGender,
+                    birth_certificate = birthCertificate,
+                    national_id = nationalId,
+                    createdAt = Date()
+                )
+                val newFarmerCreatedAt = newFarmer.createdAt
+                val phoneNo = newFarmer.phone_number
+                farmerViewModel.insert(newFarmer)
 //            val addedFarmer = farmerViewModel.getFarmerByDateAndTimeCreated(newFarmer.createdAt)
-            val addedFarmer = farmerViewModel.getFarmerByPhoneNumber(phoneNo)
+//                val addedFarmer = farmerViewModel.getFarmerByPhoneNumber(phoneNo)
 
-            val addedFarmerDateCreated = addedFarmer.createdAt
-            if (addedFarmer != null) {
-                Toast.makeText(
-                    this,
-                    "Farmer successfully added \n FarmerId: ${addedFarmer.farmer_id} \n farmer name: ${addedFarmer.name} \n farmer birthCertificate: ",
-                    Toast.LENGTH_SHORT
-                ).show()
-            } else {
-                Toast.makeText(
-                    this,
-                    "Farmer not added",
-                    Toast.LENGTH_SHORT
-                ).show()
+//                val addedFarmerDateCreated = addedFarmer.createdAt
+//                if (addedFarmer != null) {
+//                    Toast.makeText(
+//                        this,
+//                        "Farmer successfully added \n FarmerId: ${addedFarmer.farmer_id} \n farmer name: ${addedFarmer.name} \n farmer birthCertificate: ",
+//                        Toast.LENGTH_SHORT
+//                    ).show()
+//                } else {
+//                    Toast.makeText(
+//                        this,
+//                        "Farmer not added",
+//                        Toast.LENGTH_SHORT
+//                    ).show()
+//
+//                }
             }
-        }
-    }
+        }else{
+            val regionalManagerId = farmer?.manager_id
+            Toast.makeText(
+                this,
+                " $regionalManagerId",
+                Toast.LENGTH_SHORT
+            ).show()
+            editTextName.setText(farmer?.name)
+            phoneNumber.setText(farmer?.phone_number)
+            farmer?.gender?.let { mGenderSpinner.setSelection(it) }
 
+        }
+
+
+        }
     private fun setUpGenderSpinner(){
         if (mGenderSpinner != null ){
             //Create adapter for spinner
@@ -174,7 +192,8 @@ class NewFarmerActivity : AppCompatActivity() {
         }
         return super.onOptionsItemSelected(item)
     }
+    }
 
 
-}
+
 

@@ -12,6 +12,9 @@ class FarmerRepository constructor(private val farmerDao: FarmerDao) {
     fun insertNewFarmer(farmer: Farmer){
         farmerDao.insert(farmer)
     }
+    fun updateFarmer(farmer: Farmer){
+        farmerDao.updateFarmer(farmer)
+    }
     fun getAllFarmersByRegionalManagerId(regionalManagerId: Int): LiveData<List<Farmer>> {
         val farmer = farmerDao.getAllFarmersByRegionalManagerId(regionalManagerId)
         return farmer
@@ -24,5 +27,12 @@ class FarmerRepository constructor(private val farmerDao: FarmerDao) {
         val farmer = farmerDao.getFarmerByPhoneNumber(phone_number)
         return farmer
     }
+    fun getFarmerAndRegionalManager(regionalManagerId: Int, farmerId: Int): Farmer{
+        val farmer = farmerDao.getFarmerAndRegionalManager(regionalManagerId, farmerId)
+        return farmer
+    }
+//    fun updateSingleFarmer(farmerId: Int){
+//        farmerDao.updateSingleFarmer(farmerId)
+//    }
 
 }
