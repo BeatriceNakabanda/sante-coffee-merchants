@@ -18,7 +18,6 @@ class FarmerListAdapter internal constructor( private val context: Context)
 
     private val inflater: LayoutInflater = LayoutInflater.from(context)
     private var farmers = emptyList<Farmer>()
-//    private var regionalManager: RegionalManager? = null
 
     inner class FarmerViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
         val farmerNameView: TextView = itemView.findViewById(R.id.farmerNameTextView)

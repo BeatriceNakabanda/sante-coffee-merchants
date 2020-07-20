@@ -44,7 +44,7 @@ class FarmerDaoTest  {
 
         regionalManager = RegionalManager(
             name = "liz",
-            gender = "Male",
+            gender = 1,
             email = "liz@gmail.com",
             region = "Lwengo",
             password = "12345",
@@ -96,28 +96,29 @@ class FarmerDaoTest  {
         //Arrange
         //1.  create the new farmer
         //2. insert new farmer
-        farmerDao?.insert(newFarmer)
+        farmerDao.insert(newFarmer)
 
         Log.i("newFarmerIn", "${newFarmer.farmer_id}")
         Log.i("Manager id", "${newFarmer.manager_id}")
 
         //Act
         // 3. get new farmer from database
-        val createdFarmer = farmerDao?.getFarmerByDateAndTimeCreated(newFarmer.createdAt)
+        val createdFarmer = farmerDao.getFarmerByDateAndTimeCreated(newFarmer.createdAt)
 
         // 4. update new farmer
-        createdFarmer?.name = "William shakespear"
-        createdFarmer?.let { farmerDao?.updateFarmer(it) }
+        createdFarmer.name = "William shakespear"
+        farmerDao.updateFarmer(createdFarmer)
 
-        val updatedFarmer = farmerDao?.getFarmerByDateAndTimeCreated(newFarmer.createdAt)
+//        val updatedFarmer = farmerDao.getFarmerByDateAndTimeCreated(newFarmer.createdAt)
+        val updatedFarmer = farmerDao.getSingleFarmer(createdFarmer.farmer_id)
 
         //5. assert that new farmer in database has updated name
         assert(updatedFarmer != null)
-        assertThat(updatedFarmer?.name, equalTo(createdFarmer?.name))
+        assertThat(updatedFarmer.name, equalTo(createdFarmer.name))
     }
 
     @Test
-    fun getAllFarmers(){
+    fun getFarmers(){
         //Arrange
         //1. Create farmer
         //2. Insert Farmer

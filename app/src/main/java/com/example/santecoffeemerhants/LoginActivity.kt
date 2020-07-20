@@ -24,11 +24,7 @@ class LoginActivity : AppCompatActivity() {
     private lateinit var editTextEmail:EditText
     private lateinit var editTextPassword:EditText
     private lateinit var textViewRegister: TextView
-    private  lateinit var regionalManagerViewModel: RegionalManagerViewModel
-    private val MyPREFERENCES = "MyPrefs"
-    private val Password = "passwordKey"
-    private val Email = "emailKey"
-    private var sharedpreferences: SharedPreferences? = null
+    private lateinit var regionalManagerViewModel: RegionalManagerViewModel
 
     private var regionalManager: RegionalManager? = null
 
@@ -47,6 +43,7 @@ class LoginActivity : AppCompatActivity() {
 
         editTextEmail = findViewById(R.id.loginEmailAddressEditText)
         editTextPassword = findViewById(R.id.loginPasswordEditText)
+
         editTextEmail.addTextChangedListener(emailTextWatcher)
         editTextPassword.addTextChangedListener(passwordTextWatcher)
         textViewRegister = findViewById(R.id.signUpTextView)
@@ -58,7 +55,6 @@ class LoginActivity : AppCompatActivity() {
 
         regionalManagerViewModel = ViewModelProvider(this).get(RegionalManagerViewModel::class.java)
 
-        sharedpreferences = getSharedPreferences(MyPREFERENCES, Context.MODE_PRIVATE);
         val button = findViewById<Button>(R.id.signInButton)
         button.setOnClickListener{
             val email = editTextEmail.getText().toString().trim()
@@ -67,32 +63,35 @@ class LoginActivity : AppCompatActivity() {
                 findViewById<View>(R.id.invalidEmailLoginTextView) as TextView
             val invalidPasswordText =
                 findViewById<View>(R.id.invalidPasswordLoginTextView) as TextView
-            val emailPattern = "[a-zA-Z0-9._-]+@[a-z]+\\.+[a-z]+"
 
-//            val regionalManager: Unit = regionalManagerViewModel.getRegionalMangerByEmail(email)
+            regionalManager = regionalManagerViewModel.getRegionalManager(email, password)
 
-            when{
-                email.isEmpty() || password.isEmpty() || !Patterns.EMAIL_ADDRESS.matcher(email).matches() ->{
+            when {
+                email.isEmpty() || password.isEmpty() || !Patterns.EMAIL_ADDRESS.matcher(email).matches() -> {
                     invalidEmailText.visibility = View.VISIBLE
                     invalidPasswordText.visibility = View.VISIBLE
-                }else ->{
-                val isValid = regionalManagerViewModel?.checkIfValidAccount(email, password)
-                regionalManager = regionalManagerViewModel.getRegionalManagerDetails(email)
 
-                val returnedEmail = regionalManager?.email
-                if(isValid && email == returnedEmail){
+                }
+                regionalManager == null -> {
+                    Toast.makeText(
+                        this@LoginActivity,
+                        "Unregistered user",
+                        Toast.LENGTH_SHORT
+                    ).show()
+                }
+                regionalManager != null -> {
                     val intent = Intent(this, MainActivity::class.java)
                     intent.putExtra("Regional_Manager", regionalManager)
                     startActivity(intent)
                     finish()
-                }else{
+                }
+                else -> {
                     Toast.makeText(
                         this@LoginActivity,
-                        "Unregistered user, or incorrect",
+                        "Invalid user login",
                         Toast.LENGTH_SHORT
                     ).show()
                 }
-            }
             }
 
             }

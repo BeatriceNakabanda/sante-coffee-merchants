@@ -20,6 +20,9 @@ class RegionalManagerViewModel(application: Application): AndroidViewModel(appli
     fun insert(regionalManager: RegionalManager){
         repository.insertRegionalManager(regionalManager)
     }
+    fun getRegionalManager(email: String, password: String): RegionalManager{
+        return repository.getRegionalManager(email, password)
+    }
     fun getRegionalMangerByEmail(regionalManager: String){
         repository.getRegionalManagerByEmail(regionalManager)
     }

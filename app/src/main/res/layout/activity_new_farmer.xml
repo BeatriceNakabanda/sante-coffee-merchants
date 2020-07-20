@@ -8,7 +8,7 @@
     tools:context=".NewFarmerActivity">
 
     <TextView
-        android:id="@+id/titleTextView"
+        android:id="@+id/addNewFarmerTextView"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginStart="@dimen/medium"
@@ -16,12 +16,30 @@
         android:layout_marginTop="@dimen/medium"
         android:textSize="17dp"
         android:text="Add New Farmer"
+        android:visibility="gone"
         android:textStyle="bold"
         android:textColor="@color/colorPrimaryDark"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
+
+    <TextView
+        android:id="@+id/editNewFarmerTextView"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="@dimen/medium"
+        android:layout_marginEnd="@dimen/medium"
+        android:layout_marginTop="@dimen/medium"
+        android:textSize="17dp"
+        android:text="Edit New Farmer"
+        android:visibility="gone"
+        android:textStyle="bold"
+        android:textColor="@color/colorPrimaryDark"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/addNewFarmerTextView"/>
 
     <TextView
         android:id="@+id/nameTextView"
@@ -36,7 +54,7 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/titleTextView"/>
+        app:layout_constraintTop_toBottomOf="@+id/editNewFarmerTextView"/>
 
     <EditText
         android:id="@+id/farmerNameEditText"
@@ -178,21 +196,52 @@
         android:textAllCaps="false"
         android:textColor="#442C2E"
         app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintRight_toRightOf="@id/previewBirthCertificateTextView"
         app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/birthCertificateTextView" />
+
+    <TextView
+        android:id="@+id/emptyBirthCertificateTextView"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="@dimen/medium"
+        android:layout_marginEnd="@dimen/medium"
+        android:layout_marginTop="@dimen/medium"
+        android:text="Please attach birth certificate"
+        android:textColor="@color/invalid"
+        android:textSize="12sp"
+        android:visibility="gone"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/captureBirthCertificateButton" />
+
+
+    <TextView
+        android:id="@+id/previewBirthCertificateTextView"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="120dp"
+        android:layout_marginTop="32dp"
+        android:text="Preview"
+        android:visibility="gone"
+        android:textSize="13dp"
+        app:layout_constraintLeft_toLeftOf="@+id/captureBirthCertificateButton"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/birthCertificateTextView"/>
 
     <TextView
         android:id="@+id/nationalIdTextView"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginStart="@dimen/medium"
+        android:layout_marginTop="12dp"
         android:layout_marginEnd="@dimen/medium"
-        android:layout_marginTop="@dimen/medium"
         android:text="National Id"
-        android:textSize="15dp"
         android:textColor="@color/colorPrimaryDark"
+        android:textSize="15dp"
         app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@id/captureBirthCertificateButton" />
 
@@ -210,11 +259,39 @@
         android:textAlignment="center"
         android:textAllCaps="false"
         android:textColor="#442C2E"
-        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintRight_toRightOf="@id/previewNationalIdTextView"
         app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/nationalIdTextView" />
 
+    <TextView
+        android:id="@+id/emptyNationalIdTextView"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="@dimen/medium"
+        android:layout_marginEnd="@dimen/medium"
+        android:layout_marginTop="@dimen/medium"
+        android:text="Please attach birth certificate"
+        android:textColor="@color/invalid"
+        android:textSize="12sp"
+        android:visibility="gone"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/captureBirthCertificateButton" />
+
+
+    <TextView
+        android:id="@+id/previewNationalIdTextView"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="120dp"
+        android:layout_marginTop="34dp"
+        android:text="Preview"
+        android:visibility="gone"
+        android:textSize="13dp"
+        app:layout_constraintLeft_toLeftOf="@+id/captureNationalIdButton"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/nationalIdTextView" />
 
     <Button
         android:id="@+id/addFarmerButton"
@@ -223,7 +300,7 @@
         android:layout_gravity="end|bottom"
         android:background="#442C2E"
         android:textColor="#FFFFFF"
-        android:text="Add"
+        android:text="Save"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         android:layout_margin="16dp" />

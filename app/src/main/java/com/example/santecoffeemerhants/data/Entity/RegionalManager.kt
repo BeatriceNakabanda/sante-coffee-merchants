@@ -13,7 +13,7 @@ data class RegionalManager(
     @PrimaryKey(autoGenerate = true)
     @ColumnInfo(name = "id") var regional_manager_id: Int = 0,
     @ColumnInfo(name = "name") var name: String,
-    @ColumnInfo(name = "gender") var gender: String,
+    @ColumnInfo(name = "gender") var gender: Int,
     @ColumnInfo(name = "email") var email: String,
     @ColumnInfo(name = "region") var region: String,
     @ColumnInfo(name = "password") var password: String,

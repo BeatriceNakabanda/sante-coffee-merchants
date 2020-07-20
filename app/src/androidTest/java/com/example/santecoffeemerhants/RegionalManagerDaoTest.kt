@@ -45,7 +45,7 @@ class RegionalManagerDaoTest {
         //Arrange
         val regionalManager1 = RegionalManager(
             name = "liz",
-            gender = "Male",
+            gender = 1,
             email = "liz@gmail.com",
             region = "Lwengo",
             password = "12345",
@@ -64,7 +64,7 @@ class RegionalManagerDaoTest {
         //Arrange
         val regionalManager1 = RegionalManager(
             name = "liz",
-            gender = "Male",
+            gender = 1,
             email = "liz@gmail.com",
             region = "Lwengo",
             password = "12345",
@@ -87,7 +87,7 @@ class RegionalManagerDaoTest {
         //Arrange
         val regionalManager1 = RegionalManager(
             name = "liz",
-            gender = "Female",
+            gender = 1,
             email = "liz@gmail.com",
             region = "Lwengo",
             password = "12345",
@@ -95,7 +95,7 @@ class RegionalManagerDaoTest {
         )
         val regionalManager2 = RegionalManager(
             name = "Sande",
-            gender = "Male",
+            gender = 1,
             email = "sande@gmail.com",
             region = "Bbunga",
             password = "12345",
@@ -116,7 +116,7 @@ class RegionalManagerDaoTest {
         //Arrange
         val regionalManager1 = RegionalManager(
             name = "liz",
-            gender = "Male",
+            gender = 1,
             email = "liz@gmail.com",
             region = "Lwengo",
             password = "12345",

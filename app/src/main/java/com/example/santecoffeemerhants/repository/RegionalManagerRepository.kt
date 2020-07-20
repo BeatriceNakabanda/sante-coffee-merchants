@@ -10,6 +10,10 @@ class RegionalManagerRepository constructor(private val regionalManagerDao: Regi
     fun insertRegionalManager(regionalManager: RegionalManager){
         regionalManagerDao.insert(regionalManager)
     }
+    fun getRegionalManager(email: String, password: String): RegionalManager{
+        val regionalManager = regionalManagerDao.getRegionalManager(email, password)
+        return regionalManager
+    }
     fun getRegionalManagerByEmail(email: String) {
         regionalManagerDao.getRegionalManagerByEmail(email)
     }
@@ -23,7 +27,7 @@ class RegionalManagerRepository constructor(private val regionalManagerDao: Regi
     }
     //Check if password for an email exists
     fun isValidAccount(email: String, password: String): Boolean{
-        val regionalManagerAccount = regionalManagerDao.getRegionalManagerByEmail(email)
+        val regionalManagerAccount = regionalManagerDao.getRegionalManager(email, password)
         return regionalManagerAccount.password == password
     }
     fun getRegionalManagerDetails(email: String): RegionalManager {

@@ -13,6 +13,9 @@ interface RegionalManagerDao {
     @Query("SELECT * FROM regional_manager")
     fun getAllRegionalMangers():LiveData<List<RegionalManager>>
 
+    @Query("SELECT * FROM regional_manager where email= :mail and password= :password")
+    fun getRegionalManager(mail: String, password: String): RegionalManager
+
     @Query("SELECT * FROM regional_manager WHERE regional_manager.email LIKE :email")
     fun getRegionalManagerByEmail(email: String): RegionalManager
 

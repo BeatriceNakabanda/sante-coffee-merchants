@@ -36,7 +36,7 @@ class MainActivity : AppCompatActivity()  {
         val regionalManagerId = regionalManager?.regional_manager_id
         Toast.makeText(
             this,
-            "User Email: $email \n User Id: $regionalManagerId \n UserName: $name",
+            "Welcome $name",
             Toast.LENGTH_SHORT
         ).show()
 

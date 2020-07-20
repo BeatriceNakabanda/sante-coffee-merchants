@@ -19,6 +19,10 @@ class FarmerRepository constructor(private val farmerDao: FarmerDao) {
         val farmer = farmerDao.getAllFarmersByRegionalManagerId(regionalManagerId)
         return farmer
     }
+    fun getSingleFarmer(farmerId: Int): Farmer{
+        val farmer = farmerDao.getSingleFarmer(farmerId)
+        return farmer
+    }
     fun getFarmerByDateAndTimeCreated(createdAt: Date?): Farmer{
         val farmer = farmerDao.getFarmerByDateAndTimeCreated(createdAt)
         return farmer

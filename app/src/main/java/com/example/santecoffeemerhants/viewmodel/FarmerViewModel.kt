@@ -20,11 +20,13 @@ class FarmerViewModel(application: Application): AndroidViewModel(application) {
     fun insert(farmer: Farmer){
         repository.insertNewFarmer(farmer)
     }
-//    fun updateSingleFarmer(farmerId: Int){
-//        repository.updateSingleFarmer(farmerId)
-//    }
-    fun updateFarmer(farmer: Farmer){
-        repository.updateFarmer(farmer)
+    fun getSingleFarmer(farmerId: Int): Farmer{
+        return repository.getSingleFarmer(farmerId)
+    }
+    fun updateFarmer(farmer: Farmer?){
+        if (farmer != null) {
+            repository.updateFarmer(farmer)
+        }
     }
     fun getFarmerByDateAndTimeCreated(createdAt: Date?): Farmer{
         return repository.getFarmerByDateAndTimeCreated(createdAt)

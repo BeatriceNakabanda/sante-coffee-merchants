@@ -13,7 +13,7 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import java.time.chrono.HijrahChronology.INSTANCE
 
-@Database(entities = [RegionalManager::class, Farmer::class], version = 1)
+@Database(entities = [RegionalManager::class, Farmer::class], version = 3)
 @TypeConverters(Converters::class)
 abstract class SanteRoomDatabase: RoomDatabase() {
 
