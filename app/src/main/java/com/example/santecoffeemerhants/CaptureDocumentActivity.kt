@@ -33,8 +33,6 @@ class CaptureDocumentActivity : AppCompatActivity() {
 //    private lateinit var savedUri: Uri
 
     override fun onCreate(savedInstanceState: Bundle?) {
-
-
         super.onCreate(savedInstanceState)
 
         // hide the title
@@ -83,15 +81,26 @@ class CaptureDocumentActivity : AppCompatActivity() {
                         val msg = "Photo capture succeeded: $savedUri"
 //                        Toast.makeText(baseContext, msg, Toast.LENGTH_SHORT).show()
 //
-
-                        val intent = Intent()
-
                         Toast.makeText(baseContext, "Photo_URI : $savedUri", Toast.LENGTH_SHORT).show()
-                        intent.putExtra("Photo_Uri", savedUri.toString()).also {
-                            setResult(Activity.RESULT_OK, intent)
+
+                        val callbackIntent = Intent()
+                        val extras = intent?.extras()
+                        when(extras){
+                            null -> {
+                                // if no extras found
+                            }
+                            containsKey(IS_BIRTH_CERT) -> {
+                                callbackIntent.putExtra(BIRTH_CERT_URI, savedUri.toString()).also {
+                                    setResult(Activity.RESULT_OK, callbackIntent)
+                                }
+                            }
+                            containsKey(IS_NATIONAL_ID) -> {
+                                callbackIntent.putExtra(NATIONAL_ID_URI, savedUri.toString()).also {
+                                    setResult(Activity.RESULT_OK, callbackIntent)
+                                }
+                            }
                         }
                         finish()
-
                     }
 
 

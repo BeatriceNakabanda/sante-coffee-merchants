@@ -20,8 +20,6 @@ import kotlinx.android.synthetic.main.activity_new_farmer.*
 import java.util.*
 
 class NewFarmerActivity : AppCompatActivity() {
-    private val BIRTH_CERT_CODE = 101
-    private val NATIONAL_ID_CODE = 102
     private lateinit var editTextName: EditText
     private lateinit var phoneNumber: EditText
     private lateinit var mGenderSpinner: Spinner
@@ -44,8 +42,8 @@ class NewFarmerActivity : AppCompatActivity() {
                 val intent = result.data
                 // Handle the Intent
                 val extras = intent?.extras
-                if (extras != null && extras.containsKey("Birth_Cert_Uri")) {
-                    savedUri = intent.getStringExtra("Photo_Uri") as String
+                if (extras != null && extras.containsKey(BIRTH_CERT_URI)) {
+                    savedUri = intent.getStringExtra(BIRTH_CERT_URI) as String
                     Toast.makeText(
                         this,
                         "saved uri: $savedUri",
@@ -74,12 +72,15 @@ class NewFarmerActivity : AppCompatActivity() {
 
         setUpGenderSpinner()
 
+        val intent = Intent(this, CaptureDocumentActivity::class.java)
         captureNationalIdButton.setOnClickListener {
-            startForResult.launch(Intent(this, CaptureDocumentActivity::class.java))
+            intent.putExtra(IS_NATIONAL_ID, true)
+            startForResult.launch(intent)
 
         }
         captureBirthCertificateButton.setOnClickListener {
-            startForResult.launch(Intent(this, CaptureDocumentActivity::class.java))
+            intent.putExtra(IS_BIRTH_CERT, true)
+            startForResult.launch(intent)
         }
 
         farmer = intent?.extras?.get("farmer") as Farmer?
