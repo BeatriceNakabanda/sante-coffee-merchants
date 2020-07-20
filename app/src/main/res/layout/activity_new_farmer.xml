@@ -188,12 +188,12 @@
         android:layout_marginStart="@dimen/medium"
         android:layout_marginEnd="@dimen/medium"
         android:layout_marginTop="@dimen/medium"
+        android:textSize="13dp"
+        android:text="Capture"
         android:background="#FFFFFF"
-        android:drawableRight="@drawable/ic_baseline_attach_file_24"
-        android:ems="10"
-        android:text="Attach"
+        android:visibility="gone"
         android:textAlignment="center"
-        android:textAllCaps="false"
+        android:textAllCaps="true"
         android:textColor="#442C2E"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintRight_toRightOf="@id/previewBirthCertificateTextView"
@@ -216,19 +216,21 @@
         app:layout_constraintTop_toBottomOf="@id/captureBirthCertificateButton" />
 
 
-    <TextView
+
+    <Button
         android:id="@+id/previewBirthCertificateTextView"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginStart="120dp"
-        android:layout_marginTop="32dp"
+        android:layout_marginStart="@dimen/medium"
+        android:layout_marginEnd="@dimen/medium"
+        android:layout_marginTop="@dimen/medium"
         android:text="Preview"
-        android:visibility="gone"
+        android:background="#FFFFFF"
         android:textSize="13dp"
-        app:layout_constraintLeft_toLeftOf="@+id/captureBirthCertificateButton"
-        app:layout_constraintRight_toRightOf="parent"
+        android:textAllCaps="true"
+        android:visibility="gone"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/birthCertificateTextView"/>
+        app:layout_constraintTop_toBottomOf="@id/emptyBirthCertificateTextView"/>
 
     <TextView
         android:id="@+id/nationalIdTextView"
@@ -243,7 +245,7 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/captureBirthCertificateButton" />
+        app:layout_constraintTop_toBottomOf="@id/previewBirthCertificateTextView" />
 
     <Button
         android:id="@+id/captureNationalIdButton"
@@ -252,12 +254,12 @@
         android:layout_marginStart="@dimen/medium"
         android:layout_marginEnd="@dimen/medium"
         android:layout_marginTop="@dimen/medium"
+        android:textSize="13dp"
         android:background="#FFFFFF"
-        android:drawableRight="@drawable/ic_baseline_attach_file_24"
-        android:ems="10"
-        android:text="Attach"
+        android:text="Capture"
+        android:visibility="gone"
         android:textAlignment="center"
-        android:textAllCaps="false"
+        android:textAllCaps="true"
         android:textColor="#442C2E"
         app:layout_constraintRight_toRightOf="@id/previewNationalIdTextView"
         app:layout_constraintHorizontal_bias="0.0"
@@ -279,19 +281,28 @@
         app:layout_constraintTop_toBottomOf="@id/captureBirthCertificateButton" />
 
 
-    <TextView
+    <Button
         android:id="@+id/previewNationalIdTextView"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginStart="120dp"
-        android:layout_marginTop="34dp"
+        android:layout_marginStart="16dp"
+        android:layout_marginTop="16dp"
         android:text="Preview"
+        android:background="#FFFFFF"
+        android:textAllCaps="true"
         android:visibility="gone"
         android:textSize="13dp"
-        app:layout_constraintLeft_toLeftOf="@+id/captureNationalIdButton"
-        app:layout_constraintRight_toRightOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/nationalIdTextView" />
+
+    <ImageView
+        android:id="@+id/imagePreview"
+        android:layout_width="match_parent"
+        android:layout_height="50dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/previewNationalIdTextView" />
 
     <Button
         android:id="@+id/addFarmerButton"

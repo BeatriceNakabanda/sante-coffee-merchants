@@ -28,7 +28,7 @@ class FarmerViewModel(application: Application): AndroidViewModel(application) {
             repository.updateFarmer(farmer)
         }
     }
-    fun getFarmerByDateAndTimeCreated(createdAt: Date?): Farmer{
+    fun getFarmerByDateAndTimeCreated(createdAt: Date?): Farmer?{
         return repository.getFarmerByDateAndTimeCreated(createdAt)
     }
     fun getFarmerByPhoneNumber(phone_number: String): Farmer{

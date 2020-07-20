@@ -28,7 +28,7 @@ class FarmerListAdapter internal constructor( private val context: Context)
                 val FARMER = "farmer"
                 val position: Int = adapterPosition
 
-                Toast.makeText(itemView.context, "You clicked on item # ${position + 1} \n $farmers[position]", Toast.LENGTH_SHORT).show()
+//                Toast.makeText(itemView.context, "You clicked on item # ${position + 1} \n $farmers[position]", Toast.LENGTH_SHORT).show()
 
                 val intent = Intent(context, NewFarmerActivity::class.java )
                 val bundle = Bundle()

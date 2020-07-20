@@ -2,6 +2,7 @@ package com.example.santecoffeemerhants
 
 import android.app.Activity
 import android.content.Intent
+import android.net.Uri
 import android.os.Bundle
 import android.text.TextUtils
 import android.view.Menu
@@ -19,14 +20,16 @@ import kotlinx.android.synthetic.main.activity_new_farmer.*
 import java.util.*
 
 class NewFarmerActivity : AppCompatActivity() {
+    private val BIRTH_CERT_CODE = 101
+    private val NATIONAL_ID_CODE = 102
     private lateinit var editTextName: EditText
     private lateinit var phoneNumber: EditText
     private lateinit var mGenderSpinner: Spinner
     private lateinit var farmerViewModel: FarmerViewModel
     private var regionalManager: RegionalManager? = null
-    private lateinit var birthCertificate:  String
-//    private lateinit var photoUri: String
-    private  var photoUri: String = null.toString()
+
+    //    private lateinit var birthCertificate:  String
+    private lateinit var savedUri: String
 
     private val genderUnknown = 0
     private val genderMale = 1
@@ -37,10 +40,24 @@ class NewFarmerActivity : AppCompatActivity() {
 
     val startForResult =
         registerForActivityResult(ActivityResultContracts.StartActivityForResult()) { result: ActivityResult ->
-            if (result.resultCode == Activity.RESULT_OK) {
+            if (result.resultCode == BIRTH_CERT_CODE) {
                 val intent = result.data
                 // Handle the Intent
-                photoUri = intent?.getStringExtra("savedUri").toString()
+                val extras = intent?.extras
+                if (extras != null && extras.containsKey("Birth_Cert_Uri")) {
+                    savedUri = intent.getStringExtra("Photo_Uri") as String
+                    Toast.makeText(
+                        this,
+                        "saved uri: $savedUri",
+                        Toast.LENGTH_SHORT
+                    ).show()
+                } else {
+                    Toast.makeText(
+                        this,
+                        "saved uri null",
+                        Toast.LENGTH_SHORT
+                    ).show()
+                }
 
             }
         }
@@ -58,21 +75,23 @@ class NewFarmerActivity : AppCompatActivity() {
         setUpGenderSpinner()
 
         captureNationalIdButton.setOnClickListener {
-            startForResult.launch(Intent(this,  CaptureDocumentActivity::class.java))
+            startForResult.launch(Intent(this, CaptureDocumentActivity::class.java))
 
         }
         captureBirthCertificateButton.setOnClickListener {
-            startForResult.launch(Intent(this,  CaptureDocumentActivity::class.java))
+            startForResult.launch(Intent(this, CaptureDocumentActivity::class.java))
         }
 
         farmer = intent?.extras?.get("farmer") as Farmer?
 
         if (farmer == null) {
+            captureBirthCertificateButton.visibility = View.VISIBLE
+            captureNationalIdButton.visibility = View.VISIBLE
             addNewFarmerTextView.visibility = View.VISIBLE
             //Get details of logged in regional manager
-            regionalManager = intent.getSerializableExtra("Regional_Manager") as RegionalManager
+            regionalManager = intent.getSerializableExtra("Regional_Manager") as RegionalManager?
 
-            val regionalManagerId = regionalManager?.regional_manager_id!!
+            val regionalManagerId = regionalManager?.regional_manager_id
             Toast.makeText(
                 this,
                 " $regionalManagerId",
@@ -82,47 +101,62 @@ class NewFarmerActivity : AppCompatActivity() {
             //Create new farmer
             val addFarmerButton = findViewById<Button>(R.id.addFarmerButton)
             addFarmerButton.setOnClickListener {
-                val name = editTextName.getText().toString().trim()
-                val phoneNumber = phoneNumber.getText().toString().trim()
-                birthCertificate = photoUri
-                val nationalId = photoUri
+                val name = editTextName.text.toString().trim()
+                val phoneNumber = phoneNumber.text.toString().trim()
+                val birthCertificate = savedUri
+                val nationalId = savedUri
 
-                val newFarmer = Farmer(
-                    manager_id = regionalManagerId,
-                    name = name,
-                    phone_number = phoneNumber,
-                    gender = mGender,
-                    birth_certificate = birthCertificate,
-                    national_id = nationalId,
-                    createdAt = Date()
-                )
-                val newFarmerCreatedAt = newFarmer.createdAt
-                val phoneNo = newFarmer.phone_number
-                farmerViewModel.insert(newFarmer)
-                val addedFarmer = farmerViewModel.getFarmerByDateAndTimeCreated(newFarmer.createdAt)
+                when (regionalManagerId) {
+                    null -> {
+                        return@setOnClickListener
+                    }
+                    else -> {
 
-                val addedFarmerDateCreated = addedFarmer.createdAt
-                if (addedFarmer != null) {
-                    Toast.makeText(
-                        this,
-                        "Farmer successfully added",
-                        Toast.LENGTH_SHORT
-                    ).show()
-                } else {
-                    Toast.makeText(
-                        this,
-                        "Farmer not added",
-                        Toast.LENGTH_SHORT
-                    ).show()
+                        val newFarmer = Farmer(
+                            manager_id = regionalManagerId,
+                            name = name,
+                            phone_number = phoneNumber,
+                            gender = mGender,
+                            birth_certificate = birthCertificate,
+                            national_id = nationalId,
+                            createdAt = Date()
+                        )
 
+                        farmerViewModel.insert(newFarmer)
+
+                        val addedFarmer =
+                            farmerViewModel.getFarmerByDateAndTimeCreated(newFarmer.createdAt)
+
+                        if (addedFarmer != null) {
+                            val addedFarmerDateCreated = addedFarmer.createdAt
+
+                            Toast.makeText(
+                                this,
+                                "Farmer successfully added. BirthCertificate ${addedFarmer.birth_certificate} \n" +
+                                        " farmer Name: ${addedFarmer.name}",
+                                Toast.LENGTH_SHORT
+                            ).show()
+                        } else {
+                            Toast.makeText(
+                                this,
+                                "Farmer not added",
+                                Toast.LENGTH_SHORT
+                            ).show()
+
+                        }
+                    }
                 }
             }
-        }else{
+        } else {
+            editNewFarmerTextView.visibility = View.VISIBLE
+            previewNationalIdTextView.visibility = View.VISIBLE
+            previewBirthCertificateTextView.visibility = View.VISIBLE
+
             editNewFarmerTextView.visibility = View.VISIBLE
             val regionalManagerId = farmer?.manager_id
             Toast.makeText(
                 this,
-                " $regionalManagerId",
+                " $regionalManagerId ",
                 Toast.LENGTH_SHORT
             ).show()
             editTextName.setText(farmer?.name)
@@ -132,18 +166,18 @@ class NewFarmerActivity : AppCompatActivity() {
             //Edit farmer
             val addFarmerButton = findViewById<Button>(R.id.addFarmerButton)
             addFarmerButton.setOnClickListener {
-                val name = editTextName.getText().toString().trim()
-                val phoneNumber = phoneNumber.getText().toString().trim()
+                val name = editTextName.text.toString().trim()
+                val phoneNumber = phoneNumber.text.toString().trim()
 //                birthCertificate = photoUri
 //                val nationalId = photoUri
 
                 farmer?.name = name
                 farmer?.gender = mGender
                 farmer?.phone_number = phoneNumber
-                farmer?.birth_certificate = photoUri
-                farmer?.national_id = photoUri
+                farmer?.birth_certificate = savedUri
+                farmer?.national_id = savedUri
 
-                 farmerViewModel.updateFarmer(farmer)
+                farmerViewModel.updateFarmer(farmer)
 
                 val updatedFarmer = farmerViewModel.getSingleFarmer(farmer!!.farmer_id)
 
@@ -168,10 +202,12 @@ class NewFarmerActivity : AppCompatActivity() {
 
 
     }
-    private fun setUpGenderSpinner(){
-        if (mGenderSpinner != null ){
+
+    private fun setUpGenderSpinner() {
+        if (mGenderSpinner != null) {
             //Create adapter for spinner
-            val adapter = ArrayAdapter.createFromResource(this,
+            val adapter = ArrayAdapter.createFromResource(
+                this,
                 R.array.array_gender_options,
                 android.R.layout.simple_spinner_item
             )
@@ -182,8 +218,10 @@ class NewFarmerActivity : AppCompatActivity() {
 
             mGenderSpinner.onItemSelectedListener = object :
                 AdapterView.OnItemSelectedListener {
-                override fun onItemSelected(parent: AdapterView<*>,
-                                            view: View, position: Int, id: Long) {
+                override fun onItemSelected(
+                    parent: AdapterView<*>,
+                    view: View, position: Int, id: Long
+                ) {
                     val selection =
                         parent.getItemAtPosition(position) as String
                     if (!TextUtils.isEmpty(selection)) {
@@ -216,8 +254,9 @@ class NewFarmerActivity : AppCompatActivity() {
         menuInflater.inflate(R.menu.options_menu, menu)
         return true
     }
+
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
-        val id: Int = item.getItemId()
+        val id: Int = item.itemId
         if (id == R.id.logout) {
             val intent = Intent(this, LoginActivity::class.java)
             intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP or Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK)
