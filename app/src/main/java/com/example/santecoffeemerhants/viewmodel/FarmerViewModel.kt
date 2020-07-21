@@ -17,28 +17,25 @@ class FarmerViewModel(application: Application): AndroidViewModel(application) {
         repository = FarmerRepository(farmerDao)
         allFarmers = repository.allFarmers
     }
+//    fun insert(farmer: Farmer): Farmer{
+//        return repository.insertNewFarmer(farmer)
+//    }
     fun insert(farmer: Farmer){
-        repository.insertNewFarmer(farmer)
-    }
-    fun getSingleFarmer(farmerId: Int): Farmer{
-        return repository.getSingleFarmer(farmerId)
-    }
-    fun updateFarmer(farmer: Farmer?){
-        if (farmer != null) {
-            repository.updateFarmer(farmer)
-        }
+         repository.insertNewFarmer(farmer)
     }
     fun getFarmerByDateAndTimeCreated(createdAt: Date?): Farmer?{
         return repository.getFarmerByDateAndTimeCreated(createdAt)
     }
-    fun getFarmerByPhoneNumber(phone_number: String): Farmer{
-        return repository.getFarmerByPhoneNumber(phone_number)
+    fun getSingleFarmer(farmerId: Int?): Farmer{
+        return repository.getSingleFarmer(farmerId)
     }
+    fun updateFarmer(farmer: Farmer?){
+        farmer?.let { repository.updateFarmer(it) }
+    }
+
     fun getAllFarmersByRegionalManagerId(regionalManagerId: Int): LiveData<List<Farmer>> {
         return repository.getAllFarmersByRegionalManagerId(regionalManagerId)
     }
-    fun getFarmerAndRegionalManager(regionalManagerId: Int, farmerId: Int): Farmer{
-        return repository.getFarmerAndRegionalManager(regionalManagerId, farmerId)
-    }
+
 
 }

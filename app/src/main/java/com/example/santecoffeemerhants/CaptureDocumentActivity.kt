@@ -85,22 +85,23 @@ class CaptureDocumentActivity : AppCompatActivity() {
                         val msg = "Photo capture succeeded: $savedUri"
 //                        Toast.makeText(baseContext, msg, Toast.LENGTH_SHORT).show()
 
-                        Toast.makeText(baseContext, "Photo_URI : $savedUri", Toast.LENGTH_SHORT).show()
+//                        Toast.makeText(baseContext, "Photo_URI : $savedUri", Toast.LENGTH_SHORT).show()
 
                         val callbackIntent = Intent()
                         val extras = intent?.extras
 
                         when(extras != null){
                             true -> {
-                                if (extras.containsKey(IS_BIRTH_CERT)){
-                                    callbackIntent.putExtra(BIRTH_CERT_URI, savedUri.toString()).also {
-                                        setResult(Activity.RESULT_OK, callbackIntent)
+                                when {
+                                    extras.containsKey(IS_BIRTH_CERT) -> {
+                                        callbackIntent.putExtra(BIRTH_CERT_URI, savedUri.toString()).also {
+                                            setResult(Activity.RESULT_OK, callbackIntent)
+                                        }
                                     }
-                                }
-
-                                if(extras.containsKey(IS_NATIONAL_ID) ) {
-                                    callbackIntent.putExtra(NATIONAL_ID_URI, savedUri.toString()).also {
-                                        setResult(Activity.RESULT_OK, callbackIntent)
+                                    extras.containsKey(IS_NATIONAL_ID) -> {
+                                        callbackIntent.putExtra(NATIONAL_ID_URI, savedUri.toString()).also {
+                                            setResult(Activity.RESULT_OK, callbackIntent)
+                                        }
                                     }
                                 }
                             }

@@ -106,15 +106,14 @@ class FarmerDaoTest  {
         val createdFarmer = farmerDao.getFarmerByDateAndTimeCreated(newFarmer.createdAt)
 
         // 4. update new farmer
-        createdFarmer.name = "William shakespear"
-        farmerDao.updateFarmer(createdFarmer)
+        createdFarmer?.name = "William shakespear"
+        createdFarmer?.let { farmerDao?.updateFarmer(it) }
 
-//        val updatedFarmer = farmerDao.getFarmerByDateAndTimeCreated(newFarmer.createdAt)
-        val updatedFarmer = farmerDao.getSingleFarmer(createdFarmer.farmer_id)
+        val updatedFarmer = farmerDao?.getFarmerByDateAndTimeCreated(newFarmer.createdAt)
 
         //5. assert that new farmer in database has updated name
         assert(updatedFarmer != null)
-        assertThat(updatedFarmer.name, equalTo(createdFarmer.name))
+        assertThat(updatedFarmer?.name, equalTo(createdFarmer?.name))
     }
 
     @Test

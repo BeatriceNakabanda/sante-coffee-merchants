@@ -5,6 +5,7 @@ import android.content.Intent
 import android.net.Uri
 import android.os.Bundle
 import android.text.TextUtils
+import android.util.Log
 import android.view.Menu
 import android.view.MenuItem
 import android.view.View
@@ -18,6 +19,7 @@ import com.example.santecoffeemerhants.data.Entity.RegionalManager
 import com.example.santecoffeemerhants.utils.*
 import com.example.santecoffeemerhants.viewmodel.FarmerViewModel
 import kotlinx.android.synthetic.main.activity_new_farmer.*
+import kotlinx.android.synthetic.main.activity_preview_image.*
 import java.util.*
 
 class NewFarmerActivity : AppCompatActivity() {
@@ -38,36 +40,36 @@ class NewFarmerActivity : AppCompatActivity() {
 
     val startForResult =
         registerForActivityResult(ActivityResultContracts.StartActivityForResult()) { result: ActivityResult ->
-            if (result.resultCode == Activity.RESULT_OK) {
-                val intent = result.data
-                // Handle the Intent
-                val extras = intent?.extras
+            when (result.resultCode) {
+                Activity.RESULT_OK -> {
+                    val intent = result.data
+                    // Handle the Intent
+                    val extras = intent?.extras
 
-                when {
-                    extras != null && extras.containsKey(BIRTH_CERT_URI) -> {
-                        savedUri = intent.getStringExtra(BIRTH_CERT_URI) as String
-                        Toast.makeText(
-                            this,
-                            "birthCert uri: $savedUri",
-                            Toast.LENGTH_SHORT
-                        ).show()
-                    }
-                    extras != null && extras.containsKey(NATIONAL_ID_URI) -> {
-                        savedUri = intent.getStringExtra(NATIONAL_ID_URI) as String
-                        Toast.makeText(
-                            this,
-                            "birthCert uri: $savedUri",
-                            Toast.LENGTH_SHORT
-                        ).show()
-                    }
-                    extras == null -> {
-                        Toast.makeText(
-                            this,
-                            "saved uri null",
-                            Toast.LENGTH_SHORT
-                        ).show()
-                    }
+                    when(extras != null){
+                        true -> {
+                            when {
+                                extras.containsKey(BIRTH_CERT_URI) -> {
+                                    savedUri = intent.getStringExtra(BIRTH_CERT_URI) as String
 
+                                    Log.i("TAG", "Birth Cert: $savedUri")
+                                }
+                                extras.containsKey(NATIONAL_ID_URI) -> {
+                                    savedUri = intent.getStringExtra(NATIONAL_ID_URI) as String
+
+                                    Log.i("TAG", "National Id: $savedUri")
+
+                                }
+                            }
+                        }
+                        false -> {
+                            Toast.makeText(
+                                this,
+                                "saved uri null",
+                                Toast.LENGTH_SHORT
+                            ).show()
+                        }
+                    }
                 }
             }
         }
@@ -116,11 +118,7 @@ class NewFarmerActivity : AppCompatActivity() {
         val regionalManager = intent.getSerializableExtra("Regional_Manager") as RegionalManager?
 
         val regionalManagerId = regionalManager?.regional_manager_id
-        Toast.makeText(
-            this,
-            " $regionalManagerId",
-            Toast.LENGTH_SHORT
-        ).show()
+        Log.i("TAG", "Regional Manager Id: $regionalManagerId")
 
         //Create new farmer
         val addFarmerButton = findViewById<Button>(R.id.addFarmerButton)
@@ -145,28 +143,33 @@ class NewFarmerActivity : AppCompatActivity() {
                         national_id = nationalId,
                         createdAt = Date()
                     )
+                    Log.i("TAG", "Id in ${newFarmer.farmer_id}")
 
                     farmerViewModel.insert(newFarmer)
 
                     val addedFarmer =
                         farmerViewModel.getFarmerByDateAndTimeCreated(newFarmer.createdAt)
 
-                    if (addedFarmer != null) {
-                        val addedFarmerDateCreated = addedFarmer.createdAt
+                    Log.i("TAG", "Id out ${addedFarmer?.farmer_id}")
 
-                        Toast.makeText(
-                            this,
-                            "Farmer successfully added. BirthCertificate ${addedFarmer.birth_certificate} \n" +
-                                    " farmer Name: ${addedFarmer.name}",
-                            Toast.LENGTH_SHORT
-                        ).show()
-                    } else {
-                        Toast.makeText(
-                            this,
-                            "Farmer not added",
-                            Toast.LENGTH_SHORT
-                        ).show()
+                    when(addedFarmer !=null ){
+                        true -> {
+                            Log.i("TAG", "Birth Certificate ${addedFarmer.birth_certificate} \n" +
+                                    " National Id: ${addedFarmer.national_id}")
 
+                            Toast.makeText(
+                                this,
+                                "Farmer successfully added",
+                                Toast.LENGTH_SHORT
+                            ).show()
+                        }
+                        false -> {
+                            Toast.makeText(
+                                this,
+                                "Farmer not added",
+                                Toast.LENGTH_SHORT
+                            ).show()
+                        }
                     }
                 }
             }
@@ -179,51 +182,72 @@ class NewFarmerActivity : AppCompatActivity() {
         previewNationalIdTextView.visibility = View.VISIBLE
         previewBirthCertificateTextView.visibility = View.VISIBLE
 
-        editNewFarmerTextView.visibility = View.VISIBLE
+
         val regionalManagerId = farmer?.manager_id
-        Toast.makeText(
-            this,
-            " $regionalManagerId ",
-            Toast.LENGTH_SHORT
-        ).show()
+        Log.i("TAG", "Regional Manager Id: $regionalManagerId")
+
         editTextName.setText(farmer?.name)
         phoneNumber.setText(farmer?.phone_number)
         farmer?.gender?.let { mGenderSpinner.setSelection(it) }
 
+        Log.i("TAG", "Birth certificate: ${farmer?.birth_certificate} \n National id ${farmer?.national_id}")
+
+        //Preview Birth certificate
+        previewBirthCertificateTextView.setOnClickListener {
+            val returnedBirthCertificate = farmer?.birth_certificate
+            val intent = Intent(this@NewFarmerActivity, PreviewFarmerActivity::class.java)
+            intent.putExtra(IS_BIRTH_CERT, returnedBirthCertificate )
+            startActivity(intent)
+        }
+        //Preview National id
+        previewNationalIdTextView.setOnClickListener {
+            val returnedNationalId = farmer?.national_id
+            val intent = Intent(this@NewFarmerActivity, PreviewFarmerActivity::class.java)
+            intent.putExtra(IS_NATIONAL_ID, returnedNationalId )
+            startActivity(intent)
+        }
+
         //Edit farmer
-        val addFarmerButton = findViewById<Button>(R.id.addFarmerButton)
-        addFarmerButton.setOnClickListener {
-            val name = editTextName.text.toString().trim()
-            val phoneNumber = phoneNumber.text.toString().trim()
-            when (regionalManagerId) {
+        val saveFarmerButton = findViewById<Button>(R.id.addFarmerButton)
+        saveFarmerButton.setOnClickListener {
+
+            when (farmer?.farmer_id) {
                 null -> {
                     return@setOnClickListener
+                    Log.i("TAG", "Null farmer opened")
                 }
                 else -> {
+                    val name = editTextName.text.toString().trim()
+                    val phoneNumber = phoneNumber.text.toString().trim()
+
                     farmer?.name = name
                     farmer?.gender = mGender
                     farmer?.phone_number = phoneNumber
                     farmer?.birth_certificate = savedUri
                     farmer?.national_id = savedUri
+                    Log.i("TAG", "farmer opened")
+
 
                     farmerViewModel.updateFarmer(farmer)
 
-                    val updatedFarmer = farmerViewModel.getSingleFarmer(farmer!!.farmer_id)
+                    val updatedFarmer = farmerViewModel.getSingleFarmer(farmer?.farmer_id)
 
+                    when(updatedFarmer != null ){
+                        true -> {
+                            Toast.makeText(
+                                this,
+                                "Farmer successfully updated",
+                                Toast.LENGTH_SHORT
+                            ).show()
+                        }
+                        false -> {
+                            Toast.makeText(
+                                this,
+                                "Farmer not updated",
+                                Toast.LENGTH_SHORT
+                            ).show()
 
-                    if (updatedFarmer != null) {
-                        Toast.makeText(
-                            this,
-                            "Farmer successfully updated",
-                            Toast.LENGTH_SHORT
-                        ).show()
-                    } else {
-                        Toast.makeText(
-                            this,
-                            "Farmer not updated",
-                            Toast.LENGTH_SHORT
-                        ).show()
-
+                        }
                     }
                 }
             }

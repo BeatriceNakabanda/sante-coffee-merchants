@@ -9,6 +9,10 @@ import java.util.*
 class FarmerRepository constructor(private val farmerDao: FarmerDao) {
     val allFarmers: LiveData<List<Farmer>> = farmerDao.getAllFarmers()
 
+//    fun insertNewFarmer(farmer: Farmer): Farmer{
+//        farmerDao.insert(farmer)
+//        return farmer
+//    }
     fun insertNewFarmer(farmer: Farmer){
         farmerDao.insert(farmer)
     }
@@ -19,7 +23,7 @@ class FarmerRepository constructor(private val farmerDao: FarmerDao) {
         val farmer = farmerDao.getAllFarmersByRegionalManagerId(regionalManagerId)
         return farmer
     }
-    fun getSingleFarmer(farmerId: Int): Farmer{
+    fun getSingleFarmer(farmerId: Int?): Farmer{
         val farmer = farmerDao.getSingleFarmer(farmerId)
         return farmer
     }
@@ -27,16 +31,5 @@ class FarmerRepository constructor(private val farmerDao: FarmerDao) {
         val farmer = farmerDao.getFarmerByDateAndTimeCreated(createdAt)
         return farmer
     }
-    fun getFarmerByPhoneNumber(phone_number: String): Farmer{
-        val farmer = farmerDao.getFarmerByPhoneNumber(phone_number)
-        return farmer
-    }
-    fun getFarmerAndRegionalManager(regionalManagerId: Int, farmerId: Int): Farmer{
-        val farmer = farmerDao.getFarmerAndRegionalManager(regionalManagerId, farmerId)
-        return farmer
-    }
-//    fun updateSingleFarmer(farmerId: Int){
-//        farmerDao.updateSingleFarmer(farmerId)
-//    }
 
 }
