@@ -15,6 +15,10 @@ import androidx.camera.core.*
 import androidx.camera.lifecycle.ProcessCameraProvider
 import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
+import com.example.santecoffeemerhants.utils.BIRTH_CERT_URI
+import com.example.santecoffeemerhants.utils.IS_BIRTH_CERT
+import com.example.santecoffeemerhants.utils.IS_NATIONAL_ID
+import com.example.santecoffeemerhants.utils.NATIONAL_ID_URI
 import kotlinx.android.synthetic.main.activity_camera.*
 import java.io.File
 import java.text.SimpleDateFormat
@@ -80,25 +84,31 @@ class CaptureDocumentActivity : AppCompatActivity() {
                         val savedUri = Uri.fromFile(photoFile)
                         val msg = "Photo capture succeeded: $savedUri"
 //                        Toast.makeText(baseContext, msg, Toast.LENGTH_SHORT).show()
-//
+
                         Toast.makeText(baseContext, "Photo_URI : $savedUri", Toast.LENGTH_SHORT).show()
 
                         val callbackIntent = Intent()
-                        val extras = intent?.extras()
-                        when(extras){
-                            null -> {
-                                // if no extras found
-                            }
-                            containsKey(IS_BIRTH_CERT) -> {
-                                callbackIntent.putExtra(BIRTH_CERT_URI, savedUri.toString()).also {
-                                    setResult(Activity.RESULT_OK, callbackIntent)
+                        val extras = intent?.extras
+
+                        when(extras != null){
+                            true -> {
+                                if (extras.containsKey(IS_BIRTH_CERT)){
+                                    callbackIntent.putExtra(BIRTH_CERT_URI, savedUri.toString()).also {
+                                        setResult(Activity.RESULT_OK, callbackIntent)
+                                    }
+                                }
+
+                                if(extras.containsKey(IS_NATIONAL_ID) ) {
+                                    callbackIntent.putExtra(NATIONAL_ID_URI, savedUri.toString()).also {
+                                        setResult(Activity.RESULT_OK, callbackIntent)
+                                    }
                                 }
                             }
-                            containsKey(IS_NATIONAL_ID) -> {
-                                callbackIntent.putExtra(NATIONAL_ID_URI, savedUri.toString()).also {
-                                    setResult(Activity.RESULT_OK, callbackIntent)
-                                }
+
+                            false -> {
+                                Log.i("TAG", "Intent is null")
                             }
+
                         }
                         finish()
                     }
@@ -108,7 +118,7 @@ class CaptureDocumentActivity : AppCompatActivity() {
         }
 
         camera_back_button.setOnClickListener {
-                    finish()
+            finish()
 
         }
 
@@ -189,3 +199,4 @@ class CaptureDocumentActivity : AppCompatActivity() {
 
 
 }
+

@@ -75,7 +75,7 @@ class LoginActivity : AppCompatActivity() {
                 regionalManager == null -> {
                     Toast.makeText(
                         this@LoginActivity,
-                        "Unregistered user",
+                        "Unregistered user or wrong credentials",
                         Toast.LENGTH_SHORT
                     ).show()
                 }

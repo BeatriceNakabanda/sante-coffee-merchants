@@ -20,7 +20,7 @@ import kotlinx.android.synthetic.main.activity_main.*
 
 
 class MainActivity : AppCompatActivity()  {
-     var regionalManager: RegionalManager? = null
+    private var regionalManager: RegionalManager? = null
     private lateinit var farmerViewModel: FarmerViewModel
 
 
@@ -70,9 +70,16 @@ class MainActivity : AppCompatActivity()  {
 
         val fab = findViewById<FloatingActionButton>(R.id.fab)
         fab.setOnClickListener {
-            val intent = Intent(this, NewFarmerActivity::class.java)
-            intent.putExtra("Regional_Manager", regionalManager)
-            startActivity(intent)
+            if (regionalManager == null) {
+                return@setOnClickListener
+            }
+            else {
+                val intent = Intent(this, NewFarmerActivity::class.java)
+                intent.putExtra("Regional_Manager", regionalManager)
+                startActivity(intent)
+            }
+
+
 
         }
 
