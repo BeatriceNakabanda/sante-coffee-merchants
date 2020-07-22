@@ -4,6 +4,7 @@ import android.os.Bundle
 import android.text.Editable
 import android.text.TextUtils
 import android.text.TextWatcher
+import android.util.Patterns
 import android.view.View
 import android.view.Window
 import android.view.WindowManager
@@ -15,8 +16,10 @@ import com.example.santecoffeemerhants.utils.GENDER_FEMALE
 import com.example.santecoffeemerhants.utils.GENDER_MALE
 import com.example.santecoffeemerhants.utils.GENDER_UNKOWN
 import com.example.santecoffeemerhants.viewmodel.RegionalManagerViewModel
+import kotlinx.android.synthetic.main.activity_login.*
 import kotlinx.android.synthetic.main.activity_register.*
 import java.util.*
+
 
 class RegisterActivity : AppCompatActivity(){
     private lateinit  var regionalManagerViewModel: RegionalManagerViewModel
@@ -40,7 +43,7 @@ class RegisterActivity : AppCompatActivity(){
         registerEmailAddressEditText.addTextChangedListener(emailTextWatcher)
         regionEditText.addTextChangedListener(regionTextWatcher)
         registerPasswordEditText.addTextChangedListener(passwordTextWatcher)
-        confirmPasswordEditText.addTextChangedListener(confirmPasswordTextWatcher)
+//        confirmPasswordEditText.addTextChangedListener(confirmPasswordTextWatcher)
 
         setUpGenderSpinner()
 
@@ -56,35 +59,21 @@ class RegisterActivity : AppCompatActivity(){
             val password = registerPasswordEditText.text.toString().trim()
             val confirmPassword = confirmPasswordEditText.text.toString().trim()
 
-            when {
-                mGender == GENDER_UNKOWN || name.isEmpty() || email.isEmpty() || region.isEmpty()
-                        || password.isEmpty() || confirmPassword.isEmpty() -> {
-                    invalidGenderTextView.visibility = View.VISIBLE
-                    emptyNameTextView.visibility = View.VISIBLE
-                    invalidEmailTextView.visibility = View.VISIBLE
-                    emptyRegionTextView.visibility = View.VISIBLE
-                    emptyPasswordTextView.visibility = View.VISIBLE
-                    emptyConfirmPasswordTextView.visibility = View.VISIBLE
-                }
-                password != confirmPassword -> {
-                    noMatchPasswordTextView.visibility = View.VISIBLE
-                }
-                else -> {
-                    val regionalManager = RegionalManager(
-                        name = name,
-                        gender = mGender,
-                        email = email,
-                        region = region,
-                        password = password,
-                        createdAt = Date()
-                    )
+            val regionalManager = RegionalManager(
+                name = name,
+                gender = mGender,
+                email = email,
+                region = region,
+                password = password,
+                createdAt = Date()
+            )
+            val regionalManager1Email = regionalManager.email
 
-                    val regionalManagerEmail = regionalManager.email
 
+            when(isValid()){
+                true -> {
                     regionalManagerViewModel.insert(regionalManager)
-                    val returnedRegionalManager
-                            = regionalManagerViewModel.getRegionalMangerByEmail(regionalManagerEmail)
-
+                    val returnedRegionalManager = regionalManagerViewModel.getRegionalMangerByEmail(regionalManager1Email)
                     when {
                         returnedRegionalManager != null -> {
                             Toast.makeText(
@@ -102,6 +91,50 @@ class RegisterActivity : AppCompatActivity(){
                         }
                     }
                 }
+                false -> {
+                    Toast.makeText(
+                        this,
+                        "Please enter valid fields",
+                        Toast.LENGTH_SHORT
+                    ).show()
+                }
+            }
+
+
+
+        }
+
+
+    }
+
+    private fun isValid(): Boolean{
+        when {
+            mGender == GENDER_UNKOWN && nameEditText.text.toString().trim().isEmpty() &&
+                    registerEmailAddressEditText.text.toString().trim().isEmpty() &&
+                    regionEditText.text.toString().trim().isEmpty() &&
+                    registerPasswordEditText.text.toString().trim().isEmpty() -> {
+
+                invalidGenderTextView.visibility = View.VISIBLE
+                emptyNameTextView.visibility = View.VISIBLE
+                invalidEmailTextView.visibility = View.VISIBLE
+                emptyRegionTextView.visibility = View.VISIBLE
+                emptyPasswordTextView.visibility = View.VISIBLE
+
+                return false
+
+            }
+            registerPasswordEditText.text.toString().trim() != confirmPasswordEditText.text.toString().trim() -> {
+                noMatchPasswordTextView.visibility = View.VISIBLE
+
+                return false
+
+            }
+            !Patterns.EMAIL_ADDRESS.matcher(registerEmailAddressEditText.text.toString()).matches() -> {
+                invalidEmailTextView.visibility = View.VISIBLE
+                return false
+            }
+            else -> {
+                return true
             }
         }
     }
@@ -140,7 +173,9 @@ class RegisterActivity : AppCompatActivity(){
                                     }
                                 }
                             }
+
                         }
+
                     }
 
                     override fun onNothingSelected(parent: AdapterView<*>) {
@@ -172,9 +207,8 @@ class RegisterActivity : AppCompatActivity(){
 
     private val emailTextWatcher = object: TextWatcher{
         override fun afterTextChanged(s: Editable?) {
-            val email = registerEmailAddressEditText.text.toString().trim()
             when {
-                email.isEmpty() -> {
+                registerEmailAddressEditText.text.toString().trim().isEmpty() -> {
                     invalidEmailTextView.visibility = View.VISIBLE
                 }
                 else -> {
@@ -213,23 +247,6 @@ class RegisterActivity : AppCompatActivity(){
                 }
                 else -> {
                     emptyPasswordTextView.visibility = View.GONE
-                }
-            }
-        }
-
-        override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) { }
-
-        override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) { }
-    }
-
-    private val confirmPasswordTextWatcher = object: TextWatcher{
-        override fun afterTextChanged(s: Editable?) {
-            when {
-                confirmPasswordEditText.text.toString().trim().isEmpty() -> {
-                    emptyConfirmPasswordTextView.visibility = View.VISIBLE
-                }
-                else -> {
-                    emptyConfirmPasswordTextView.visibility = View.GONE
                 }
             }
         }
