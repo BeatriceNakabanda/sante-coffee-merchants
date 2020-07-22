@@ -7,11 +7,9 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.TextView
-import android.widget.Toast
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.RecyclerView
 import com.example.santecoffeemerhants.data.Entity.Farmer
-import com.example.santecoffeemerhants.data.Entity.RegionalManager
 
 class FarmerListAdapter internal constructor( private val context: Context)
     : RecyclerView.Adapter<FarmerListAdapter.FarmerViewHolder>()  {
@@ -30,7 +28,7 @@ class FarmerListAdapter internal constructor( private val context: Context)
 
 //                Toast.makeText(itemView.context, "You clicked on item # ${position + 1} \n $farmers[position]", Toast.LENGTH_SHORT).show()
 
-                val intent = Intent(context, NewFarmerActivity::class.java )
+                val intent = Intent(context, FarmerActivity::class.java )
                 val bundle = Bundle()
                 bundle.putSerializable(FARMER, farmers[position])
                 intent.putExtras(bundle)

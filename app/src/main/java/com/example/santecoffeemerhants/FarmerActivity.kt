@@ -22,20 +22,15 @@ import kotlinx.android.synthetic.main.activity_new_farmer.*
 import kotlinx.android.synthetic.main.activity_preview_image.*
 import java.util.*
 
-class NewFarmerActivity : AppCompatActivity() {
+class FarmerActivity : AppCompatActivity() {
     private lateinit var editTextName: EditText
     private lateinit var phoneNumber: EditText
     private lateinit var mGenderSpinner: Spinner
     private lateinit var farmerViewModel: FarmerViewModel
-    private var regionalManager: RegionalManager? = null
 
     private lateinit var savedUri: String
 
-    private val genderUnknown = 0
-    private val genderMale = 1
-    private val genderFemale = 2
-
-    private var mGender = genderUnknown
+    private var mGender = GENDER_UNKOWN
     private  var farmer: Farmer? = null
 
     val startForResult =
@@ -53,11 +48,20 @@ class NewFarmerActivity : AppCompatActivity() {
                                     savedUri = intent.getStringExtra(BIRTH_CERT_URI) as String
 
                                     Log.i("TAG", "Birth Cert: $savedUri")
+                                    Toast.makeText(
+                                        this,
+                                        "Saved Birth certificate",
+                                        Toast.LENGTH_SHORT
+                                    ).show()
                                 }
                                 extras.containsKey(NATIONAL_ID_URI) -> {
                                     savedUri = intent.getStringExtra(NATIONAL_ID_URI) as String
-
                                     Log.i("TAG", "National Id: $savedUri")
+                                    Toast.makeText(
+                                        this,
+                                        "Saved National Id",
+                                        Toast.LENGTH_SHORT
+                                    ).show()
 
                                 }
                             }
@@ -195,14 +199,14 @@ class NewFarmerActivity : AppCompatActivity() {
         //Preview Birth certificate
         previewBirthCertificateTextView.setOnClickListener {
             val returnedBirthCertificate = farmer?.birth_certificate
-            val intent = Intent(this@NewFarmerActivity, PreviewFarmerActivity::class.java)
+            val intent = Intent(this@FarmerActivity, PreviewFarmerActivity::class.java)
             intent.putExtra(IS_BIRTH_CERT, returnedBirthCertificate )
             startActivity(intent)
         }
         //Preview National id
         previewNationalIdTextView.setOnClickListener {
             val returnedNationalId = farmer?.national_id
-            val intent = Intent(this@NewFarmerActivity, PreviewFarmerActivity::class.java)
+            val intent = Intent(this@FarmerActivity, PreviewFarmerActivity::class.java)
             intent.putExtra(IS_NATIONAL_ID, returnedNationalId )
             startActivity(intent)
         }
@@ -219,6 +223,10 @@ class NewFarmerActivity : AppCompatActivity() {
                 else -> {
                     val name = editTextName.text.toString().trim()
                     val phoneNumber = phoneNumber.text.toString().trim()
+
+//                    val extras = intent.extras
+
+
 
                     farmer?.name = name
                     farmer?.gender = mGender
@@ -279,13 +287,13 @@ class NewFarmerActivity : AppCompatActivity() {
                     if (!TextUtils.isEmpty(selection)) {
                         mGender = when (selection) {
                             getString(R.string.gender_male) -> {
-                                genderMale
+                                GENDER_MALE
                             }
                             getString(R.string.gender_female) -> {
-                                genderFemale
+                                GENDER_FEMALE
                             }
                             else -> {
-                                genderUnknown
+                                GENDER_UNKOWN
                             }
                         }
                     }

@@ -1,6 +1,5 @@
 package com.example.santecoffeemerhants
 
-import android.content.Context
 import android.content.Intent
 import android.os.Bundle
 import android.view.Menu
@@ -16,7 +15,6 @@ import androidx.recyclerview.widget.RecyclerView
 import com.example.santecoffeemerhants.data.Entity.RegionalManager
 import com.example.santecoffeemerhants.viewmodel.FarmerViewModel
 import com.google.android.material.floatingactionbutton.FloatingActionButton
-import kotlinx.android.synthetic.main.activity_main.*
 
 
 class MainActivity : AppCompatActivity()  {
@@ -74,7 +72,7 @@ class MainActivity : AppCompatActivity()  {
                 return@setOnClickListener
             }
             else {
-                val intent = Intent(this, NewFarmerActivity::class.java)
+                val intent = Intent(this, FarmerActivity::class.java)
                 intent.putExtra("Regional_Manager", regionalManager)
                 startActivity(intent)
             }

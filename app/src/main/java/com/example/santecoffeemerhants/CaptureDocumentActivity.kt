@@ -117,17 +117,8 @@ class CaptureDocumentActivity : AppCompatActivity() {
 
                 })
         }
-
-        camera_back_button.setOnClickListener {
-            finish()
-
-        }
-
         outputDirectory = getOutputDirectory()
-
         cameraExecutor = Executors.newSingleThreadExecutor()
-
-
     }
 
     private fun startCamera() {
