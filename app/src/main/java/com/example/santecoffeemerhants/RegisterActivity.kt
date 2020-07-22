@@ -43,7 +43,6 @@ class RegisterActivity : AppCompatActivity(){
         registerEmailAddressEditText.addTextChangedListener(emailTextWatcher)
         regionEditText.addTextChangedListener(regionTextWatcher)
         registerPasswordEditText.addTextChangedListener(passwordTextWatcher)
-//        confirmPasswordEditText.addTextChangedListener(confirmPasswordTextWatcher)
 
         setUpGenderSpinner()
 
@@ -99,19 +98,14 @@ class RegisterActivity : AppCompatActivity(){
                     ).show()
                 }
             }
-
-
-
         }
-
-
     }
 
     private fun isValid(): Boolean{
         when {
-            mGender == GENDER_UNKOWN && nameEditText.text.toString().trim().isEmpty() &&
-                    registerEmailAddressEditText.text.toString().trim().isEmpty() &&
-                    regionEditText.text.toString().trim().isEmpty() &&
+            mGender == GENDER_UNKOWN || nameEditText.text.toString().trim().isEmpty() ||
+                    registerEmailAddressEditText.text.toString().trim().isEmpty() ||
+                    regionEditText.text.toString().trim().isEmpty() ||
                     registerPasswordEditText.text.toString().trim().isEmpty() -> {
 
                 invalidGenderTextView.visibility = View.VISIBLE
@@ -123,7 +117,7 @@ class RegisterActivity : AppCompatActivity(){
                 return false
 
             }
-            registerPasswordEditText.text.toString().trim() != confirmPasswordEditText.text.toString().trim() -> {
+            registerPasswordEditText.text.toString() != confirmPasswordEditText.text.toString() -> {
                 noMatchPasswordTextView.visibility = View.VISIBLE
 
                 return false
@@ -255,4 +249,5 @@ class RegisterActivity : AppCompatActivity(){
 
         override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) { }
     }
+
 }
