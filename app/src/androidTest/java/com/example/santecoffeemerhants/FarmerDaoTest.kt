@@ -1,9 +1,6 @@
 package com.example.santecoffeemerhants
 
 import android.util.Log
-import android.widget.EditText
-import androidx.appcompat.app.AppCompatActivity
-import androidx.lifecycle.LiveData
 import androidx.room.Room
 import androidx.test.InstrumentationRegistry
 import androidx.test.runner.AndroidJUnit4

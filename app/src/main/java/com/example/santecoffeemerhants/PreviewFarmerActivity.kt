@@ -20,44 +20,44 @@ class PreviewFarmerActivity: AppCompatActivity() {
 
     private  var savedUri: String = null.toString()
 
-    val startForResult =
-        registerForActivityResult(ActivityResultContracts.StartActivityForResult()) { result: ActivityResult ->
-            when (result.resultCode) {
-                Activity.RESULT_OK -> {
-                    val intent = result.data
-                    // Handle the Intent
-                    val extras = intent?.extras
-
-                    when(extras != null){
-                        true -> {
-                            when {
-                                extras.containsKey(BIRTH_CERT_URI) -> {
-                                    savedUri = intent.getStringExtra(BIRTH_CERT_URI) as String
-
-                                    Log.i("TAG", "Recaptured Birth Cert: $savedUri")
-
-                                    imagePreview.setImageURI(Uri.parse(savedUri))
-
-                                }
-                                extras.containsKey(NATIONAL_ID_URI) -> {
-                                    savedUri = intent.getStringExtra(NATIONAL_ID_URI) as String
-
-                                    Log.i("TAG", "Recaptured National Id: $savedUri")
-
-                                }
-                            }
-                        }
-                        false -> {
-                            Toast.makeText(
-                                this,
-                                "saved uri null",
-                                Toast.LENGTH_SHORT
-                            ).show()
-                        }
-                    }
-                }
-            }
-        }
+//    val startForResult =
+//        registerForActivityResult(ActivityResultContracts.StartActivityForResult()) { result: ActivityResult ->
+//            when (result.resultCode) {
+//                Activity.RESULT_OK -> {
+//                    val intent = result.data
+//                    // Handle the Intent
+//                    val extras = intent?.extras
+//
+//                    when(extras != null){
+//                        true -> {
+//                            when {
+//                                extras.containsKey(BIRTH_CERT_URI) -> {
+//                                    savedUri = intent.getStringExtra(BIRTH_CERT_URI) as String
+//
+//                                    Log.i("TAG", "Recaptured Birth Cert: $savedUri")
+//
+//                                    imagePreview.setImageURI(Uri.parse(savedUri))
+//
+//                                }
+//                                extras.containsKey(NATIONAL_ID_URI) -> {
+//                                    savedUri = intent.getStringExtra(NATIONAL_ID_URI) as String
+//
+//                                    Log.i("TAG", "Recaptured National Id: $savedUri")
+//
+//                                }
+//                            }
+//                        }
+//                        false -> {
+//                            Toast.makeText(
+//                                this,
+//                                "saved uri null",
+//                                Toast.LENGTH_SHORT
+//                            ).show()
+//                        }
+//                    }
+//                }
+//            }
+//        }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -72,9 +72,9 @@ class PreviewFarmerActivity: AppCompatActivity() {
                         imagePreview.setImageURI(Uri.parse(birthCertificate))
 
                         preview_retake_button.setOnClickListener {
-                            val intent = Intent(this, CaptureDocumentActivity::class.java)
-                            intent.putExtra(IS_BIRTH_CERT, true)
-                            startForResult.launch(intent)
+//                            val intent = Intent(this, CaptureDocumentActivity::class.java)
+//                            intent.putExtra(IS_BIRTH_CERT, true)
+//                            startForResult.launch(intent)
                         }
 //                        when(savedUri != null){
 //                            true -> {

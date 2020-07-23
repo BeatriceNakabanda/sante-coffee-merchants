@@ -236,7 +236,9 @@ class RegisterActivity : AppCompatActivity(){
     private val passwordTextWatcher = object: TextWatcher{
         override fun afterTextChanged(s: Editable?) {
             when {
-                registerPasswordEditText.text.toString().trim().isEmpty() -> {
+                registerPasswordEditText.text.toString().trim().isEmpty() ||
+                        registerPasswordEditText.text.toString().trim().length <= 3
+                -> {
                     emptyPasswordTextView.visibility = View.VISIBLE
                 }
                 else -> {

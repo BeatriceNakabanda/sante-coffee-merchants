@@ -2,14 +2,17 @@ package com.example.santecoffeemerhants
 
 import android.app.Activity
 import android.content.Intent
-import android.net.Uri
 import android.os.Bundle
+import android.text.Editable
 import android.text.TextUtils
+import android.text.TextWatcher
 import android.util.Log
 import android.view.Menu
 import android.view.MenuItem
 import android.view.View
-import android.widget.*
+import android.widget.AdapterView
+import android.widget.ArrayAdapter
+import android.widget.Toast
 import androidx.activity.result.ActivityResult
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.appcompat.app.AppCompatActivity
@@ -19,16 +22,15 @@ import com.example.santecoffeemerhants.data.Entity.RegionalManager
 import com.example.santecoffeemerhants.utils.*
 import com.example.santecoffeemerhants.viewmodel.FarmerViewModel
 import kotlinx.android.synthetic.main.activity_new_farmer.*
-import kotlinx.android.synthetic.main.activity_preview_image.*
 import java.util.*
 
-class FarmerActivity : AppCompatActivity() {
-    private lateinit var editTextName: EditText
-    private lateinit var phoneNumber: EditText
-    private lateinit var mGenderSpinner: Spinner
-    private lateinit var farmerViewModel: FarmerViewModel
 
+class FarmerActivity : AppCompatActivity() {
+
+    private lateinit var farmerViewModel: FarmerViewModel
     private lateinit var savedUri: String
+    private lateinit var birthCertificate: String
+    private lateinit var nationalId: String
 
     private var mGender = GENDER_UNKOWN
     private  var farmer: Farmer? = null
@@ -82,11 +84,11 @@ class FarmerActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
 
         setContentView(R.layout.activity_new_farmer)
-        editTextName = findViewById(R.id.farmerNameEditText)
-        phoneNumber = findViewById(R.id.phoneEditText)
-        mGenderSpinner = findViewById(R.id.farmerGenderSpinner)
 
         farmerViewModel = ViewModelProvider(this).get(FarmerViewModel::class.java)
+
+        farmerNameEditText.addTextChangedListener(nameTextWatcher)
+        phoneEditText.addTextChangedListener(phoneNumberTextWatcher)
 
         setUpGenderSpinner()
 
@@ -125,18 +127,13 @@ class FarmerActivity : AppCompatActivity() {
         Log.i("TAG", "Regional Manager Id: $regionalManagerId")
 
         //Create new farmer
-        val addFarmerButton = findViewById<Button>(R.id.addFarmerButton)
-        addFarmerButton.setOnClickListener {
-            val name = editTextName.text.toString().trim()
-            val phoneNumber = phoneNumber.text.toString().trim()
-            val birthCertificate = savedUri
-            val nationalId = savedUri
-
-            when (regionalManagerId) {
-                null -> {
-                    return@setOnClickListener
-                }
-                else -> {
+        saveFarmerButton.setOnClickListener {
+            when (isValid() && regionalManagerId != null) {
+                true -> {
+                    val name = farmerNameEditText.text.toString().trim()
+                    val phoneNumber = phoneEditText.text.toString().trim()
+                    birthCertificate = savedUri
+                    nationalId = savedUri
 
                     val newFarmer = Farmer(
                         manager_id = regionalManagerId,
@@ -147,6 +144,7 @@ class FarmerActivity : AppCompatActivity() {
                         national_id = nationalId,
                         createdAt = Date()
                     )
+                    Log.i("TAG", "Rgional manager for farmer ${newFarmer.manager_id}")
                     Log.i("TAG", "Id in ${newFarmer.farmer_id}")
 
                     farmerViewModel.insert(newFarmer)
@@ -156,10 +154,12 @@ class FarmerActivity : AppCompatActivity() {
 
                     Log.i("TAG", "Id out ${addedFarmer?.farmer_id}")
 
-                    when(addedFarmer !=null ){
+                    when (addedFarmer != null) {
                         true -> {
-                            Log.i("TAG", "Birth Certificate ${addedFarmer.birth_certificate} \n" +
-                                    " National Id: ${addedFarmer.national_id}")
+                            Log.i(
+                                "TAG", "Birth Certificate ${addedFarmer.birth_certificate} \n" +
+                                        " National Id: ${addedFarmer.national_id}"
+                            )
 
                             Toast.makeText(
                                 this,
@@ -176,8 +176,19 @@ class FarmerActivity : AppCompatActivity() {
                         }
                     }
                 }
+                false -> {
+                    Toast.makeText(
+                        this,
+                        "Please enter all fields",
+                        Toast.LENGTH_SHORT
+                    ).show()
+                    return@setOnClickListener
+                }
+
             }
+
         }
+
     }
     private fun editFarmer(){
         farmer = intent.extras?.get("farmer") as Farmer?
@@ -190,9 +201,9 @@ class FarmerActivity : AppCompatActivity() {
         val regionalManagerId = farmer?.manager_id
         Log.i("TAG", "Regional Manager Id: $regionalManagerId")
 
-        editTextName.setText(farmer?.name)
-        phoneNumber.setText(farmer?.phone_number)
-        farmer?.gender?.let { mGenderSpinner.setSelection(it) }
+        farmerNameEditText.setText(farmer?.name)
+        phoneEditText.setText(farmer?.phone_number)
+        farmer?.gender?.let { farmerGenderSpinner.setSelection(it) }
 
         Log.i("TAG", "Birth certificate: ${farmer?.birth_certificate} \n National id ${farmer?.national_id}")
 
@@ -212,21 +223,12 @@ class FarmerActivity : AppCompatActivity() {
         }
 
         //Edit farmer
-        val saveFarmerButton = findViewById<Button>(R.id.addFarmerButton)
         saveFarmerButton.setOnClickListener {
 
-            when (farmer?.farmer_id) {
-                null -> {
-                    return@setOnClickListener
-                    Log.i("TAG", "Null farmer opened")
-                }
-                else -> {
-                    val name = editTextName.text.toString().trim()
-                    val phoneNumber = phoneNumber.text.toString().trim()
-
-//                    val extras = intent.extras
-
-
+            when(isValid() && farmer?.farmer_id != null){
+                true -> {
+                    val name = farmerNameEditText.text.toString().trim()
+                    val phoneNumber = phoneEditText.text.toString().trim()
 
                     farmer?.name = name
                     farmer?.gender = mGender
@@ -257,54 +259,124 @@ class FarmerActivity : AppCompatActivity() {
 
                         }
                     }
+
+                }
+                false ->{
+                    Toast.makeText(
+                        this,
+                        "Please enter valid fields",
+                        Toast.LENGTH_SHORT
+                    ).show()
+                }
+            }
+
+//            when (farmer?.farmer_id) {
+//                null -> {
+//                    return@setOnClickListener
+//                    Log.i("TAG", "Null farmer opened")
+//                }
+//                else -> {
+//
+//                }
+//            }
+        }
+
+    }
+    private val nameTextWatcher = object: TextWatcher{
+        override fun afterTextChanged(s: Editable?) {
+            when {
+                farmerNameEditText.text.toString().trim().isEmpty() -> {
+                    farmerEmptyNameTextView.visibility = View.VISIBLE
+                }
+                else -> {
+                    farmerEmptyNameTextView.visibility = View.GONE
                 }
             }
         }
 
+        override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) { }
+
+        override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) { }
+
+    }
+    private val phoneNumberTextWatcher = object: TextWatcher {
+        override fun afterTextChanged(s: Editable?) {
+            when {
+                phoneEditText.text.toString().trim().isEmpty() -> {
+                    InvalidFarmerPhoneNumberTextView.visibility = View.VISIBLE
+                }
+                else -> {
+                    InvalidFarmerPhoneNumberTextView.visibility = View.GONE
+                }
+            }
+        }
+
+        override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {}
+        override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {
+
+        }
+
+    }
+    private fun isValid(): Boolean{
+        when {
+            mGender == GENDER_UNKOWN || farmerNameEditText.text.toString().trim().isEmpty() ||
+                    farmerPhoneNumberTextView.text.toString().trim().isEmpty() -> {
+                farmerEmptyNameTextView.visibility = View.VISIBLE
+                InvalidFarmerPhoneNumberTextView.visibility = View.VISIBLE
+                farmerInvalidGenderTextView.visibility = View.VISIBLE
+//                emptyBirthCertificateTextView.visibility = View.VISIBLE
+//                emptyNationalIdTextView.visibility = View.VISIBLE
+
+                return false
+            }
+
+            else -> {
+                return true
+            }
+        }
     }
 
     private fun setUpGenderSpinner() {
-        if (mGenderSpinner != null) {
-            //Create adapter for spinner
-            val adapter = ArrayAdapter.createFromResource(
-                this,
-                R.array.array_gender_options,
-                android.R.layout.simple_spinner_item
-            )
-            // Specify dropdown layout style - simple list view with 1 item per line
-            adapter.setDropDownViewResource(android.R.layout.simple_dropdown_item_1line)
-            // Apply the adapter to the spinner
-            mGenderSpinner.adapter = adapter
+        when {
+            farmerGenderSpinner != null -> {
+                //Create adapter for spinner
+                val adapter = ArrayAdapter.createFromResource(
+                    this,
+                    R.array.array_gender_options,
+                    android.R.layout.simple_spinner_item
+                )
+                // Specify dropdown layout style - simple list view with 1 item per line
+                adapter.setDropDownViewResource(android.R.layout.simple_dropdown_item_1line)
+                // Apply the adapter to the spinner
+                farmerGenderSpinner.adapter = adapter
 
-            mGenderSpinner.onItemSelectedListener = object :
-                AdapterView.OnItemSelectedListener {
-                override fun onItemSelected(
-                    parent: AdapterView<*>,
-                    view: View, position: Int, id: Long
-                ) {
-                    val selection =
-                        parent.getItemAtPosition(position) as String
-                    if (!TextUtils.isEmpty(selection)) {
-                        mGender = when (selection) {
-                            getString(R.string.gender_male) -> {
-                                GENDER_MALE
-                            }
-                            getString(R.string.gender_female) -> {
-                                GENDER_FEMALE
-                            }
-                            else -> {
-                                GENDER_UNKOWN
+                farmerGenderSpinner.onItemSelectedListener = object :
+                    AdapterView.OnItemSelectedListener {
+                    override fun onItemSelected(
+                        parent: AdapterView<*>,
+                        view: View, position: Int, id: Long
+                    ) {
+                        val selection =
+                            parent.getItemAtPosition(position) as String
+                        when {
+                            !TextUtils.isEmpty(selection) -> {
+                                mGender = when (selection) {
+                                    getString(R.string.gender_male) -> {
+                                        GENDER_MALE
+                                    }
+                                    getString(R.string.gender_female) -> {
+                                        GENDER_FEMALE
+                                    }
+                                    else -> {
+                                        GENDER_UNKOWN
+                                    }
+                                }
                             }
                         }
                     }
-                    val invalidGenderText =
-                        findViewById<View>(R.id.farmerInvalidGenderTextView) as TextView
-                    invalidGenderText.visibility = View.GONE
-
-                }
-
-                override fun onNothingSelected(parent: AdapterView<*>) {
-                    mGender
+                    override fun onNothingSelected(parent: AdapterView<*>) {
+                        mGender
+                    }
                 }
             }
         }
@@ -317,14 +389,16 @@ class FarmerActivity : AppCompatActivity() {
 
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
         val id: Int = item.itemId
-        if (id == R.id.logout) {
-            val intent = Intent(this, LoginActivity::class.java)
-            intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP or Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK)
-            startActivity(intent)
-            finish()
-            return true
+        when (id) {
+            R.id.logout -> {
+                val intent = Intent(this, LoginActivity::class.java)
+                intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP or Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK)
+                startActivity(intent)
+                finish()
+                return true
+            }
+            else -> return super.onOptionsItemSelected(item)
         }
-        return super.onOptionsItemSelected(item)
     }
 }
 

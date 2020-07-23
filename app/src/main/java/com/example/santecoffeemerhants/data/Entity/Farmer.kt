@@ -1,6 +1,5 @@
 package com.example.santecoffeemerhants.data.Entity
 
-import android.net.Uri
 import androidx.room.*
 import com.example.santecoffeemerhants.data.converter.Converters
 import java.io.Serializable
