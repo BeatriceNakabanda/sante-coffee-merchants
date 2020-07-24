@@ -113,8 +113,6 @@ class CaptureDocumentActivity : AppCompatActivity() {
                         }
                         finish()
                     }
-
-
                 })
         }
         outputDirectory = getOutputDirectory()

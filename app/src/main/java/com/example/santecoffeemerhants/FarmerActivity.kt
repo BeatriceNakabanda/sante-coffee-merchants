@@ -30,7 +30,6 @@ class FarmerActivity : AppCompatActivity() {
 
     private lateinit var farmerViewModel: FarmerViewModel
 
-    //    private lateinit var savedUri: String
     private lateinit var birthCertificate: String
     private lateinit var nationalId: String
 
@@ -52,6 +51,7 @@ class FarmerActivity : AppCompatActivity() {
                                     birthCertificate =
                                         intent.getStringExtra(BIRTH_CERT_URI) as String
                                     Log.i("TAG", "saved Birth Cert: $birthCertificate")
+                                    imagePreview.setImageURI(Uri.parse(birthCertificate))
                                     Toast.makeText(
                                         this,
                                         "Saved Birth certificate",
@@ -60,13 +60,13 @@ class FarmerActivity : AppCompatActivity() {
                                 }
                                 extras.containsKey(NATIONAL_ID_URI) -> {
                                     nationalId = intent.getStringExtra(NATIONAL_ID_URI) as String
-//                                    Log.i("TAG", "National Id: $savedUri")
+                                    Log.i("TAG", "National Id: $nationalId")
+                                    imagePreview.setImageURI(Uri.parse(nationalId))
                                     Toast.makeText(
                                         this,
                                         "Saved National Id",
                                         Toast.LENGTH_SHORT
                                     ).show()
-
                                 }
                             }
                         }
@@ -96,29 +96,24 @@ class FarmerActivity : AppCompatActivity() {
 
         farmer = intent?.extras?.get("farmer") as Farmer?
 
-        when (farmer) {
+        when(farmer) {
             null -> {
                 captureNationalIdButton.setOnClickListener {
                     val intent = Intent(this, CaptureDocumentActivity::class.java)
                     intent.putExtra(IS_NATIONAL_ID, true)
                     startForResult.launch(intent)
-
                 }
                 captureBirthCertificateButton.setOnClickListener {
                     val intent = Intent(this, CaptureDocumentActivity::class.java)
                     intent.putExtra(IS_BIRTH_CERT, true)
                     startForResult.launch(intent)
                 }
-
                 addFarmer()
             }
             else -> {
-
                 editFarmer()
             }
         }
-
-
     }
     private fun previewDocuments() {
         imagePreview.visibility = View.VISIBLE
@@ -137,8 +132,6 @@ class FarmerActivity : AppCompatActivity() {
             preview_back_button.visibility = View.GONE
             saveFarmerButton.visibility = View.VISIBLE
         }
-
-
     }
 
     private fun addFarmer() {
@@ -146,7 +139,8 @@ class FarmerActivity : AppCompatActivity() {
         captureNationalIdButton.visibility = View.VISIBLE
         addNewFarmerTextView.visibility = View.VISIBLE
         //Get details of logged in regional manager
-        val regionalManager = intent.getSerializableExtra("Regional_Manager") as RegionalManager?
+        val regionalManager =
+            intent.getSerializableExtra("Regional_Manager") as RegionalManager?
 
         val regionalManagerId = regionalManager?.regional_manager_id
         Log.i("TAG", "Regional Manager Id: $regionalManagerId")
@@ -157,7 +151,6 @@ class FarmerActivity : AppCompatActivity() {
                 true -> {
                     val name = farmerNameEditText.text.toString().trim()
                     val phoneNumber = phoneEditText.text.toString().trim()
-
                     val newFarmer = Farmer(
                         manager_id = regionalManagerId,
                         name = name,
@@ -167,7 +160,7 @@ class FarmerActivity : AppCompatActivity() {
                         national_id = nationalId,
                         createdAt = Date()
                     )
-                    Log.i("TAG", "Rgional manager for farmer ${newFarmer.manager_id}")
+                    Log.i("TAG", "Regional manager for farmer ${newFarmer.manager_id}")
                     Log.i("TAG", "Id in ${newFarmer.farmer_id}")
 
                     farmerViewModel.insert(newFarmer)
@@ -179,11 +172,9 @@ class FarmerActivity : AppCompatActivity() {
 
                     when (addedFarmer != null) {
                         true -> {
-                            Log.i(
-                                "TAG", "Birth Certificate ${addedFarmer.birth_certificate} \n" +
-                                        " National Id: ${addedFarmer.national_id}"
-                            )
-
+                            Log.i("TAG",
+                                "Birth Certificate ${addedFarmer.birth_certificate} \n" +
+                                        " National Id: ${addedFarmer.national_id}")
                             Toast.makeText(
                                 this,
                                 "Farmer successfully added",
@@ -207,16 +198,11 @@ class FarmerActivity : AppCompatActivity() {
                     ).show()
                     return@setOnClickListener
                 }
-
             }
-
         }
-
     }
 
     private fun editFarmer() {
-        farmer = intent.extras?.get("farmer") as Farmer?
-
         editNewFarmerTextView.visibility = View.VISIBLE
         previewNationalIdButton.visibility = View.VISIBLE
         previewBirthCertificateButton.visibility = View.VISIBLE
@@ -231,7 +217,6 @@ class FarmerActivity : AppCompatActivity() {
                 intent.putExtra(IS_BIRTH_CERT, true)
                 startForResult.launch(intent)
             }
-
         }
         //Preview National id
         previewNationalIdButton.setOnClickListener {
@@ -242,9 +227,7 @@ class FarmerActivity : AppCompatActivity() {
                 val intent = Intent(this, CaptureDocumentActivity::class.java)
                 intent.putExtra(IS_NATIONAL_ID, true)
                 startForResult.launch(intent)
-
             }
-
         }
 
         val regionalManagerId = farmer?.manager_id
@@ -254,20 +237,17 @@ class FarmerActivity : AppCompatActivity() {
         phoneEditText.setText(farmer?.phone_number)
         farmer?.gender?.let { farmerGenderSpinner.setSelection(it) }
 
-        Log.i(
-            "TAG",
-            "Birth certificate: ${farmer?.birth_certificate} \n National id ${farmer?.national_id}"
-        )
+        Log.i("TAG", "Birth certificate: ${farmer?.birth_certificate} " +
+                "\n National id ${farmer?.national_id}")
 
         //Edit farmer
         saveFarmerButton.setOnClickListener {
-
             when (farmer?.farmer_id != null) {
                 true -> {
                     val name = farmerNameEditText.text.toString().trim()
                     val phoneNumber = phoneEditText.text.toString().trim()
 
-                    Log.i("TAG", "Updating Birth Cert...: $birthCertificate " )
+//                    Log.i("TAG", "Updating Birth Cert...: $birthCertificate " )
                     farmer?.name = name
                     farmer?.gender = mGender
                     farmer?.phone_number = phoneNumber
@@ -278,10 +258,8 @@ class FarmerActivity : AppCompatActivity() {
 
                     val updatedFarmer = farmerViewModel.getSingleFarmer(farmer?.farmer_id)
 
-                    Log.i(
-                        "TAG", "updated birth certificate ${updatedFarmer.birth_certificate} " +
-                                "\n Updated national id ${updatedFarmer.national_id}"
-                    )
+                    Log.i("TAG", "updated birth certificate ${updatedFarmer.birth_certificate} " +
+                                "\n Updated national id ${updatedFarmer.national_id}")
 
                     when (updatedFarmer != null) {
                         true -> {
@@ -297,10 +275,8 @@ class FarmerActivity : AppCompatActivity() {
                                 "Farmer not updated",
                                 Toast.LENGTH_SHORT
                             ).show()
-
                         }
                     }
-
                 }
                 false -> {
                     Toast.makeText(
@@ -311,7 +287,6 @@ class FarmerActivity : AppCompatActivity() {
                 }
             }
         }
-
     }
 
     private val nameTextWatcher = object : TextWatcher {
@@ -435,4 +410,3 @@ class FarmerActivity : AppCompatActivity() {
         }
     }
 }
-
