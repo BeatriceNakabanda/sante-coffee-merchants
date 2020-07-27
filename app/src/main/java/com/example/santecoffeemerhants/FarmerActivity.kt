@@ -247,7 +247,6 @@ class FarmerActivity : AppCompatActivity() {
                     val name = farmerNameEditText.text.toString().trim()
                     val phoneNumber = phoneEditText.text.toString().trim()
 
-//                    Log.i("TAG", "Updating Birth Cert...: $birthCertificate " )
                     farmer?.name = name
                     farmer?.gender = mGender
                     farmer?.phone_number = phoneNumber
