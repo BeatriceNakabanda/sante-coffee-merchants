@@ -96,6 +96,7 @@ class ManagersActivity: AppCompatActivity() {
                                "Cooperative manager successfully added",
                                Toast.LENGTH_SHORT
                            ).show()
+                           finish()
                        }
                        false -> {
                            Toast.makeText(

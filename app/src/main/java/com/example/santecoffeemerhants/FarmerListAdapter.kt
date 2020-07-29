@@ -84,4 +84,3 @@ class FarmerListAdapter internal constructor( private val context: Context)
         }
     }
 }
-

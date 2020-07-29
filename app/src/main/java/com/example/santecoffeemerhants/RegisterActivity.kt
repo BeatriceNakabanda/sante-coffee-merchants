@@ -81,6 +81,7 @@ class RegisterActivity : AppCompatActivity(){
                                 "Successfully added regional manager",
                                 Toast.LENGTH_SHORT
                             ).show()
+                            finish()
                         }
                         else -> {
                             Toast.makeText(
