@@ -22,6 +22,9 @@ interface RegionalManagerDao {
     @Query("SELECT * FROM regional_manager WHERE email LIKE :email and password LIKE :password")
     fun getRegionalManagerByEmailAndPassword(email: String, password: String): RegionalManager
 
+    @Query("SELECT * FROM regional_manager WHERE region LIKE :region")
+    fun getRegionalAllManagersByRegion(region: String): LiveData<List<RegionalManager>>
+
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     fun insert(regionalManager: RegionalManager)
 

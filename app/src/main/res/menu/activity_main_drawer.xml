@@ -5,13 +5,10 @@
 
   <group android:checkableBehavior="single">
     <item
-        android:id="@+id/nav_home"
-        android:title="Gender" />
+        android:id="@+id/nav_farmers"
+        android:title="Farmers" />
     <item
-        android:id="@+id/nav_gallery"
-        android:title="Email" />
-    <item
-        android:id="@+id/nav_slideshow"
-        android:title="Logout" />
+        android:id="@+id/nav_managers"
+        android:title="Managers" />
   </group>
 </menu>

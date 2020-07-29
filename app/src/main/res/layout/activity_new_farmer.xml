@@ -7,6 +7,15 @@
     android:background="@color/colorPrimary"
     tools:context=".FarmerActivity">
 
+    <include
+        android:id="@+id/main_toolbar"
+        layout="@layout/toolbar_main"
+        android:layout_width="match_parent"
+        android:layout_height="57dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
     <TextView
         android:id="@+id/addNewFarmerTextView"
         android:layout_width="match_parent"
@@ -22,7 +31,7 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:layout_constraintTop_toBottomOf="@+id/main_toolbar"/>
 
     <TextView
         android:id="@+id/editNewFarmerTextView"
@@ -161,7 +170,7 @@
         android:layout_marginStart="@dimen/medium"
         android:layout_marginTop="0dp"
         android:layout_marginEnd="@dimen/medium"
-        android:text="Please enter valid gender"
+        android:text="Please select gender"
         android:textColor="@color/invalid"
         android:textSize="12sp"
         android:visibility="gone"
@@ -182,6 +191,20 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@id/farmerInvalidGenderTextView" />
 
+    <TextView
+        android:id="@+id/birthCertificateNameTextView"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="@dimen/medium"
+        android:layout_marginTop="8dp"
+        android:layout_marginEnd="@dimen/medium"
+        android:visibility="gone"
+        android:text="View Birth Certificate"
+        android:textSize="14sp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/birthCertificateTextView" />
+
     <Button
         android:id="@+id/captureBirthCertificateButton"
         android:layout_width="85dp"
@@ -200,7 +223,22 @@
         app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintRight_toRightOf="@id/previewBirthCertificateButton"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/birthCertificateTextView" />
+        app:layout_constraintTop_toBottomOf="@+id/birthCertificateNameTextView" />
+
+    <Button
+        android:id="@+id/recaptureBirthCertificateButton"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="@dimen/medium"
+        android:layout_marginTop="8dp"
+        android:layout_marginEnd="@dimen/medium"
+        android:background="#FFFFFF"
+        android:text="Recapture"
+        android:textAllCaps="true"
+        android:textSize="13sp"
+        android:visibility="gone"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/captureBirthCertificateButton"/>
 
     <Button
         android:id="@+id/previewBirthCertificateButton"
@@ -215,7 +253,7 @@
         android:textSize="13sp"
         android:visibility="gone"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/captureBirthCertificateButton"/>
+        app:layout_constraintTop_toBottomOf="@id/recaptureBirthCertificateButton"/>
 
     <TextView
         android:id="@+id/emptyBirthCertificateTextView"
@@ -265,6 +303,35 @@
         app:layout_constraintRight_toRightOf="@id/previewNationalIdButton"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/nationalIdTextView" />
+
+    <TextView
+        android:id="@+id/nationalIdNameTextView"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="@dimen/medium"
+        android:layout_marginTop="8dp"
+        android:layout_marginEnd="8dp"
+        android:visibility="gone"
+        android:text="View National Id"
+        android:textSize="14sp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/captureNationalIdButton" />
+
+    <Button
+        android:id="@+id/recaptureNationalIdButton"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="16dp"
+        android:layout_marginTop="8dp"
+        android:background="#FFFFFF"
+        android:text="Recapture"
+        android:textAllCaps="true"
+        android:textSize="13sp"
+        android:visibility="gone"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/nationalIdNameTextView" />
 
     <Button
         android:id="@+id/previewNationalIdButton"

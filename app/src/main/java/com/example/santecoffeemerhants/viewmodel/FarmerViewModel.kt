@@ -17,9 +17,6 @@ class FarmerViewModel(application: Application): AndroidViewModel(application) {
         repository = FarmerRepository(farmerDao)
         allFarmers = repository.allFarmers
     }
-//    fun insert(farmer: Farmer): Farmer{
-//        return repository.insertNewFarmer(farmer)
-//    }
     fun insert(farmer: Farmer){
          repository.insertNewFarmer(farmer)
     }
@@ -32,10 +29,7 @@ class FarmerViewModel(application: Application): AndroidViewModel(application) {
     fun updateFarmer(farmer: Farmer?){
         farmer?.let { repository.updateFarmer(it) }
     }
-
     fun getAllFarmersByRegionalManagerId(regionalManagerId: Int): LiveData<List<Farmer>> {
         return repository.getAllFarmersByRegionalManagerId(regionalManagerId)
     }
-
-
 }

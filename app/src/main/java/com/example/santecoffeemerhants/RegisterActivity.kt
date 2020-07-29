@@ -56,12 +56,13 @@ class RegisterActivity : AppCompatActivity(){
             val email = registerEmailAddressEditText.text.toString().trim()
             val region = regionEditText.text.toString().trim()
             val password = registerPasswordEditText.text.toString().trim()
-            val confirmPassword = confirmPasswordEditText.text.toString().trim()
+            val contact = contactEditText.text.toString().trim()
 
             val regionalManager = RegionalManager(
                 name = name,
                 gender = mGender,
                 email = email,
+                contact = contact,
                 region = region,
                 password = password,
                 createdAt = Date()
@@ -105,12 +106,14 @@ class RegisterActivity : AppCompatActivity(){
         when {
             mGender == GENDER_UNKOWN || nameEditText.text.toString().trim().isEmpty() ||
                     registerEmailAddressEditText.text.toString().trim().isEmpty() ||
+                    contactEditText.text.toString().trim().isEmpty() ||
                     regionEditText.text.toString().trim().isEmpty() ||
                     registerPasswordEditText.text.toString().trim().isEmpty() -> {
 
                 invalidGenderTextView.visibility = View.VISIBLE
                 emptyNameTextView.visibility = View.VISIBLE
                 invalidEmailTextView.visibility = View.VISIBLE
+                emptyContactTextView.visibility = View.VISIBLE
                 emptyRegionTextView.visibility = View.VISIBLE
                 emptyPasswordTextView.visibility = View.VISIBLE
 

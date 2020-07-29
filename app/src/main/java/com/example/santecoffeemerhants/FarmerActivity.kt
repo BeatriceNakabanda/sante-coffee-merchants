@@ -11,11 +11,10 @@ import android.util.Log
 import android.view.Menu
 import android.view.MenuItem
 import android.view.View
-import android.widget.AdapterView
-import android.widget.ArrayAdapter
-import android.widget.Toast
+import android.widget.*
 import androidx.activity.result.ActivityResult
 import androidx.activity.result.contract.ActivityResultContracts
+import androidx.appcompat.app.ActionBar
 import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.ViewModelProvider
 import com.example.santecoffeemerhants.data.Entity.Farmer
@@ -23,11 +22,11 @@ import com.example.santecoffeemerhants.data.Entity.RegionalManager
 import com.example.santecoffeemerhants.utils.*
 import com.example.santecoffeemerhants.viewmodel.FarmerViewModel
 import kotlinx.android.synthetic.main.activity_new_farmer.*
+import kotlinx.android.synthetic.main.toolbar_main.*
 import java.util.*
 
 
 class FarmerActivity : AppCompatActivity() {
-
     private lateinit var farmerViewModel: FarmerViewModel
 
     private lateinit var birthCertificate: String
@@ -57,6 +56,10 @@ class FarmerActivity : AppCompatActivity() {
                                         "Saved Birth certificate",
                                         Toast.LENGTH_SHORT
                                     ).show()
+
+                                    captureBirthCertificateButton.visibility = View.GONE
+                                    birthCertificateNameTextView.visibility = View.VISIBLE
+                                    recaptureBirthCertificateButton.visibility = View.VISIBLE
                                 }
                                 extras.containsKey(NATIONAL_ID_URI) -> {
                                     nationalId = intent.getStringExtra(NATIONAL_ID_URI) as String
@@ -67,6 +70,9 @@ class FarmerActivity : AppCompatActivity() {
                                         "Saved National Id",
                                         Toast.LENGTH_SHORT
                                     ).show()
+                                    captureNationalIdButton.visibility = View.GONE
+                                    nationalIdNameTextView.visibility = View.VISIBLE
+                                    recaptureNationalIdButton.visibility = View.VISIBLE
                                 }
                             }
                         }
@@ -87,6 +93,12 @@ class FarmerActivity : AppCompatActivity() {
 
         setContentView(R.layout.activity_new_farmer)
 
+        //set toolbar
+        setSupportActionBar(activity_main_toolbar)
+
+        val actionBar: ActionBar? = supportActionBar
+        actionBar?.title = "Farmers"
+
         farmerViewModel = ViewModelProvider(this).get(FarmerViewModel::class.java)
 
         farmerNameEditText.addTextChangedListener(nameTextWatcher)
@@ -98,6 +110,7 @@ class FarmerActivity : AppCompatActivity() {
 
         when(farmer) {
             null -> {
+                addFarmer()
                 captureNationalIdButton.setOnClickListener {
                     val intent = Intent(this, CaptureDocumentActivity::class.java)
                     intent.putExtra(IS_NATIONAL_ID, true)
@@ -108,7 +121,46 @@ class FarmerActivity : AppCompatActivity() {
                     intent.putExtra(IS_BIRTH_CERT, true)
                     startForResult.launch(intent)
                 }
-                addFarmer()
+                recaptureBirthCertificateButton.setOnClickListener {
+                    val intent = Intent(this, CaptureDocumentActivity::class.java)
+                    intent.putExtra(IS_NATIONAL_ID, true)
+                    startForResult.launch(intent)
+                }
+                recaptureNationalIdButton.setOnClickListener {
+                    val intent = Intent(this, CaptureDocumentActivity::class.java)
+                    intent.putExtra(IS_NATIONAL_ID, true)
+                    startForResult.launch(intent)
+                }
+                birthCertificateNameTextView.setOnClickListener {
+                    imagePreview.visibility = View.VISIBLE
+                    imagePreview.setImageURI(Uri.parse(birthCertificate))
+                    saveFarmerButton.visibility = View.GONE
+                    recaptureBirthCertificateButton.visibility = View.GONE
+                    captureBirthCertificateButton.visibility = View.GONE
+                    captureNationalIdButton.visibility = View.GONE
+                    preview_back_button.visibility = View.VISIBLE
+                    preview_back_button.setOnClickListener {
+                        imagePreview.visibility = View.GONE
+                        saveFarmerButton.visibility = View.VISIBLE
+                        recaptureBirthCertificateButton.visibility = View.VISIBLE
+                        captureNationalIdButton.visibility = View.VISIBLE
+                    }
+                }
+                nationalIdNameTextView.setOnClickListener {
+                    imagePreview.visibility = View.VISIBLE
+                    imagePreview.setImageURI(Uri.parse(nationalId))
+                    saveFarmerButton.visibility = View.GONE
+                    captureBirthCertificateButton.visibility = View.GONE
+                    recaptureNationalIdButton.visibility = View.GONE
+                    recaptureBirthCertificateButton.visibility = View.GONE
+                    preview_back_button.visibility = View.VISIBLE
+                    preview_back_button.setOnClickListener {
+                        imagePreview.visibility = View.GONE
+                        saveFarmerButton.visibility = View.VISIBLE
+                        recaptureBirthCertificateButton.visibility = View.VISIBLE
+                        recaptureNationalIdButton.visibility = View.VISIBLE
+                    }
+                }
             }
             else -> {
                 editFarmer()
@@ -326,14 +378,26 @@ class FarmerActivity : AppCompatActivity() {
 
     private fun isValid(): Boolean {
         when {
-            mGender == GENDER_UNKOWN || farmerNameEditText.text.toString().trim().isEmpty() ||
-                    farmerPhoneNumberTextView.text.toString().trim().isEmpty() -> {
+            mGender == GENDER_UNKOWN && farmerNameEditText.text.toString().trim().isEmpty() &&
+                    phoneEditText.text.toString().trim().isEmpty() -> {
                 farmerEmptyNameTextView.visibility = View.VISIBLE
                 InvalidFarmerPhoneNumberTextView.visibility = View.VISIBLE
                 farmerInvalidGenderTextView.visibility = View.VISIBLE
 //                emptyBirthCertificateTextView.visibility = View.VISIBLE
 //                emptyNationalIdTextView.visibility = View.VISIBLE
 
+                return false
+            }
+            farmerNameEditText.text.toString().trim().isEmpty() -> {
+                farmerEmptyNameTextView.visibility = View.VISIBLE
+                return false
+            }
+            phoneEditText.text.toString().trim().isEmpty() -> {
+                InvalidFarmerPhoneNumberTextView.visibility = View.VISIBLE
+                return false
+            }
+            mGender == GENDER_UNKOWN -> {
+                farmerInvalidGenderTextView.visibility = View.VISIBLE
                 return false
             }
 
@@ -381,7 +445,6 @@ class FarmerActivity : AppCompatActivity() {
                             }
                         }
                     }
-
                     override fun onNothingSelected(parent: AdapterView<*>) {
                         mGender
                     }
@@ -396,16 +459,15 @@ class FarmerActivity : AppCompatActivity() {
     }
 
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
-        val id: Int = item.itemId
-        when (id) {
+        return when (item.itemId) {
             R.id.logout -> {
                 val intent = Intent(this, LoginActivity::class.java)
                 intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP or Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK)
                 startActivity(intent)
                 finish()
-                return true
+                true
             }
-            else -> return super.onOptionsItemSelected(item)
+            else -> super.onOptionsItemSelected(item)
         }
     }
 }

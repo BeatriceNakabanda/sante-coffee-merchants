@@ -15,6 +15,7 @@ data class RegionalManager(
     @ColumnInfo(name = "name") var name: String,
     @ColumnInfo(name = "gender") var gender: Int,
     @ColumnInfo(name = "email") var email: String,
+    @ColumnInfo(name = "contact") var contact: String,
     @ColumnInfo(name = "region") var region: String,
     @ColumnInfo(name = "password") var password: String,
     @ColumnInfo(name = "created_at", defaultValue = "CURRENT_TIMESTAMP")

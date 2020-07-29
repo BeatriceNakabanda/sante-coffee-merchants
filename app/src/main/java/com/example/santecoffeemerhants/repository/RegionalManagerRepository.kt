@@ -17,6 +17,10 @@ class RegionalManagerRepository constructor(private val regionalManagerDao: Regi
     fun getRegionalManagerByEmail(email: String) {
         regionalManagerDao.getRegionalManagerByEmail(email)
     }
+    fun getRegionalManagerByRegion(region: String): LiveData<List<RegionalManager>>{
+        val regionalManagerAccounts = regionalManagerDao.getRegionalAllManagersByRegion(region)
+        return regionalManagerAccounts
+    }
     fun getRegionalManagerByEmailAndPassword(regionalManager: RegionalManager){
         val email = regionalManager.email
         val password = regionalManager.password
