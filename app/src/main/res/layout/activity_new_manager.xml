@@ -1,0 +1,235 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/colorPrimary"
+    tools:context=".ManagersActivity">
+
+    <include
+        android:id="@+id/main_toolbar"
+        layout="@layout/toolbar_main"
+        android:layout_width="match_parent"
+        android:layout_height="57dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <TextView
+        android:id="@+id/addCoopManagerTextView"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="@dimen/medium"
+        android:layout_marginTop="@dimen/medium"
+        android:layout_marginEnd="@dimen/medium"
+        android:text="Add New Cooperative Manager"
+        android:textColor="@color/colorPrimaryDark"
+        android:textSize="17sp"
+        android:textStyle="bold"
+        android:visibility="gone"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/main_toolbar"/>
+
+    <TextView
+        android:id="@+id/editCoopManagerTextView"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="@dimen/medium"
+        android:layout_marginTop="@dimen/medium"
+        android:layout_marginEnd="@dimen/medium"
+        android:text="Edit New Cooperative Manager"
+        android:textColor="@color/colorPrimaryDark"
+        android:textSize="17sp"
+        android:textStyle="bold"
+        android:visibility="gone"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/addCoopManagerTextView"/>
+
+    <TextView
+        android:id="@+id/coopNameTextView"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="@dimen/medium"
+        android:layout_marginTop="8dp"
+        android:layout_marginEnd="@dimen/medium"
+        android:text="Name"
+        android:textColor="@color/colorPrimaryDark"
+        android:textSize="15sp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/editCoopManagerTextView"/>
+
+    <EditText
+        android:id="@+id/coopManagerNameEditText"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="@dimen/medium"
+        android:layout_marginTop="4dp"
+        android:layout_marginEnd="@dimen/medium"
+        android:textSize="15sp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/coopNameTextView" />
+
+    <TextView
+        android:id="@+id/coopManagerEmptyNameTextView"
+        android:layout_width="match_parent"
+        android:layout_height="15dp"
+        android:layout_marginStart="@dimen/medium"
+        android:layout_marginTop="0dp"
+        android:layout_marginEnd="@dimen/medium"
+        android:text="Please enter name"
+        android:textColor="@color/invalid"
+        android:textSize="12sp"
+        android:visibility="gone"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/coopManagerNameEditText" />
+
+    <TextView
+        android:id="@+id/coopManagerPhoneNumberTextView"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="@dimen/medium"
+        android:layout_marginTop="8dp"
+        android:layout_marginEnd="@dimen/medium"
+        android:text="Phone Number"
+        android:textColor="@color/colorPrimaryDark"
+        android:textSize="15sp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/coopManagerEmptyNameTextView" />
+
+    <EditText
+        android:id="@+id/coopManagerphoneEditText"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="@dimen/medium"
+        android:layout_marginTop="4dp"
+        android:layout_marginEnd="@dimen/medium"
+        android:inputType="phone"
+        android:maxLength="10"
+        android:textAlignment="textStart"
+        android:textSize="15sp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/coopManagerPhoneNumberTextView" />
+
+    <TextView
+        android:id="@+id/InvalidCoopManagerPhoneNumberTextView"
+        android:layout_width="match_parent"
+        android:layout_height="15dp"
+        android:layout_marginStart="@dimen/medium"
+        android:layout_marginTop="0dp"
+        android:layout_marginEnd="@dimen/medium"
+        android:text="Please enter valid phone number"
+        android:textColor="@color/invalid"
+        android:textSize="12sp"
+        android:visibility="gone"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/coopManagerphoneEditText" />
+
+    <TextView
+        android:id="@+id/coopEmailTextView"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="@dimen/medium"
+        android:layout_marginTop="8dp"
+        android:layout_marginEnd="@dimen/medium"
+        android:text="Email"
+        android:textColor="@color/colorPrimaryDark"
+        android:textSize="15sp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/InvalidCoopManagerPhoneNumberTextView"/>
+
+    <EditText
+        android:id="@+id/coopManagerEmailEditText"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="@dimen/medium"
+        android:layout_marginTop="4dp"
+        android:inputType="textEmailAddress"
+        android:layout_marginEnd="@dimen/medium"
+        android:textSize="15sp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/coopEmailTextView" />
+
+    <TextView
+        android:id="@+id/coopManagerInvalidEmailTextView"
+        android:layout_width="match_parent"
+        android:layout_height="15dp"
+        android:layout_marginStart="@dimen/medium"
+        android:layout_marginTop="0dp"
+        android:layout_marginEnd="@dimen/medium"
+        android:text="Please enter valid email"
+        android:textColor="@color/invalid"
+        android:textSize="12sp"
+        android:visibility="gone"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/coopManagerEmailEditText" />
+
+    <TextView
+        android:id="@+id/coopGenderTextView"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="@dimen/medium"
+        android:layout_marginTop="8dp"
+        android:layout_marginEnd="@dimen/medium"
+        android:text="Gender"
+        android:textColor="@color/colorPrimaryDark"
+        android:textSize="15sp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/coopManagerInvalidEmailTextView" />
+
+    <Spinner
+        android:id="@+id/coopManagerGenderSpinner"
+        android:layout_width="match_parent"
+        android:layout_height="48dp"
+        android:layout_marginStart="9dp"
+        android:layout_marginTop="4dp"
+        android:layout_marginEnd="@dimen/medium"
+        android:spinnerMode="dropdown"
+        android:textAlignment="textStart"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/coopGenderTextView" />
+
+    <TextView
+        android:id="@+id/coopManagerInvalidGenderTextView"
+        android:layout_width="wrap_content"
+        android:layout_height="15dp"
+        android:layout_marginStart="@dimen/medium"
+        android:layout_marginTop="0dp"
+        android:layout_marginEnd="@dimen/medium"
+        android:text="Please select gender"
+        android:textColor="@color/invalid"
+        android:textSize="12sp"
+        android:visibility="gone"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/coopManagerGenderSpinner" />
+
+    <Button
+        android:id="@+id/saveCoopManagerButton"
+        android:layout_width="85dp"
+        android:layout_height="50dp"
+        android:layout_gravity="end|bottom"
+        android:layout_margin="16dp"
+        android:background="#442C2E"
+        android:text="Save"
+        android:textColor="#FFFFFF"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent" />
+
+</androidx.constraintlayout.widget.ConstraintLayout>
