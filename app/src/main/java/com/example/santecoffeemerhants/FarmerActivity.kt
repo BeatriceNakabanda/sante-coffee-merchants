@@ -232,6 +232,7 @@ class FarmerActivity : AppCompatActivity() {
                                 "Farmer successfully added",
                                 Toast.LENGTH_SHORT
                             ).show()
+                            finish()
                         }
                         false -> {
                             Toast.makeText(
@@ -319,6 +320,7 @@ class FarmerActivity : AppCompatActivity() {
                                 "Updated Farmer",
                                 Toast.LENGTH_SHORT
                             ).show()
+                            finish()
                         }
                         false -> {
                             Toast.makeText(

@@ -81,7 +81,8 @@ class ManagersListActivity: AppCompatActivity() {
         navigation_recyclerView.setHasFixedSize(true)
 
         //Add item touch listener
-        navigation_recyclerView.addOnItemTouchListener(NavigationItemTouchListener(this, object : ClickListener{
+        navigation_recyclerView.addOnItemTouchListener(NavigationItemTouchListener(this,
+            object : ClickListener{
             override fun onClick(view: View, position: Int) {
                 when(position) {
                     0 -> {
@@ -103,7 +104,9 @@ class ManagersListActivity: AppCompatActivity() {
         
 
         // Close the soft keyboard when you open or close the Drawer
-        val toggle: ActionBarDrawerToggle = object : ActionBarDrawerToggle(this, drawerLayout, activity_main_toolbar, R.string.navigation_drawer_open, R.string.navigation_drawer_close) {
+        val toggle: ActionBarDrawerToggle = object : ActionBarDrawerToggle(this,
+            drawerLayout, activity_main_toolbar, R.string.navigation_drawer_open,
+            R.string.navigation_drawer_close) {
             override fun onDrawerClosed(drawerView: View) {
                 // Triggered once the drawer closes
                 super.onDrawerClosed(drawerView)
