@@ -58,8 +58,7 @@ class FarmerActivity : AppCompatActivity() {
                                     ).show()
 
                                     captureBirthCertificateButton.visibility = View.GONE
-                                    birthCertificateNameTextView.visibility = View.VISIBLE
-                                    recaptureBirthCertificateButton.visibility = View.VISIBLE
+                                    previewBirthCertificateButton.visibility = View.VISIBLE
                                 }
                                 extras.containsKey(NATIONAL_ID_URI) -> {
                                     nationalId = intent.getStringExtra(NATIONAL_ID_URI) as String
@@ -71,9 +70,10 @@ class FarmerActivity : AppCompatActivity() {
                                         Toast.LENGTH_SHORT
                                     ).show()
                                     captureNationalIdButton.visibility = View.GONE
-                                    nationalIdNameTextView.visibility = View.VISIBLE
-                                    recaptureNationalIdButton.visibility = View.VISIBLE
+                                    previewNationalIdButton.visibility = View.VISIBLE
                                 }
+
+
                             }
                         }
                         false -> {
@@ -121,49 +121,85 @@ class FarmerActivity : AppCompatActivity() {
                     intent.putExtra(IS_BIRTH_CERT, true)
                     startForResult.launch(intent)
                 }
-                recaptureBirthCertificateButton.setOnClickListener {
-                    val intent = Intent(this, CaptureDocumentActivity::class.java)
-                    intent.putExtra(IS_NATIONAL_ID, true)
-                    startForResult.launch(intent)
-                }
-                recaptureNationalIdButton.setOnClickListener {
-                    val intent = Intent(this, CaptureDocumentActivity::class.java)
-                    intent.putExtra(IS_NATIONAL_ID, true)
-                    startForResult.launch(intent)
-                }
-                birthCertificateNameTextView.setOnClickListener {
+
+                previewBirthCertificateButton.setOnClickListener {
+                    previewNationalIdButton.visibility = View.GONE
+
                     imagePreview.visibility = View.VISIBLE
                     imagePreview.setImageURI(Uri.parse(birthCertificate))
                     saveFarmerButton.visibility = View.GONE
-                    recaptureBirthCertificateButton.visibility = View.GONE
-                    captureBirthCertificateButton.visibility = View.GONE
                     captureNationalIdButton.visibility = View.GONE
+                    previewBirthCertificateButton.visibility = View.GONE
+                    preview_retake_button.visibility = View.VISIBLE
                     preview_back_button.visibility = View.VISIBLE
                     preview_back_button.setOnClickListener {
                         imagePreview.visibility = View.GONE
                         saveFarmerButton.visibility = View.VISIBLE
-                        recaptureBirthCertificateButton.visibility = View.VISIBLE
                         captureNationalIdButton.visibility = View.VISIBLE
+                        previewBirthCertificateButton.visibility = View.VISIBLE
+                    }
+                    preview_retake_button.setOnClickListener {
+                        val intent = Intent(this, CaptureDocumentActivity::class.java)
+                        intent.putExtra(IS_BIRTH_CERT, true)
+                        startForResult.launch(intent)
                     }
                 }
-                nationalIdNameTextView.setOnClickListener {
+                previewNationalIdButton.setOnClickListener {
                     imagePreview.visibility = View.VISIBLE
                     imagePreview.setImageURI(Uri.parse(nationalId))
                     saveFarmerButton.visibility = View.GONE
                     captureBirthCertificateButton.visibility = View.GONE
-                    recaptureNationalIdButton.visibility = View.GONE
-                    recaptureBirthCertificateButton.visibility = View.GONE
                     preview_back_button.visibility = View.VISIBLE
+                    preview_retake_button.visibility = View.VISIBLE
+                    previewNationalIdButton.visibility = View.GONE
+                    previewBirthCertificateButton.visibility = View.GONE
                     preview_back_button.setOnClickListener {
                         imagePreview.visibility = View.GONE
                         saveFarmerButton.visibility = View.VISIBLE
-                        recaptureBirthCertificateButton.visibility = View.VISIBLE
-                        recaptureNationalIdButton.visibility = View.VISIBLE
+                        previewNationalIdButton.visibility = View.VISIBLE
+                    }
+                    preview_retake_button.setOnClickListener {
+                        val intent = Intent(this, CaptureDocumentActivity::class.java)
+                        intent.putExtra(IS_NATIONAL_ID, true)
+                        startForResult.launch(intent)
                     }
                 }
             }
             else -> {
                 editFarmer()
+                birthCertificateNameTextView.setOnClickListener {
+                    previewBirthCertificateButton.visibility = View.GONE
+                    previewNationalIdButton.visibility = View.GONE
+                    imagePreview.visibility = View.VISIBLE
+                    imagePreview.setImageURI(Uri.parse(birthCertificate))
+                    saveFarmerButton.visibility = View.GONE
+                    preview_retake_button.visibility = View.VISIBLE
+                    captureNationalIdButton.visibility = View.GONE
+                    preview_back_button.visibility = View.VISIBLE
+                    preview_back_button.setOnClickListener {
+                        preview_retake_button.visibility = View.GONE
+                        imagePreview.visibility = View.GONE
+                        saveFarmerButton.visibility = View.VISIBLE
+                        previewNationalIdButton.visibility = View.VISIBLE
+                        birthCertificateNameTextView.visibility = View.VISIBLE
+                    }
+                }
+                nationalIdNameTextView.setOnClickListener {
+                    previewBirthCertificateButton.visibility = View.GONE
+                    previewNationalIdButton.visibility = View.GONE
+                    imagePreview.visibility = View.VISIBLE
+                    imagePreview.setImageURI(Uri.parse(birthCertificate))
+                    saveFarmerButton.visibility = View.GONE
+                    preview_retake_button.visibility = View.VISIBLE
+                    captureNationalIdButton.visibility = View.GONE
+                    preview_back_button.visibility = View.VISIBLE
+                    preview_back_button.setOnClickListener {
+                        preview_retake_button.visibility = View.GONE
+                        imagePreview.visibility = View.GONE
+                        saveFarmerButton.visibility = View.VISIBLE
+                        captureNationalIdButton.visibility = View.VISIBLE
+                    }
+                }
             }
         }
     }
@@ -172,7 +208,7 @@ class FarmerActivity : AppCompatActivity() {
         previewBirthCertificateButton.visibility = View.GONE
         previewNationalIdButton.visibility = View.GONE
         saveFarmerButton.visibility = View.GONE
-        preview_retake_button.visibility = View.VISIBLE
+//        preview_retake_button.visibility = View.VISIBLE
         preview_back_button.visibility = View.VISIBLE
 
         preview_back_button.setOnClickListener {
@@ -262,7 +298,14 @@ class FarmerActivity : AppCompatActivity() {
 
         //Preview Birth certificate
         previewBirthCertificateButton.setOnClickListener {
-            previewDocuments()
+//            previewDocuments()
+            imagePreview.visibility = View.VISIBLE
+            previewBirthCertificateButton.visibility = View.GONE
+            previewNationalIdButton.visibility = View.GONE
+            saveFarmerButton.visibility = View.GONE
+//            preview_retake_button.visibility = View.VISIBLE
+            preview_back_button.visibility = View.VISIBLE
+
             imagePreview.setImageURI(Uri.parse(farmer?.birth_certificate))
 
             preview_retake_button.setOnClickListener {
@@ -270,7 +313,31 @@ class FarmerActivity : AppCompatActivity() {
                 intent.putExtra(IS_BIRTH_CERT, true)
                 startForResult.launch(intent)
             }
+            preview_back_button.setOnClickListener {
+                imagePreview.visibility = View.GONE
+                editNewFarmerTextView.visibility = View.VISIBLE
+                previewNationalIdButton.visibility = View.VISIBLE
+                preview_retake_button.visibility = View.GONE
+                preview_back_button.visibility = View.GONE
+                saveFarmerButton.visibility = View.VISIBLE
+                previewBirthCertificateButton.visibility = View.VISIBLE
+
+                previewBirthCertificateButton.setOnClickListener{
+                    imagePreview.visibility = View.VISIBLE
+                    previewBirthCertificateButton.visibility = View.GONE
+                    previewNationalIdButton.visibility = View.GONE
+                    saveFarmerButton.visibility = View.GONE
+                    preview_retake_button.visibility = View.VISIBLE
+                    preview_back_button.visibility = View.VISIBLE
+                }
+                previewNationalIdButton.setOnClickListener {
+                    previewDocuments()
+                }
+
+            }
+
         }
+
         //Preview National id
         previewNationalIdButton.setOnClickListener {
             previewDocuments()

@@ -15,10 +15,7 @@ import androidx.camera.core.*
 import androidx.camera.lifecycle.ProcessCameraProvider
 import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
-import com.example.santecoffeemerhants.utils.BIRTH_CERT_URI
-import com.example.santecoffeemerhants.utils.IS_BIRTH_CERT
-import com.example.santecoffeemerhants.utils.IS_NATIONAL_ID
-import com.example.santecoffeemerhants.utils.NATIONAL_ID_URI
+import com.example.santecoffeemerhants.utils.*
 import kotlinx.android.synthetic.main.activity_camera.*
 import java.io.File
 import java.text.SimpleDateFormat
@@ -98,11 +95,22 @@ class CaptureDocumentActivity : AppCompatActivity() {
                                             setResult(Activity.RESULT_OK, callbackIntent)
                                         }
                                     }
+                                    extras.containsKey(IS_BIRTH_CERT_RETAKEN) -> {
+                                        callbackIntent.putExtra(RETAKEN_BIRTH_CERT_URI, savedUri.toString()).also {
+                                            setResult(Activity.RESULT_OK, callbackIntent)
+                                        }
+                                    }
                                     extras.containsKey(IS_NATIONAL_ID) -> {
                                         callbackIntent.putExtra(NATIONAL_ID_URI, savedUri.toString()).also {
                                             setResult(Activity.RESULT_OK, callbackIntent)
                                         }
                                     }
+                                    extras.containsKey(IS_NATIONAL_ID_RETAKEN) -> {
+                                        callbackIntent.putExtra(RETAKEN_NATIONAL_ID_URI, savedUri.toString()).also {
+                                            setResult(Activity.RESULT_OK, callbackIntent)
+                                        }
+                                    }
+
                                 }
                             }
 

@@ -45,7 +45,7 @@
     <string name="gender">Gender</string>
     <string name="please_select_gender">Please select gender</string>
     <string name="add_new_farmer">Add New Farmer</string>
-    <string name="edit_new_farmer">Edit New Farmer</string>
+    <string name="edit_new_farmer">Edit Farmer</string>
     <string name="birth_certificate">Birth Certificate</string>
     <string name="view_birth_certificate">View Birth Certificate</string>
     <string name="capture">Capture</string>
