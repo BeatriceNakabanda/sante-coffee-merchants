@@ -33,7 +33,7 @@
         android:layout_marginTop="95dp"
         app:layout_constraintHorizontal_bias="0.0"
         android:layout_marginEnd="32dp"
-        android:text="Email"
+        android:text="@string/email"
         android:textColor="@color/colorPrimaryDark"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
@@ -59,7 +59,7 @@
         android:layout_height="wrap_content"
         android:layout_marginStart="32dp"
         android:layout_marginTop="4dp"
-        android:text="Please enter valid email"
+        android:text="@string/please_enter_valid_email"
         android:textColor="@color/invalid"
         android:textSize="12sp"
         android:visibility="gone"
@@ -72,7 +72,7 @@
         android:layout_height="wrap_content"
         android:layout_marginStart="32dp"
         android:layout_marginTop="4dp"
-        android:text="Please enter email"
+        android:text="@string/please_enter_email"
         android:textColor="@color/invalid"
         android:textSize="12sp"
         android:visibility="gone"
@@ -86,7 +86,7 @@
         android:layout_marginStart="32dp"
         android:layout_marginTop="16dp"
         android:layout_marginEnd="32dp"
-        android:text="Password"
+        android:text="@string/password"
         android:textColor="@color/colorPrimaryDark"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.0"
@@ -113,7 +113,7 @@
         android:layout_height="wrap_content"
         android:layout_marginStart="32dp"
         android:layout_marginTop="4dp"
-        android:text="Please enter password"
+        android:text="@string/please_enter_password"
         android:textColor="@color/invalid"
         android:textSize="12sp"
         android:visibility="gone"
@@ -126,7 +126,7 @@
         android:layout_height="wrap_content"
         android:layout_marginStart="32dp"
         android:layout_marginTop="4dp"
-        android:text="Enter password with more than 4 characters"
+        android:text="@string/enter_password_with_more_than_4_characters"
         android:textColor="@color/invalid"
         android:textSize="12sp"
         android:visibility="gone"
@@ -138,7 +138,7 @@
         android:layout_height="wrap_content"
         android:layout_marginStart="32dp"
         android:layout_marginTop="4dp"
-        android:text="Enter valid email and password"
+        android:text="@string/enter_valid_email_and_password"
         android:textColor="@color/invalid"
         android:textSize="12sp"
         android:visibility="gone"
@@ -153,7 +153,7 @@
         android:layout_marginTop="32dp"
         android:layout_marginEnd="162dp"
         android:background="@color/colorPrimaryDark"
-        android:text="Sign in"
+        android:text="@string/sign_in"
         android:textAlignment="center"
         android:textColor="#FFFFFF"
         app:layout_constraintEnd_toEndOf="parent"
@@ -177,7 +177,7 @@
             android:layout_height="wrap_content"
             android:ems="10"
             android:textColor="@color/colorPrimaryDark"
-            android:text="New User ?" />
+            android:text="@string/new_user" />
 
         <TextView
             android:id="@+id/signUpTextView"
@@ -186,7 +186,7 @@
             android:layout_toRightOf="@id/newUserTextView"
             android:textStyle="bold"
             android:ems="10"
-            android:text="Sign up" />
+            android:text="@string/sign_up" />
 
 
     </LinearLayout>

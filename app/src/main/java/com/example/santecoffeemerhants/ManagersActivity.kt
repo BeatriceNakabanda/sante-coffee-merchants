@@ -22,6 +22,7 @@ import com.example.santecoffeemerhants.utils.GENDER_FEMALE
 import com.example.santecoffeemerhants.utils.GENDER_MALE
 import com.example.santecoffeemerhants.utils.GENDER_UNKOWN
 import com.example.santecoffeemerhants.viewmodel.CoopManagerViewModel
+import kotlinx.android.synthetic.main.activity_new_farmer.*
 import kotlinx.android.synthetic.main.activity_new_manager.*
 import kotlinx.android.synthetic.main.toolbar_main.*
 import java.util.*
@@ -57,6 +58,7 @@ class ManagersActivity: AppCompatActivity() {
             }
             else -> {
                 editCoopManagerTextView.visibility = View.VISIBLE
+                editContact()
             }
         }
     }
@@ -109,6 +111,54 @@ class ManagersActivity: AppCompatActivity() {
                 }
                 false -> {
                     return@setOnClickListener
+                }
+            }
+        }
+    }
+    private fun editContact(){
+        coopManagerphoneEditText.setText(cooperativeManager?.phone_number)
+
+        coopNameTextView.visibility = View.GONE
+        coopManagerNameEditText.visibility = View.GONE
+        coopEmailTextView.visibility = View.GONE
+        coopManagerEmailEditText.visibility = View.GONE
+        coopGenderTextView.visibility = View.GONE
+        coopManagerGenderSpinner.visibility = View.GONE
+
+        saveCoopManagerButton.setOnClickListener {
+            when(cooperativeManager?.cooperative_manager_id != null) {
+                 true -> {
+                    val contact = coopManagerphoneEditText.text.toString().trim()
+
+                    cooperativeManager?.phone_number = contact
+
+                    coopManagerViewModel.update(cooperativeManager)
+
+                     val updatedContact = coopManagerViewModel.getCooperativeManagerByCreatedAt(cooperativeManager?.createdAt)
+                     when(updatedContact != null){
+                         true -> {
+                             Toast.makeText(
+                                 this,
+                                 "Updated Contact",
+                                 Toast.LENGTH_SHORT
+                             ).show()
+                             finish()
+                         }
+                         false -> {
+                             Toast.makeText(
+                                 this,
+                                 "Contact not updated",
+                                 Toast.LENGTH_SHORT
+                             ).show()
+                         }
+                     }
+                }
+                false -> {
+                    Toast.makeText(
+                        this,
+                        "Please enter valid fields",
+                        Toast.LENGTH_SHORT
+                    ).show()
                 }
             }
         }
@@ -233,7 +283,6 @@ class ManagersActivity: AppCompatActivity() {
 
         override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) { }
     }
-
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
         return when (item.itemId) {
             R.id.logout -> {

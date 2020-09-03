@@ -16,7 +16,6 @@ import com.example.santecoffeemerhants.utils.GENDER_FEMALE
 import com.example.santecoffeemerhants.utils.GENDER_MALE
 import com.example.santecoffeemerhants.utils.GENDER_UNKOWN
 import com.example.santecoffeemerhants.viewmodel.RegionalManagerViewModel
-import kotlinx.android.synthetic.main.activity_login.*
 import kotlinx.android.synthetic.main.activity_register.*
 import java.util.*
 
@@ -29,13 +28,13 @@ class RegisterActivity : AppCompatActivity(){
 
         super.onCreate(savedInstanceState)
         // hide the title
-        requestWindowFeature(Window.FEATURE_NO_TITLE);
+        requestWindowFeature(Window.FEATURE_NO_TITLE)
         // hide the title bar
-        getSupportActionBar()?.hide();
+        getSupportActionBar()?.hide()
         //enable full screen
         this.getWindow().setFlags(
             WindowManager.LayoutParams.FLAG_FULLSCREEN,
-            WindowManager.LayoutParams.FLAG_FULLSCREEN);
+            WindowManager.LayoutParams.FLAG_FULLSCREEN)
         //inflate layout
         setContentView(R.layout.activity_register)
 

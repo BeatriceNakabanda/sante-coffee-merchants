@@ -45,7 +45,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="4dp"
-                    android:text="Email"
+                    android:text="@string/email"
                     android:fontFamily="sans-serif"
                     android:textAppearance="?android:textAppearanceSmall" />
 
@@ -62,14 +62,14 @@
                     android:layout_width="wrap_content"
                     android:layout_height="50dp"
                     android:layout_marginEnd="8dp"
-                    android:text="Send Email"
+                    android:text="@string/send_email"
                     android:fontFamily="sans-serif"
                     style="?attr/borderlessButtonStyle" />
                 <Button
                     android:id="@+id/editContact"
                     android:layout_width="wrap_content"
                     android:layout_height="50dp"
-                    android:text="Edit Contact"
+                    android:text="@string/edit_contact"
                     android:fontFamily="sans-serif"
                     style="?attr/borderlessButtonStyle" />
             </LinearLayout>

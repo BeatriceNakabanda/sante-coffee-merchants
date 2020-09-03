@@ -5,6 +5,7 @@ import androidx.room.*
 import com.example.santecoffeemerhants.data.Entity.CooperativeManager
 import java.util.*
 
+
 @Dao
 interface CoopManagerDao {
     @Query("SELECT * FROM cooperative_Manager")
@@ -21,4 +22,5 @@ interface CoopManagerDao {
 
     @Update
     fun updateFarmer(cooperativeManager: CooperativeManager)
+
 }

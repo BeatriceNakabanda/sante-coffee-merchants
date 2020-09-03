@@ -23,8 +23,8 @@ class CoopManagerViewModel(application: Application): AndroidViewModel(applicati
     fun getCooperativeManagerByCreatedAt(created_at: Date?): CooperativeManager?{
         return repository.getCooperativeManagerByCreatedAt(created_at)
     }
-    fun update(cooperativeManager: CooperativeManager){
-        repository.updateCoopManager(cooperativeManager)
+    fun update(cooperativeManager: CooperativeManager?){
+        cooperativeManager?.let { repository.updateCoopManager(it) }
     }
     fun getCoopManagersByRegionalManager(regionalManagerId: Int): LiveData<List<CooperativeManager>>{
         return repository.getAllCooperativeManagersByRegionalManager(regionalManagerId)
